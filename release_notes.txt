@@ -1,0 +1,14 @@
+1.0.0
+------
+
+- D3D12 support.
+- MultiGPU, allowing DX12 Flow simulation and inter-GPU tranfer, in both DX11 and DX12 applications.
+- Multiple material support, allowing multiple active layers in the same grid.
+- Self shadowing.
+- Custom emitter APIs.
+- Grid data access APIs.
+
+0.1.1
+------
+
+- Initial Release

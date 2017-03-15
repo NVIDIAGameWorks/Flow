@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="x-ua-compatible" content="IE=Edge"/>
+    
+    <title>Manual &mdash; Nvidia Flow 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/breathe.css" type="text/css" />
+    <link rel="stylesheet" href="_static/application.css" type="text/css" />
+    <link rel="stylesheet" href="_static/styleguide.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/bootstrap.js"></script>
+    <script type="text/javascript" src="_static/jquery.cookie.js"></script>
+    <script type="text/javascript" src="_static/jquery.storageapi.js"></script>
+    <link rel="top" title="Nvidia Flow 1.0.0 documentation" href="index.html" />
+    <link rel="next" title="Release Notes" href="releasenotes.html" />
+    <link rel="prev" title="Nvidia Flow" href="index.html" /> 
+  </head>
+  <body>
+<nav class="navbar navbar-inverse navbar-default">
+  <div class="row">
+      <div class="navbar-brand">
+             <img class="logo" src="_static/developerzone_gameworks_logo.png" alt="Logo"/>
+      </div>
+<div id="searchbox" style="display: none; float:right; padding-top:4px; padding-right:4px">
+    <form class="search form-inline" action="search.html" method="get">
+      <div class="form-group">
+      <input type="text" name="q" class="form-control" />
+      <input type="submit" value="Search" class="btn btn-primary" />
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+</nav>
+<div class="masthead">
+    <div class="row">
+      <ul class="breadcrumb">
+        <li><a href="index.html">Nvidia Flow 1.0.0 documentation</a></li> 
+      </ul>
+    </div>
+</div>
+<div class="row">
+  <div class="col-md-3 bs-sidenav" style="white-space: nowrap; overflow: auto;">
+<div class="bs-sidebar">
+  <div id="sidebar_toc">
+  <h4>Table Of Contents</h4>
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Manual</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#flow-context">Flow Context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#grid">Grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#volume-render">Volume Render</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#grid-export-import">Grid Export/Import</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#grid-proxy">Grid Proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#volume-shadows">Volume Shadows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flow-device">Flow Device</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#tuning">Tuning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#flow-grid-description">Flow Grid Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flow-grid-simulation-parameters">Flow Grid Simulation Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#flow-emitter-parameters">Flow Emitter Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#time-stepping">Time Stepping</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="releasenotes.html">Release Notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="releasenotes.html#id1">1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="releasenotes.html#id2">0.1.1</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Nvidia Flow</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="releasenotes.html"
+                        title="next chapter">Release Notes</a></p>
+<div id="searchbox" style="display: none">
+  <h4>Quick search</h4>
+    <form class="search form-inline" action="search.html" method="get">
+      <div class="form-group">
+      <input type="text" name="q" class="form-control" />
+      <input type="submit" value="Search" class="btn btn-primary" />
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+</div>
+  </div>
+    <div class="document col-md-8">
+          <div class="body">
+            
+  <div class="section" id="manual">
+<h1>Manual<a class="headerlink" href="#manual" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Nvidia Flow is an adaptive sparse voxel fluid simulation library for real-time applications.
+It currently includes backends for D3D11 and D3D12 support.
+Simulation and rendering capabilities are included, although interfaces exist to allow custom rendering.</p>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="flow-context">
+<h3>Flow Context<a class="headerlink" href="#flow-context" title="Permalink to this headline">¶</a></h3>
+<p>NvFlowContext provides the graphics API abstraction that the core Flow API operates against.
+Graphics API dependent functions and structures are provided to allow sharing between Flow and applications.
+For D3D11, the graphics API dependent functions and structures are in NvFlowContextD3D11.h.</p>
+</div>
+<div class="section" id="grid">
+<h3>Grid<a class="headerlink" href="#grid" title="Permalink to this headline">¶</a></h3>
+<p>NvFlowGrid is the core simulation object. It is responsible for the most of the memory allocated by Flow.
+Simulation data is stored in sparse 3D textures, with 64KB blocks, typically 32x16x16 with FP16x4 format.
+There are two primary sparse 3D texture channels, one with velocity, the other with temperature, fuel, burn, and smoke fields for combustion.
+Blocks are allocated dynamically in active regions, with allocation driven by both emitters and simulation values.</p>
+<p>The sparse 3D textures can be layered. This allows multiple active simulations inside the same grid, each with unique simulation parameters.
+This allows the memory pool provided by the grid to be shared between multiple effects.
+Per layer parameters are supported using Grid Materials. Grid Materials are created and referenced in Flow emitters.
+Active materials are tracked, with layers being allocated only for active materials.</p>
+<p>Native emitter and collision behavior is supported in the grid, with a unified interface. Spheres, capsules, boxes, convexes, and signed distance fields are supported.
+Performance for spheres, capsules, boxes, and convexes is optimized for scaling, with hundreds of shapes per frame being practical.
+The grid processes these as emit events, where a shape and bundle of parameters is applied to the grid as an impulse.
+This make emitters generally stateless from the perspective of the grid. Custom emitter callbacks are also supported. This is useful for many things, including two way particle interaction.</p>
+</div>
+<div class="section" id="volume-render">
+<h3>Volume Render<a class="headerlink" href="#volume-render" title="Permalink to this headline">¶</a></h3>
+<p>NvFlowVolumeRender is the core visualization object. It performs ray marching on data provided by a NvFlowGrid or any other source through the NvFlowGridExport interface.
+Simulation results are rendered by ray marching one of the sparse 3D texture channels.
+Multiple render modes are supported, with the most common mode using a color map to
+manipulate color and transparency based on temperature and density.
+The ray marching can be performed at resolutions independent of the application render target,
+to improve performance and avoid oversampling the density field.
+The rendered result is composited against an application provided render target,
+with support for compositing against conventional, multiple resolution shading, and lens matched shading render targets.
+The ray marching also supports early ray termination based on an application provided depth buffer, for proper occlusion.</p>
+<p>Multiple render materials are supported, to allow volume rendering parameters defined per grid material.
+Multiple layer ray march rendering is also supported, so that overlapping layers do not have sorting artifacts.
+Multiple render materials per grid material is also supported, so that multiple components of the same layer can be visualized.
+For example, one render material might have a temperature driven color map to visualize flame, while a second render material might visualize fuel.</p>
+</div>
+<div class="section" id="grid-export-import">
+<h3>Grid Export/Import<a class="headerlink" href="#grid-export-import" title="Permalink to this headline">¶</a></h3>
+<p>NvFlowGridExport and NvFlowGridImport serve as the core interfaces to read and write layered 3D sparse textures with Flow.
+The Flow Grid provides a grid export for read only access to simulation results.
+Many operations can be done with that export. For example, data can be moved between multiple GPUs using a NvFlowGridProxy.
+In this case, grid export provides the necessary read interface to encode necessary data and copy,
+but provides no way to feed that information into NvFlowVolumeRender on the other GPU.
+Grid import provides a way to write information to a layered sparse 3D texture, and then get a grid export interface for that written data.</p>
+</div>
+<div class="section" id="grid-proxy">
+<h3>Grid Proxy<a class="headerlink" href="#grid-proxy" title="Permalink to this headline">¶</a></h3>
+<p>NvFlowGridProxy serves as a very useful extension. It provides an interface to abstract potential data movement.
+Data movement currently supported includes GPU to GPU tranfers, and versioning for safe async compute operation.
+Also included is a passthrough mode, this allows the grid proxy to be used in all cases, reducing app side code paths.</p>
+</div>
+<div class="section" id="volume-shadows">
+<h3>Volume Shadows<a class="headerlink" href="#volume-shadows" title="Permalink to this headline">¶</a></h3>
+<p>NvFlowVolumeShadow is an extension to perform sparse voxel self shadowing.
+It takes a grid export as a input, and outputs a grid export, with the burn component overridden with shadow values.
+The NvFlowVolumeRender can then take this shadow component and modulate intensity during ray march.</p>
+</div>
+<div class="section" id="flow-device">
+<h3>Flow Device<a class="headerlink" href="#flow-device" title="Permalink to this headline">¶</a></h3>
+<p>NvFlowDevice is an extension to simplify the creation of Flow dedicated devices and queues.
+This is useful for multiple GPU and async compute, combined with NvFlowGridProxy.
+Support is included to create D3D12 devices and queues that can interoperate with a D3D11 application.</p>
+</div>
+</div>
+<div class="section" id="tuning">
+<h2>Tuning<a class="headerlink" href="#tuning" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="flow-grid-description">
+<h3>Flow Grid Description<a class="headerlink" href="#flow-grid-description" title="Permalink to this headline">¶</a></h3>
+<p>These parameters tend to have the largest impact on performance and memory consumption.
+The grid size and virtual dimensions together determine the cell size. Finer grid cells tend to produce
+more detail at higher computational cost. Resident scale sets the fraction of virtual grid cells that
+can simulate simultaneously, controlling how much memory should be allocated/made resident on the GPU.
+Allocating a fraction of the memory needed to simulate all virtual cells simultaneously means the grid can have
+more virtual cells than would practical fit on the GPU, recycling memory as an effect moves around.</p>
+<p>Flow is also able to leverage Volume Tiled Resources on supporting hardware and operating systems.
+This allows the GPU hardware to perform the translation from virtual cell coordinates to the correct memory address.
+This provides significant performance benefit to the simulation shader perf. Overhead is added in the form of page
+table updates that the OS must perform, however, in most cases these updates can be performed concurrently to other GPU work.
+This support is experimental, and best used for grids that do not change shape quickly.</p>
+</div>
+<div class="section" id="flow-grid-simulation-parameters">
+<h3>Flow Grid Simulation Parameters<a class="headerlink" href="#flow-grid-simulation-parameters" title="Permalink to this headline">¶</a></h3>
+<p>NvFlowGridMaterialParams apply uniformly to a given layer, controlling fundamental properties of the simulation.
+The damping and fade parameters allow the user to control how fast effects lose energy and fade out of visibility.
+Combustion parameters drive the behavior of fire, allowing the user to manipulate fuel to heat conversion rates,
+buoyancy, expansion, and cooling rates. Vorticity strength allows the user to control the degree of rotational flow in
+the simulation. The weights and thresholds for each channel allow the user to prioritize allocation.
+For example, in the typical fire case, only the temperature weight is non-zero, since the color map fades out regions that
+are not hot. Since cool region are not visible, disabling simulation there improves performance substantially, with minimal
+visible impact.</p>
+</div>
+<div class="section" id="flow-emitter-parameters">
+<h3>Flow Emitter Parameters<a class="headerlink" href="#flow-emitter-parameters" title="Permalink to this headline">¶</a></h3>
+<p>NvFlowGridEmitParams are used to control both emitter and collider behavior. Per channel couple rates control
+how aggressively the emitter attempts to move a grid cell&#8217;s value to emitter channel value. Zero couple rate allows
+channels to be selectively disabled, high couple rate allow for immediate grid cell override.
+A typical default couple rate like 0.5 allows the emitter to influence the grid, but also allows the grid simulate in
+the active region of the emitter, allowing smoother and more consistent behavior.</p>
+<p>NvFlowGridEmitParams not only control simulation behavior, but also drive grid allocation. The main controls
+are allocation scale and allocation predict. Allocation scale determines what grid blocks should be forced to allocate,
+relative to the size and location of the emitter bounding box.
+An allocation scale of 0.0 will result in no forced allocation. This is useful for collision objects.
+An allocation scale of 1.0 is a good default when the user wants the grid allocate for an effect.
+A non-zero allocation scale is required for to get an inactive region to become active. Once a region is active, it
+will automatically expand the domain as needed based on activity in the simulation.</p>
+<p>Making new blocks active in the grid takes time, especially in the Volume Tiled Resource case, where changes to
+the page table must go through the operating system. Allocation predict provides a mechanism to request allocations based on
+emitter velocity, greatly increasing the chance blocks are allocated as the emitter passes over them. This is very useful for
+fast moving objects on trajectories.</p>
+</div>
+<div class="section" id="time-stepping">
+<h3>Time Stepping<a class="headerlink" href="#time-stepping" title="Permalink to this headline">¶</a></h3>
+<p>Due to numerical diffusion, it is best to establish a fixed time step for simulation updates,
+or at least minimum/maxmimum bounds on the timestep. Numerical diffusion has the effect of damping the simulation, so
+very short timesteps do not necessarily result in higher perceived visual fidelity.
+Emitters are handled as events with their own delta time value. This means they can be stepped independently of the grid simulation.
+Substepping emitters, especially fast moving ones, will improve visual appearance,
+since the emitter location and orientation will be advanced a shorter distance per emit event.</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="col-md-1"></div>
+</div>
+<div class="masthead">
+    <div class="row">
+      <ul class="breadcrumb">
+        <li><a href="index.html">Nvidia Flow 1.0.0 documentation</a></li> 
+      </ul>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-boilerplate">
+        <div class="row">
+            <div class="boilerplate">
+                Copyright &copy; 2014, NVIDIA Corporation &nbsp; | &nbsp; <a href="http://www.nvidia.com/object/about-nvidia.html" onclick="s_objectID=&quot;http://www.nvidia.com/object/about-nvidia.html_1&quot;;return this.s_oc?this.s_oc(e):true">About NVIDIA </a>&nbsp; | &nbsp; <a href="http://www.nvidia.com/object/legal_info.html" onclick="s_objectID=&quot;http://www.nvidia.com/object/legal_info.html_1&quot;;return this.s_oc?this.s_oc(e):true">Legal Information </a>&nbsp; | &nbsp; <a href="http://www.nvidia.com/object/privacy_policy.html" onclick="s_objectID=&quot;http://www.nvidia.com/object/privacy_policy.html_1&quot;;return this.s_oc?this.s_oc(e):true">Privacy Policy </a>
+            </div>
+        </div>
+    </div>
+</div>
+</footer>
+<script>
+var treestatename = 'GWDocsTreeState';
+var protocol = location.href.split('/')[0].toLowerCase();
+var storage;
+if (protocol.substring(0,4) == 'http') {
+  storage = $.cookieStorage;
+  storage.setPath('/');
+} else {
+  storage = $.localStorage;
+}
+
+if (storage.isEmpty(treestatename)) {
+  storage.set(treestatename, {});
+}
+
+var treestate = storage.get(treestatename);
+
+$.each($("#sidebar_toc ul li"), toc_walker);
+
+function toc_walker(key, value) {
+    var handleSpan = $("<span></span>")
+        .addClass("toc_handle").prependTo(value);
+    handleSpan.attr("id", $(value).closest("div").attr("id") + "." + key);
+
+    if($(value).has("ul li").size() > 0) {
+        var id = handleSpan.attr("id");
+        if (!(id in treestate)) {
+          treestate[id] = false;
+        }
+        handleSpan.addClass("toc_expanded").click(function() {
+            $(this).toggleClass("toc_expanded toc_collapsed").siblings("ul").toggle();
+            treestate[$(this).attr('id')] = $(this).hasClass('toc_expanded');
+            storage.set(treestatename, treestate);
+        });
+        if(!($(this).hasClass('current') || treestate[id])) {
+            handleSpan.click();
+        }
+        if($(this).hasClass('current')) {
+            treestate[handleSpan.attr('id')] = handleSpan.hasClass('toc_expanded');
+            storage.set(treestatename, treestate);
+        }
+    }
+}
+</script>
+  </body>
+</html>
