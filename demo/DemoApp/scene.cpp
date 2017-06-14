@@ -43,8 +43,9 @@ namespace Scenes
 	SceneSimpleFlameFuelMap sceneSimpleFlameFuelMap;
 	SceneSimpleFlameParticleSurface sceneParticleSurface;
 	SceneSimpleFlameBall sceneSimpleFlameBall;
+	SceneEmitSubStep sceneEmitSubStep;
 
-	const int count = 18;
+	const int count = 19;
 	Scene* list[count] = {
 		&scene2DTextureEmitter1,
 		&scene2DTextureEmitter2,
@@ -64,7 +65,8 @@ namespace Scenes
 		&sceneSimpleFlame2,
 		&sceneSimpleFlameFuelMap,
 		&sceneParticleSurface,
-		&sceneSimpleFlameBall
+		&sceneSimpleFlameBall, 
+		&sceneEmitSubStep
 	};
 };
 
@@ -115,6 +117,10 @@ void pointsToImage(NvFlowFloat4* image, int imageDim, const CurvePoint* pts, int
 
 void Scene::update(float dt)
 {
+	m_deltaTime = dt;
+
+	doFrameUpdate(m_deltaTime);
+
 	int numSteps = m_timeStepper.getNumSteps(dt);
 
 	for (int i = 0; i < numSteps; i++)
@@ -233,6 +239,22 @@ void SceneFluid::imguiDesc()
 		m_shouldGridReset = true;
 	}
 
+	if (imguiCheck("Auto Reset", m_autoResetMode, true))
+	{
+		m_autoResetMode = !m_autoResetMode;
+		m_autoResetTime = 0.f;
+	}
+	if (m_autoResetMode)
+	{
+		m_autoResetTime += m_deltaTime;
+		if (m_autoResetTime > m_autoResetThresh)
+		{
+			m_shouldReset = true;
+			m_autoResetTime = 0.f;
+			m_autoResetThresh = 5.f * (1.f / 255.f) * float((rand() & 255));
+		}
+	}
+
 	float cellSizeLogf = float(m_flowGridActor.m_cellSizeLogScale);
 	if (imguiserSlider("Cell Size Log Scale", &cellSizeLogf, -6.f, 6.f, 1.f, true))
 	{
@@ -271,6 +293,11 @@ void SceneFluid::imguiFluidSim()
 	imguiserSlider("Fuel", &m_flowGridActor.m_materialParams.fuel.fade, 0.f, 1.f, 0.01f, true);
 	imguiserEndGroup();
 
+	if (imguiCheck("Single Pass Advect", m_flowGridActor.m_gridParams.singlePassAdvection, true))
+	{
+		m_flowGridActor.m_gridParams.singlePassAdvection = !m_flowGridActor.m_gridParams.singlePassAdvection;
+	}
+
 	imguiSeparator();
 	imguiLabel("MacCormack Correction");
 	imguiserBeginGroup("MacCormack Correction", nullptr);
@@ -287,8 +314,16 @@ void SceneFluid::imguiFluidSim()
 	imguiserSlider("Fuel", &m_flowGridActor.m_materialParams.fuel.macCormackBlendThreshold, 0.f, 0.01f, 0.001f, true);
 	imguiserEndGroup();
 
-	imguiserSlider("Vorticity Strength", &m_flowGridActor.m_materialParams.vorticityStrength, 0.f, 20.f, 0.1f, true);
-	imguiserSlider("Vorticity Vel Mask", &m_flowGridActor.m_materialParams.vorticityVelocityMask, 0.f, 1.f, 0.01f, true);
+	imguiSeparator();
+	imguiLabel("Vorticity Confinement");
+	imguiserBeginGroup("Vorticity Confinement", nullptr);
+	imguiserSlider("Strength", &m_flowGridActor.m_materialParams.vorticityStrength, 0.f, 20.f, 0.1f, true);
+	imguiserSlider("Velocity Mask", &m_flowGridActor.m_materialParams.vorticityVelocityMask, -1.f, 1.f, 0.01f, true);
+	imguiserSlider("Temperature Mask", &m_flowGridActor.m_materialParams.vorticityTemperatureMask, -1.f, 1.f, 0.01f, true);
+	imguiserSlider("Smoke Mask", &m_flowGridActor.m_materialParams.vorticitySmokeMask, -1.f, 1.f, 0.01f, true);
+	imguiserSlider("Fuel Mask", &m_flowGridActor.m_materialParams.vorticityFuelMask, -1.f, 1.f, 0.01f, true);
+	imguiserSlider("Constant Mask", &m_flowGridActor.m_materialParams.vorticityConstantMask, -1.f, 1.f, 0.01f, true);
+	imguiserEndGroup();
 
 	if (imguiCheck("Legacy Pressure", m_flowGridActor.m_gridParams.pressureLegacyMode, true))
 	{
@@ -497,6 +532,21 @@ void SceneFluid::imguiFluidRender()
 		imguiserSlider("Vector Length", &m_flowGridActor.m_crossSectionParams.vectorLengthScale, 0.1f, 2.f, 0.01f, true);
 	}
 
+	imguiLabel("Grid Summary");
+	imguiserBeginGroup("Grid Summary", nullptr);
+	if (imguiserCheck("Enabled", m_flowGridActor.m_enableGridSummary, true))
+	{
+		m_flowGridActor.m_enableGridSummary = !m_flowGridActor.m_enableGridSummary;
+	}
+	if (m_flowGridActor.m_enableGridSummary)
+	{
+		if (imguiserCheck("Debug Render", m_flowGridActor.m_enableGridSummaryDebugVis, true))
+		{
+			m_flowGridActor.m_enableGridSummaryDebugVis = !m_flowGridActor.m_enableGridSummaryDebugVis;
+		}
+	}
+	imguiserEndGroup();
+
 	imguiFluidRenderExtra();
 	imguiserEndGroup();
 }
@@ -548,6 +598,12 @@ void SceneFluid::imguiFluidAlloc()
 	imguiserSlider("Smoke Threshold", &m_flowGridActor.m_materialParams.smoke.allocThreshold, 0.f, 1.f, 0.01f, true);
 	imguiserSlider("Temp Threshold", &m_flowGridActor.m_materialParams.temperature.allocThreshold, 0.f, 1.f, 0.01f, true);
 	imguiserSlider("Fuel Threshold", &m_flowGridActor.m_materialParams.fuel.allocThreshold, 0.f, 1.f, 0.01f, true);
+
+	if (imguiCheck("Translation Test", m_flowGridActor.m_enableTranslationTest, true))
+	{
+		m_flowGridActor.m_enableTranslationTest = !m_flowGridActor.m_enableTranslationTest;
+	}
+	imguiSlider("Test Time Scale", &m_flowGridActor.m_translationTimeScale, 0.25f, 8.f, 0.1f, true);
 
 	imguiFluidAllocExtra();
 	imguiserEndGroup();
@@ -678,37 +734,45 @@ bool SceneFluid::getStats(int lineIdx, int statIdx, char* buf)
 		}
 		case 1:
 		{
+			float simRate = (1.f / m_flowContext.m_statUpdateDt) * 
+				float(m_flowContext.m_statUpdateSuccessCount /
+					  m_flowContext.m_statUpdateAttemptCount);
+			snprintf(buf, 79, "SimRate: %.3f Hz", simRate);
+			return true;
+		}
+		case 2:
+		{
 			NvFlowUint numLayers = m_flowGridActor.m_statNumLayers;
 			snprintf(buf, 79, "NumLayers: %d layers", numLayers);
 			return true;
 		}
-		case 2:
+		case 3:
 		{
 			NvFlowUint numBlocks = m_flowGridActor.m_statNumDensityBlocks;
 			NvFlowUint maxBlocks = m_flowGridActor.m_statMaxDensityBlocks;
 			snprintf(buf, 79, "Density: %d blocks active of %d", numBlocks, maxBlocks);
 			return true;
 		}
-		case 3:
+		case 4:
 		{
 			NvFlowUint numBlocks = m_flowGridActor.m_statNumVelocityBlocks;
 			NvFlowUint maxBlocks = m_flowGridActor.m_statMaxVelocityBlocks;
 			snprintf(buf, 79, "Velocity: %d blocks active of %d", numBlocks, maxBlocks);
 			return true;
 		}
-		case 4:
+		case 5:
 		{
 			NvFlowUint numCells = m_flowGridActor.m_statNumDensityCells;
 			snprintf(buf, 79, "Density: %d cells active", numCells);
 			return true;
 		}
-		case 5:
+		case 6:
 		{
 			NvFlowUint numCells = m_flowGridActor.m_statNumVelocityCells;
 			snprintf(buf, 79, "Velocity: %d cells active", numCells);
 			return true;
 		}
-		case 6:
+		case 7:
 		{
 			if (m_flowGridActor.m_statVolumeShadowBlocks > 0u)
 			{
@@ -718,7 +782,7 @@ bool SceneFluid::getStats(int lineIdx, int statIdx, char* buf)
 			}
 			return false;
 		}
-		case 7:
+		case 8:
 		{
 			if (m_flowGridActor.m_statVolumeShadowCells > 0u)
 			{

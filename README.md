@@ -1,4 +1,4 @@
-NVIDIA Flow - 1.0.0
+NVIDIA Flow - 1.0.1
 ===================
 
 Flow is a sparse grid-based fluid simulation library for real-time applications.

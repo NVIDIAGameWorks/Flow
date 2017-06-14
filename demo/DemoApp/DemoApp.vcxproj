@@ -141,6 +141,12 @@ copy "$(SolutionDir)Lib\$(PlatformName)\*.dll" "$(outDir)"</Command>
     <CustomBuildStep>
       <Outputs>SDL2.dll</Outputs>
     </CustomBuildStep>
+    <PreBuildEvent>
+      <Command>"$(outDir)DemoAppCodeGen$(Configuration)_$(PlatformName).exe"</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Code Generation</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -172,6 +178,12 @@ copy "$(SolutionDir)Lib\$(PlatformName)\*.dll" "$(outDir)"</Command>
     <CustomBuildStep>
       <Outputs>SDL2.dll</Outputs>
     </CustomBuildStep>
+    <PreBuildEvent>
+      <Command>"$(outDir)DemoAppCodeGen$(Configuration)_$(PlatformName).exe"</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Code Generation</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -207,6 +219,12 @@ copy "$(SolutionDir)Lib\$(PlatformName)\*.dll" "$(outDir)"</Command>
     <CustomBuildStep>
       <Outputs>SDL2.dll</Outputs>
     </CustomBuildStep>
+    <PreBuildEvent>
+      <Command>"$(outDir)DemoAppCodeGen$(Configuration)_$(PlatformName).exe"</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Code Generation</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -242,6 +260,12 @@ copy "$(SolutionDir)Lib\$(PlatformName)\*.dll" "$(outDir)"</Command>
     <CustomBuildStep>
       <Outputs>SDL2.dll</Outputs>
     </CustomBuildStep>
+    <PreBuildEvent>
+      <Command>"$(outDir)DemoAppCodeGen$(Configuration)_$(PlatformName).exe"</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Code Generation</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
@@ -276,6 +300,7 @@ copy "$(SolutionDir)Lib\$(PlatformName)\*.dll" "$(outDir)"</Command>
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="scene2DTextureEmitter.cpp" />
     <ClCompile Include="sceneCustomEmit.cpp" />
+    <ClCompile Include="sceneEmitSubStep.cpp" />
     <ClCompile Include="sceneFlow.cpp" />
     <ClCompile Include="sceneSDF.cpp" />
     <ClCompile Include="sceneSimpleFlame.cpp" />

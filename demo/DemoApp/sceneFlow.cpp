@@ -205,7 +205,7 @@ void FlowContext::computeContextEnd()
 	}
 }
 
-bool FlowContext::updateBegin()
+bool FlowContext::updateBegin(float dt)
 {
 	m_framesInFlight = computeContextBegin();
 	bool shouldFlush = (m_framesInFlight < m_maxFramesInFlight);
@@ -216,6 +216,12 @@ bool FlowContext::updateBegin()
 		NvFlowContextFlushRequestPush(m_gridCopyContext);
 		NvFlowContextFlushRequestPush(m_renderCopyContext);
 	}
+
+	m_statUpdateAttemptCount += 1.0;
+	if (shouldFlush) m_statUpdateSuccessCount += 1.0;
+	m_statUpdateAttemptCount *= 0.99;
+	m_statUpdateSuccessCount *= 0.99;
+	m_statUpdateDt = dt;
 
 	return shouldFlush;
 }
@@ -357,6 +363,12 @@ void FlowGridActor::init(FlowContext* flowContext, AppGraphCtx* appctx)
 	
 	m_crossSection = NvFlowCreateCrossSection(flowContext->m_renderContext, &crossSectionDesc);
 
+	NvFlowGridSummaryDesc gridSummaryDesc = {};
+	gridSummaryDesc.gridExport = gridExport;
+
+	m_gridSummary = NvFlowCreateGridSummary(flowContext->m_gridContext, &gridSummaryDesc);
+	m_gridSummaryStateCPU = NvFlowCreateGridSummaryStateCPU(m_gridSummary);
+
 	NvFlowRenderMaterialPoolDesc materialPoolDesc = {};
 	materialPoolDesc.colorMapResolution = 64u;
 	m_colorMap.m_materialPool = NvFlowCreateRenderMaterialPool(flowContext->m_renderContext, &materialPoolDesc);
@@ -393,6 +405,8 @@ void FlowGridActor::release()
 	NvFlowReleaseGridProxy(m_gridProxy);
 	NvFlowReleaseVolumeRender(m_volumeRender);
 	NvFlowReleaseCrossSection(m_crossSection);
+	NvFlowReleaseGridSummary(m_gridSummary);
+	NvFlowReleaseGridSummaryStateCPU(m_gridSummaryStateCPU);
 	NvFlowReleaseRenderMaterialPool(m_colorMap.m_materialPool);
 	if (m_volumeShadow) NvFlowReleaseVolumeShadow(m_volumeShadow);
 	m_volumeShadow = nullptr;
@@ -405,6 +419,25 @@ void FlowGridActor::updatePreEmit(FlowContext* flowContext, float dt)
 	NvFlowRenderMaterialUpdate(m_colorMap.m_materialDefault, &m_renderMaterialDefaultParams);
 	NvFlowRenderMaterialUpdate(m_colorMap.m_material0, &m_renderMaterialMat0Params);
 	NvFlowRenderMaterialUpdate(m_colorMap.m_material1, &m_renderMaterialMat1Params);
+
+	if (m_enableTranslationTest)
+	{
+		m_enableTranslationTestOld = true;
+
+		m_translationTestTime += m_translationTimeScale * dt;
+		if (m_translationTestTime > 120.f) m_translationTestTime = 0.f;
+
+		bool parity = (m_translationTestTime - floorf(m_translationTestTime)) > 0.5f;
+		NvFlowFloat3 gridLocation = parity ? m_translationOffsetA : m_translationOffsetB;
+		NvFlowGridSetTargetLocation(m_grid, gridLocation);
+	}
+	else if(m_enableTranslationTestOld)
+	{
+		NvFlowFloat3 gridLocation = NvFlowFloat3{ 0.f, 0.f, 0.f };
+		NvFlowGridSetTargetLocation(m_grid, gridLocation);
+
+		m_enableTranslationTestOld = false;
+	}
 }
 
 void FlowGridActor::updatePostEmit(FlowContext* flowContext, float dt, bool shouldUpdate, bool shouldReset)
@@ -492,6 +525,27 @@ void FlowGridActor::updatePostEmit(FlowContext* flowContext, float dt, bool shou
 		}
 
 		auto gridExport = NvFlowGridGetGridExport(flowContext->m_gridContext, m_grid);
+
+		if (m_enableGridSummary)
+		{
+			NvFlowGridSummaryUpdateParams updateParams = {};
+			updateParams.gridExport = gridExport;
+			updateParams.stateCPU = m_gridSummaryStateCPU;
+
+			NvFlowGridSummaryUpdate(m_gridSummary, flowContext->m_gridContext, &updateParams);
+
+			NvFlowUint numLayers = NvFlowGridSummaryGetNumLayers(m_gridSummaryStateCPU);
+			for (NvFlowUint layerIdx = 0u; layerIdx < numLayers; layerIdx++)
+			{
+				NvFlowGridSummaryResult* results = nullptr;
+				NvFlowUint numResults = 0u;
+
+				NvFlowGridSummaryGetSummaries(m_gridSummaryStateCPU, &results, &numResults, layerIdx);
+
+				//printf("GridSummary layer(%d) numResults(%d)", layerIdx, numResults);
+			}
+		}
+
 		NvFlowGridProxyFlushParams flushParams = {};
 		flushParams.gridContext = flowContext->m_gridContext;
 		flushParams.gridCopyContext = flowContext->m_gridCopyContext;
@@ -685,6 +739,20 @@ void FlowGridActor::draw(FlowContext* flowContext, DirectX::CXMMATRIX projection
 		memcpy(&params.viewMatrix, &view, sizeof(NvFlowFloat4x4));
 
 		NvFlowVolumeShadowDebugRender(m_volumeShadow, flowContext->m_renderContext, &params);
+	}
+
+	if (m_enableGridSummary && m_enableGridSummaryDebugVis)
+	{
+		NvFlowGridSummaryDebugRenderParams params = {};
+
+		params.stateCPU = m_gridSummaryStateCPU;
+
+		params.renderTargetView = flowContext->m_rtv;
+
+		memcpy(&params.projectionMatrix, &projection, sizeof(NvFlowFloat4x4));
+		memcpy(&params.viewMatrix, &view, sizeof(NvFlowFloat4x4));
+
+		NvFlowGridSummaryDebugRender(m_gridSummary, flowContext->m_renderContext, &params);
 	}
 }
 

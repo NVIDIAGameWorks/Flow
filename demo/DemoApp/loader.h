@@ -28,6 +28,13 @@ namespace
 			"DemoAppD3D11" XDEMOAPP_STR(DLL_SUFFIX) ".dll";
 	}
 
+	const char* demoAppBackendSuffix(AppGraphCtxType type)
+	{
+		return (type == APP_CONTEXT_D3D12) ?
+			"D3D12" :
+			"D3D11";
+	}
+
 	const char* nvFlowDLLName(AppGraphCtxType type)
 	{
 		return (type == APP_CONTEXT_D3D12) ?
@@ -53,60 +60,3 @@ void unloadImgui();
 
 void loadComputeContext(AppGraphCtxType type);
 void unloadComputeContext();
-
-template<unsigned int maxFunctionCount, void* loadobject(const char*), void unloadobject(void*), void* loadfunction(void*,const char*)>
-struct ModuleLoader
-{
-	static const int m_functionCount = maxFunctionCount;
-	void** m_functionPtrs[m_functionCount] = { nullptr };
-	const char* m_functionNames[m_functionCount] = { nullptr };
-
-	void* m_module = nullptr;
-
-	void* loadFunction(const char* name, int uid, void** ptr)
-	{
-		m_functionPtrs[uid] = ptr;
-		m_functionNames[uid] = name;
-		return SDL_LoadFunction(m_module, name);
-	}
-
-	template <int uid, class ret, class ...Args>
-	ret function(ret(*)(Args...args), const char* name, Args...args)
-	{
-		static void* func = loadFunction(name, uid, &func);
-
-		return ((ret(*)(Args...args))func)(args...);
-	}
-
-	void loadModule(const char* moduleName)
-	{
-		m_module = loadobject(moduleName);
-
-		// load functions with non-null names
-		for (int i = 0; i < m_functionCount; i++)
-		{
-			const char* name = m_functionNames[i];
-			void** funcPtr = m_functionPtrs[i];
-			if (name && funcPtr)
-			{
-				*funcPtr = loadfunction(m_module, name);
-			}
-		}
-	}
-
-	void unloadModule()
-	{
-		unloadobject(m_module);
-
-		for (int i = 0; i < m_functionCount; i++)
-		{
-			void** funcPtr = m_functionPtrs[i];
-			if (funcPtr)
-			{
-				*funcPtr = nullptr;
-			}
-		}
-	}
-
-	ModuleLoader() {}
-};

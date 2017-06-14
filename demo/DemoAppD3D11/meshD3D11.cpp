@@ -31,7 +31,7 @@ namespace
 	}
 }
 
-struct MeshContext
+struct MeshContextD3D11
 {
 	ID3D11Device* m_device = nullptr;
 	ID3D11DeviceContext* m_deviceContext = nullptr;
@@ -42,8 +42,8 @@ struct MeshContext
 	ID3D11Buffer* m_constantBuffer = nullptr;
 	ID3D11RasterizerState* m_rasterizerStateRH = nullptr;
 
-	MeshContext() {}
-	~MeshContext()
+	MeshContextD3D11() {}
+	~MeshContextD3D11()
 	{
 		COMRelease(m_inputLayout);
 		COMRelease(m_meshVS);
@@ -53,33 +53,65 @@ struct MeshContext
 	}
 };
 
-struct MeshIndexBuffer
+inline MeshContextD3D11* cast_to_MeshContextD3D11(MeshContext* ctx)
+{
+	return (MeshContextD3D11*)(ctx);
+}
+
+inline MeshContext* cast_from_MeshContextD3D11(MeshContextD3D11* ctx)
+{
+	return (MeshContext*)(ctx);
+}
+
+struct MeshIndexBufferD3D11
 {
 	ID3D11Buffer* m_buffer = nullptr;
 	MeshUint m_numElements = 0u;
 
-	MeshIndexBuffer() {}
-	~MeshIndexBuffer()
+	MeshIndexBufferD3D11() {}
+	~MeshIndexBufferD3D11()
 	{
 		COMRelease(m_buffer);
 	}
 };
 
-struct MeshVertexBuffer
+inline MeshIndexBufferD3D11* cast_to_MeshIndexBufferD3D11(MeshIndexBuffer* buf)
+{
+	return (MeshIndexBufferD3D11*)(buf);
+}
+
+inline MeshIndexBuffer* cast_from_MeshIndexBufferD3D11(MeshIndexBufferD3D11* buf)
+{
+	return (MeshIndexBuffer*)(buf);
+}
+
+struct MeshVertexBufferD3D11
 {
 	ID3D11Buffer* m_buffer = nullptr;
 	MeshUint m_numElements = 0u;
 
-	MeshVertexBuffer() {}
-	~MeshVertexBuffer()
+	MeshVertexBufferD3D11() {}
+	~MeshVertexBufferD3D11()
 	{
 		COMRelease(m_buffer);
 	}
 };
 
-MeshContext* MeshContextCreate(const MeshContextDesc* desc)
+inline MeshVertexBufferD3D11* cast_to_MeshVertexBufferD3D11(MeshVertexBuffer* buf)
 {
-	MeshContext* context = new MeshContext;
+	return (MeshVertexBufferD3D11*)(buf);
+}
+
+inline MeshVertexBuffer* cast_from_MeshVertexBufferD3D11(MeshVertexBufferD3D11* buf)
+{
+	return (MeshVertexBuffer*)(buf);
+}
+
+MeshContext* MeshContextCreateD3D11(const MeshContextDesc* descIn)
+{
+	auto desc = cast_to_MeshContextDescD3D11(descIn);
+
+	MeshContextD3D11* context = new MeshContextD3D11;
 
 	context->m_device = desc->device;
 	context->m_deviceContext = desc->context;
@@ -128,25 +160,30 @@ MeshContext* MeshContextCreate(const MeshContextDesc* desc)
 		context->m_device->CreateRasterizerState(&desc, &context->m_rasterizerStateRH);
 	}
 
-	return context;
+	return cast_from_MeshContextD3D11(context);
 }
 
-void MeshContextUpdate(MeshContext* context, const MeshContextDesc* desc)
+void MeshContextUpdateD3D11(MeshContext* contextIn, const MeshContextDesc* descIn)
 {
+	auto context = cast_to_MeshContextD3D11(contextIn);
+	auto desc = cast_to_MeshContextDescD3D11(descIn);
+
 	context->m_device = desc->device;
 	context->m_deviceContext = desc->context;
 }
 
-void MeshContextRelease(MeshContext* context)
+void MeshContextReleaseD3D11(MeshContext* context)
 {
 	if (context == nullptr) return;
 
-	delete context;
+	delete cast_to_MeshContextD3D11(context);
 }
 
-MeshIndexBuffer* MeshIndexBufferCreate(MeshContext* context, MeshUint* indices, MeshUint numIndices)
+MeshIndexBuffer* MeshIndexBufferCreateD3D11(MeshContext* contextIn, MeshUint* indices, MeshUint numIndices)
 {
-	MeshIndexBuffer* buffer = new MeshIndexBuffer;
+	auto context = cast_to_MeshContextD3D11(contextIn);
+
+	MeshIndexBufferD3D11* buffer = new MeshIndexBufferD3D11;
 
 	buffer->m_numElements = numIndices;
 	// create an index buffer
@@ -166,19 +203,21 @@ MeshIndexBuffer* MeshIndexBufferCreate(MeshContext* context, MeshUint* indices, 
 		context->m_device->CreateBuffer(&bufDesc, &data, &buffer->m_buffer);
 	}
 
-	return buffer;
+	return cast_from_MeshIndexBufferD3D11(buffer);
 }
 
-void MeshIndexBufferRelease(MeshIndexBuffer* buffer)
+void MeshIndexBufferReleaseD3D11(MeshIndexBuffer* buffer)
 {
 	if (buffer == nullptr) return;
 
-	delete buffer;
+	delete cast_to_MeshIndexBufferD3D11(buffer);
 }
 
-MeshVertexBuffer* MeshVertexBufferCreate(MeshContext* context, MeshVertex* vertices, MeshUint numVertices)
+MeshVertexBuffer* MeshVertexBufferCreateD3D11(MeshContext* contextIn, MeshVertex* vertices, MeshUint numVertices)
 {
-	MeshVertexBuffer* buffer = new MeshVertexBuffer;
+	auto context = cast_to_MeshContextD3D11(contextIn);
+
+	MeshVertexBufferD3D11* buffer = new MeshVertexBufferD3D11;
 
 	buffer->m_numElements = numVertices;
 	// create a vertex buffer
@@ -198,18 +237,20 @@ MeshVertexBuffer* MeshVertexBufferCreate(MeshContext* context, MeshVertex* verti
 		context->m_device->CreateBuffer(&bufDesc, &data, &buffer->m_buffer);
 	}
 
-	return buffer;
+	return cast_from_MeshVertexBufferD3D11(buffer);
 }
 
-void MeshVertexBufferRelease(MeshVertexBuffer* buffer)
+void MeshVertexBufferReleaseD3D11(MeshVertexBuffer* buffer)
 {
 	if (buffer == nullptr) return;
 
-	delete buffer;
+	delete cast_to_MeshVertexBufferD3D11(buffer);
 }
 
-void MeshContextDraw(MeshContext* context, const MeshContextDrawParams* params)
+void MeshContextDrawD3D11(MeshContext* contextIn, const MeshContextDrawParams* params)
 {
+	auto context = cast_to_MeshContextD3D11(contextIn);
+
 	using namespace DirectX;
 
 	XMMATRIX matrix = XMMatrixTranspose(XMMatrixMultiply(XMMatrixMultiply(
@@ -242,8 +283,8 @@ void MeshContextDraw(MeshContext* context, const MeshContextDrawParams* params)
 
 	UINT vertexStride = sizeof(MeshVertex);
 	UINT offset = 0u;
-	deviceContext->IASetVertexBuffers(0, 1, &params->vertexBuffer->m_buffer, &vertexStride, &offset);
-	deviceContext->IASetIndexBuffer(params->indexBuffer->m_buffer, DXGI_FORMAT_R32_UINT, 0u);
+	deviceContext->IASetVertexBuffers(0, 1, &cast_to_MeshVertexBufferD3D11(params->vertexBuffer)->m_buffer, &vertexStride, &offset);
+	deviceContext->IASetIndexBuffer(cast_to_MeshIndexBufferD3D11(params->indexBuffer)->m_buffer, DXGI_FORMAT_R32_UINT, 0u);
 
 	float depthSign = DirectX::XMVectorGetW(params->params->projection.r[2]);
 	if (depthSign < 0.f)
@@ -251,7 +292,7 @@ void MeshContextDraw(MeshContext* context, const MeshContextDrawParams* params)
 		deviceContext->RSSetState(context->m_rasterizerStateRH);
 	}
 
-	deviceContext->DrawIndexed((UINT)params->indexBuffer->m_numElements, 0, 0);
+	deviceContext->DrawIndexed((UINT)cast_to_MeshIndexBufferD3D11(params->indexBuffer)->m_numElements, 0, 0);
 
 	if (depthSign < 0.f)
 	{

@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>NVIDIA(R) Flow(R) 1.0.0 API Reference: NvFlowGridMaterialParams Struct Reference</title>
+		<title>NVIDIA(R) Flow(R) 1.0.1 API Reference: NvFlowGridMaterialParams Struct Reference</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<LINK HREF="NVIDIA.css" REL="stylesheet" TYPE="text/css">
 	</head>
@@ -70,12 +70,24 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="struct_nv_flow_grid_material_per_component.html">NvFlowGridMaterialPerComponent</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_material_params.html#d4046223b0fce2c7d5dce4a9671ed978">velocity</a></td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Velocity component parameters.  <a href="#d4046223b0fce2c7d5dce4a9671ed978"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_material_params.html#e9e56cc5021894697e6da7642062b021">vorticityConstantMask</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Works as other masks, provides fixed offset.  <a href="#e9e56cc5021894697e6da7642062b021"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_material_params.html#7b0fb3fbb2341cfb9eed0f3ee8a4e89f">vorticityFuelMask</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">0.f disabled; 1.0f higher fuel, higher strength; -1.0f for inverse  <a href="#7b0fb3fbb2341cfb9eed0f3ee8a4e89f"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_material_params.html#6c2b226c1f278d1343c7f12631fbdee9">vorticitySmokeMask</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">0.f disabled; 1.0f higher smoke, higher strength; -1.0f for inverse  <a href="#6c2b226c1f278d1343c7f12631fbdee9"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_material_params.html#5aed6e08e86ac4339377d2a12ccc8d35">vorticityStrength</a></td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Higher values increase rotation, reduce laminar flow.  <a href="#5aed6e08e86ac4339377d2a12ccc8d35"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_material_params.html#577e9a8b9db027c4b970976fe44320a3">vorticityTemperatureMask</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">0.f disabled; 1.0f higher temperatures, higher strength; -1.0f for inverse  <a href="#577e9a8b9db027c4b970976fe44320a3"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_material_params.html#f8c631bf051cb37eeaa03bace122e298">vorticityVelocityMask</a></td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">0.f means zero velocity magnitude influence on vorticity  <a href="#f8c631bf051cb37eeaa03bace122e298"></a><br></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">0.f disabled; 1.0f higher velocities, higher strength; -1.0f for inverse  <a href="#f8c631bf051cb37eeaa03bace122e298"></a><br></td></tr>
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
 Grid material parameters. <hr><h2>Field Documentation</h2>
@@ -283,6 +295,57 @@ Velocity component parameters.
 
 </div>
 </div><p>
+<a class="anchor" name="e9e56cc5021894697e6da7642062b021"></a><!-- doxytag: member="NvFlowGridMaterialParams::vorticityConstantMask" ref="e9e56cc5021894697e6da7642062b021" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float <a class="el" href="struct_nv_flow_grid_material_params.html#e9e56cc5021894697e6da7642062b021">NvFlowGridMaterialParams::vorticityConstantMask</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Works as other masks, provides fixed offset. 
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="7b0fb3fbb2341cfb9eed0f3ee8a4e89f"></a><!-- doxytag: member="NvFlowGridMaterialParams::vorticityFuelMask" ref="7b0fb3fbb2341cfb9eed0f3ee8a4e89f" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float <a class="el" href="struct_nv_flow_grid_material_params.html#7b0fb3fbb2341cfb9eed0f3ee8a4e89f">NvFlowGridMaterialParams::vorticityFuelMask</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+0.f disabled; 1.0f higher fuel, higher strength; -1.0f for inverse 
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="6c2b226c1f278d1343c7f12631fbdee9"></a><!-- doxytag: member="NvFlowGridMaterialParams::vorticitySmokeMask" ref="6c2b226c1f278d1343c7f12631fbdee9" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float <a class="el" href="struct_nv_flow_grid_material_params.html#6c2b226c1f278d1343c7f12631fbdee9">NvFlowGridMaterialParams::vorticitySmokeMask</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+0.f disabled; 1.0f higher smoke, higher strength; -1.0f for inverse 
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="5aed6e08e86ac4339377d2a12ccc8d35"></a><!-- doxytag: member="NvFlowGridMaterialParams::vorticityStrength" ref="5aed6e08e86ac4339377d2a12ccc8d35" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -300,6 +363,23 @@ Higher values increase rotation, reduce laminar flow.
 
 </div>
 </div><p>
+<a class="anchor" name="577e9a8b9db027c4b970976fe44320a3"></a><!-- doxytag: member="NvFlowGridMaterialParams::vorticityTemperatureMask" ref="577e9a8b9db027c4b970976fe44320a3" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float <a class="el" href="struct_nv_flow_grid_material_params.html#577e9a8b9db027c4b970976fe44320a3">NvFlowGridMaterialParams::vorticityTemperatureMask</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+0.f disabled; 1.0f higher temperatures, higher strength; -1.0f for inverse 
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="f8c631bf051cb37eeaa03bace122e298"></a><!-- doxytag: member="NvFlowGridMaterialParams::vorticityVelocityMask" ref="f8c631bf051cb37eeaa03bace122e298" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -312,7 +392,7 @@ Higher values increase rotation, reduce laminar flow.
 <div class="memdoc">
 
 <p>
-0.f means zero velocity magnitude influence on vorticity 
+0.f disabled; 1.0f higher velocities, higher strength; -1.0f for inverse 
 <p>
 
 </div>

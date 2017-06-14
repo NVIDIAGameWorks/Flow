@@ -19,20 +19,28 @@
 #include "appD3D11Ctx.h"
 #include "meshD3D11.h"
 
-MeshContext* MeshInteropContextCreate(AppGraphCtx* appctx)
+MESH_API MeshContext* MeshInteropContextCreateD3D11(AppGraphCtx* appctx);
+
+MESH_API void MeshInteropContextUpdateD3D11(MeshContext* context, AppGraphCtx* appctx);
+
+MeshContext* MeshInteropContextCreateD3D11(AppGraphCtx* appctxIn)
 {
-	MeshContextDesc desc = {};
+	auto appctx = cast_to_AppGraphCtxD3D11(appctxIn);
+
+	MeshContextDescD3D11 desc = {};
 	desc.device = appctx->m_device;
 	desc.context = appctx->m_deviceContext;
 
-	return MeshContextCreate(&desc);
+	return MeshContextCreateD3D11(cast_from_MeshContextDescD3D11(&desc));
 }
 
-void MeshInteropContextUpdate(MeshContext* context, AppGraphCtx* appctx)
+void MeshInteropContextUpdateD3D11(MeshContext* context, AppGraphCtx* appctxIn)
 {
-	MeshContextDesc desc = {};
+	auto appctx = cast_to_AppGraphCtxD3D11(appctxIn);
+
+	MeshContextDescD3D11 desc = {};
 	desc.device = appctx->m_device;
 	desc.context = appctx->m_deviceContext;
 
-	return MeshContextUpdate(context, &desc);
+	return MeshContextUpdateD3D11(context, cast_from_MeshContextDescD3D11(&desc));
 }

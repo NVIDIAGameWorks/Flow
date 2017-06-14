@@ -106,7 +106,7 @@ void SceneSimpleFlame::init(AppGraphCtx* appctx, int winw, int winh)
 
 void SceneSimpleFlame::doUpdate(float dt)
 {
-	bool shouldUpdate = m_flowContext.updateBegin();
+	bool shouldUpdate = m_flowContext.updateBegin(dt);
 	if (shouldUpdate)
 	{
 		AppGraphCtxProfileBegin(m_appctx, "Simulate");
@@ -191,6 +191,7 @@ void SceneSimpleFlameDouble::init(AppGraphCtx* context, int winw, int winh)
 
 	materialParams.vorticityStrength = 5.f;
 	materialParams.vorticityVelocityMask = 0.f;
+	materialParams.vorticityConstantMask = 1.f;
 	materialParams.velocity.macCormackBlendFactor = 0.f;
 	materialParams.smoke.macCormackBlendFactor = 0.75f;
 	materialParams.buoyancyPerTemp *= 5.f;
@@ -203,12 +204,16 @@ void SceneSimpleFlameDouble::init(AppGraphCtx* context, int winw, int winh)
 
 void SceneSimpleFlameDouble::doUpdate(float dt)
 {
-	bool shouldUpdate = m_flowContext.updateBegin();
+	bool shouldUpdate = m_flowContext.updateBegin(dt);
 	if (shouldUpdate)
 	{
 		AppGraphCtxProfileBegin(m_appctx, "Simulate");
 
 		m_flowGridActor.updatePreEmit(&m_flowContext, dt);
+
+		NvFlowGridMaterialHandle emitMaterials[2u] = { m_materialA, m_materialB };
+
+		NvFlowGridUpdateEmitMaterials(m_flowGridActor.m_grid, emitMaterials, 2u);
 
 		// emit
 		{
@@ -220,14 +225,14 @@ void SceneSimpleFlameDouble::doUpdate(float dt)
 			m_emitParams.deltaTime = dt;
 
 			m_emitParamsA = m_emitParams;
-			m_emitParamsA.material = m_materialA;
+			m_emitParamsA.emitMaterialIndex = 0u;
 			m_emitParamsA.bounds.w.x = +0.25f;
 			m_emitParamsA.localToWorld = m_emitParamsA.bounds;
 			m_emitParamsA.velocityLinear.x = -8.f;
 			NvFlowGridEmit(m_flowGridActor.m_grid, &shapeDesc, 1u, &m_emitParamsA, 1u);
 
 			m_emitParamsB = m_emitParams;
-			m_emitParamsB.material = m_materialB;
+			m_emitParamsB.emitMaterialIndex = 1u;
 			m_emitParamsB.bounds.w.x = -0.25f;
 			m_emitParamsB.localToWorld = m_emitParamsB.bounds;
 			m_emitParamsB.velocityLinear.x = +8.f;
@@ -300,7 +305,7 @@ void SceneSimpleFlameFuelMap::init(AppGraphCtx* context, int winw, int winh)
 
 void SceneSimpleFlameFuelMap::doUpdate(float dt)
 {
-	bool shouldUpdate = m_flowContext.updateBegin();
+	bool shouldUpdate = m_flowContext.updateBegin(dt);
 	if (shouldUpdate)
 	{
 		AppGraphCtxProfileBegin(m_appctx, "Simulate");
@@ -452,7 +457,7 @@ void SceneSimpleFlameParticleSurface::doEmitCustomEmitDensityFunc(NvFlowUint* da
 
 void SceneSimpleFlameParticleSurface::doUpdate(float dt)
 {
-	bool shouldUpdate = m_flowContext.updateBegin();
+	bool shouldUpdate = m_flowContext.updateBegin(dt);
 	if (shouldUpdate)
 	{
 		// update emit params
@@ -892,7 +897,7 @@ void SceneSimpleFlameCulling::initParams()
 
 void SceneSimpleFlameCulling::doUpdate(float dt)
 {
-	bool shouldUpdate = m_flowContext.updateBegin();
+	bool shouldUpdate = m_flowContext.updateBegin(dt);
 	if (shouldUpdate)
 	{
 		AppGraphCtxProfileBegin(m_appctx, "Simulate");
@@ -1005,7 +1010,7 @@ void SceneSimpleFlameConvex::initParams()
 
 void SceneSimpleFlameConvex::doUpdate(float dt)
 {
-	bool shouldUpdate = m_flowContext.updateBegin();
+	bool shouldUpdate = m_flowContext.updateBegin(dt);
 	if (shouldUpdate)
 	{
 		AppGraphCtxProfileBegin(m_appctx, "Simulate");
@@ -1083,7 +1088,7 @@ void SceneSimpleFlameCapsule::initParams()
 
 void SceneSimpleFlameCapsule::doUpdate(float dt)
 {
-	bool shouldUpdate = m_flowContext.updateBegin();
+	bool shouldUpdate = m_flowContext.updateBegin(dt);
 	if (shouldUpdate)
 	{
 		AppGraphCtxProfileBegin(m_appctx, "Simulate");
@@ -1123,6 +1128,29 @@ void SceneSimpleFlameCapsule::doUpdate(float dt)
 				shapeDesc[0].box.halfSize.z = 0.5f * m_capsuleRadius;
 			}
 
+			if (m_flameSpread && !m_flameSpreadOld)
+			{
+				m_shouldGridReset = true;
+			}
+			m_flameSpreadOld = m_flameSpread;
+
+			if (m_flameSpread)
+			{
+				m_emitParams.fuel = 0.f;
+				m_emitParams.fuelRelease = 2.5f;
+				m_emitParams.temperature = 0.f;
+				m_emitParams.temperatureCoupleRate = 0.f;
+				m_emitParams.velocityLinear.y = 0.f;
+			}
+			else
+			{
+				m_emitParams.fuel = 2.5f;
+				m_emitParams.fuelRelease = 0.f;
+				m_emitParams.temperature = 2.f;
+				m_emitParams.temperatureCoupleRate = 0.5f;
+				m_emitParams.velocityLinear.y = 8.f;
+			}
+
 			NvFlowGridEmit(m_flowGridActor.m_grid, shapeDesc, 1u, &m_emitParams, 1u);
 
 			m_projectile.update(m_flowContext.m_gridContext, m_flowGridActor.m_grid, dt);
@@ -1150,6 +1178,11 @@ void SceneSimpleFlameCapsule::imguiFluidEmitterExtra()
 	if (imguiserCheck("Box mode", m_boxMode, true))
 	{
 		m_boxMode = !m_boxMode;
+	}
+
+	if (imguiserCheck("Flame Spread", m_flameSpread, true))
+	{
+		m_flameSpread = !m_flameSpread;
 	}
 
 	imguiserEndGroup();

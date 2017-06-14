@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>NVIDIA(R) Flow(R) 1.0.0 API Reference: Data Fields</title>
+		<title>NVIDIA(R) Flow(R) 1.0.1 API Reference: Data Fields</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<LINK HREF="NVIDIA.css" REL="stylesheet" TYPE="text/css">
 	</head>
@@ -65,7 +65,10 @@ Here is a list of all struct and union fields with links to the structures/union
 <li>data
 : <a class="el" href="struct_nv_flow_shape_s_d_f_data.html#49e1adc3a74e7b17fdd1989925a0cc7c">NvFlowShapeSDFData</a>
 , <a class="el" href="struct_nv_flow_color_map_data.html#b9447a48828608f8f4fb8edd6c81dbb8">NvFlowColorMapData</a>
+, <a class="el" href="struct_nv_flow_mapped_data.html#0ae9679e2742c585dc2b9f362e554ef0">NvFlowMappedData</a>
 , <a class="el" href="struct_nv_flow_grid_export_layer_view.html#37c48516a7b3d8f37ec693724a396255">NvFlowGridExportLayerView</a>
+, <a class="el" href="struct_nv_flow_vertex_buffer_desc.html#bf895b857c503bfdf9009038e2e57d1c">NvFlowVertexBufferDesc</a>
+, <a class="el" href="struct_nv_flow_index_buffer_desc.html#30835d2828c4b7cc2bd93f62906c186b">NvFlowIndexBufferDesc</a>
 <li>dataRW
 : <a class="el" href="struct_nv_flow_grid_emit_custom_emit_layer_params.html#42e7d1f0a3f6b37d327be70e323c8e71">NvFlowGridEmitCustomEmitLayerParams</a>
 , <a class="el" href="struct_nv_flow_grid_import_layer_view.html#799c838ec91e57532e60b544851893bd">NvFlowGridImportLayerView</a>
@@ -85,14 +88,27 @@ Here is a list of all struct and union fields with links to the structures/union
 : <a class="el" href="struct_nv_flow_volume_render_multi_res_params.html#4c9236c0e7daf5cb855c35284d7a067d">NvFlowVolumeRenderMultiResParams</a>
 <li>depthAlphaThreshold
 : <a class="el" href="struct_nv_flow_volume_render_params.html#ef472087df96f5a7f01bc017d3247579">NvFlowVolumeRenderParams</a>
+<li>depthClipEnable
+: <a class="el" href="struct_nv_flow_graphics_shader_desc.html#2561f6c48a3d6ac9d472ca5011968b60">NvFlowGraphicsShaderDesc</a>
+<li>depthEnable
+: <a class="el" href="struct_nv_flow_depth_state_desc.html#994cf33bf9d9ba8234cedc74c5c8b8da">NvFlowDepthStateDesc</a>
+<li>depthFunc
+: <a class="el" href="struct_nv_flow_depth_state_desc.html#d531e9e905b38c7d5b11cdb9f0f33b1b">NvFlowDepthStateDesc</a>
 <li>depthIntensityThreshold
 : <a class="el" href="struct_nv_flow_volume_render_params.html#dd4d8f638765ddf82b05fe15dde0fba6">NvFlowVolumeRenderParams</a>
 <li>depthPitch
 : <a class="el" href="struct_nv_flow_shape_s_d_f_data.html#c1c226187354d66b66a972ace2fa8b23">NvFlowShapeSDFData</a>
+, <a class="el" href="struct_nv_flow_mapped_data.html#55e7d707de834a05bd86315cbcdc0f0f">NvFlowMappedData</a>
+<li>depthState
+: <a class="el" href="struct_nv_flow_graphics_shader_desc.html#329a21f3507e52f60bc0005225c87eef">NvFlowGraphicsShaderDesc</a>
+<li>depthStencilFormat
+: <a class="el" href="struct_nv_flow_graphics_shader_desc.html#4a5a67a50bee07bc621751aaff75f372">NvFlowGraphicsShaderDesc</a>
 <li>depthStencilView
 : <a class="el" href="struct_nv_flow_volume_render_params.html#388fd8397efb376eb33db5c00573cb7d">NvFlowVolumeRenderParams</a>
 , <a class="el" href="struct_nv_flow_cross_section_params.html#bfda18bd5b2fac76d9714c9e9e79a436">NvFlowCrossSectionParams</a>
 , <a class="el" href="struct_nv_flow_s_d_f_gen_mesh_params.html#f1c06c2f4a03fadae0b2f29110c5ee24">NvFlowSDFGenMeshParams</a>
+<li>depthWriteMask
+: <a class="el" href="struct_nv_flow_depth_state_desc.html#567b55dab0153b2700fd1cd100c6eb43">NvFlowDepthStateDesc</a>
 <li>descriptorSize
 : <a class="el" href="struct_nv_flow_descriptor_reserve_handle_d3_d12.html#a76fab33762c4b726fb6a0dbfbaf1f7f">NvFlowDescriptorReserveHandleD3D12</a>
 <li>device
@@ -101,22 +117,39 @@ Here is a list of all struct and union fields with links to the structures/union
 <li>deviceContext
 : <a class="el" href="struct_nv_flow_context_desc_d3_d11.html#ea1884a79c883e5f7faf2bc8d962fd68">NvFlowContextDescD3D11</a>
 <li>dim
-: <a class="el" href="struct_nv_flow_shape_s_d_f_data.html#3744967d16854b2b53b83576f7384a92">NvFlowShapeSDFData</a>
+: <a class="el" href="struct_nv_flow_texture3_d_desc.html#e0ac34d4a969f54b4c999806674b23a8">NvFlowTexture3DDesc</a>
 , <a class="el" href="struct_nv_flow_color_map_data.html#47f89636dfe4fa0546725e0cf2a1944a">NvFlowColorMapData</a>
+, <a class="el" href="struct_nv_flow_buffer_desc.html#758ba0c268251e4b805af0a93e44764c">NvFlowBufferDesc</a>
+, <a class="el" href="struct_nv_flow_texture1_d_desc.html#233c501d083f34d479a67e9929bb410d">NvFlowTexture1DDesc</a>
+, <a class="el" href="struct_nv_flow_shape_s_d_f_data.html#3744967d16854b2b53b83576f7384a92">NvFlowShapeSDFData</a>
+, <a class="el" href="struct_nv_flow_texture3_d_sparse_desc.html#08188ddc7d984ac6c46de089057ffb6e">NvFlowTexture3DSparseDesc</a>
 <li>dimInv
 : <a class="el" href="struct_nv_flow_shader_linear_params.html#da4c61f704f899f73b2ce9d118527b6a">NvFlowShaderLinearParams</a>
 <li>distance
 : <a class="el" href="struct_nv_flow_shape_desc_plane.html#0796602c9f754c4d3cfccb71c7d0fe38">NvFlowShapeDescPlane</a>
 <li>divergencePerBurn
 : <a class="el" href="struct_nv_flow_grid_material_params.html#eafc581a1a00e94abb2b3ac197336e73">NvFlowGridMaterialParams</a>
+<li>downloadAccess
+: <a class="el" href="struct_nv_flow_buffer_desc.html#b8d9c1298adda62ae7c41f94826ec95c">NvFlowBufferDesc</a>
+, <a class="el" href="struct_nv_flow_texture3_d_desc.html#20212c8dd0b26ecdb39dcfc608424a16">NvFlowTexture3DDesc</a>
 <li>downsampleFactor
 : <a class="el" href="struct_nv_flow_volume_render_params.html#db750a4ed22980f212ee0be67c4370c1">NvFlowVolumeRenderParams</a>
+<li>ds_format
+: <a class="el" href="struct_nv_flow_depth_stencil_desc.html#2a72ae9f886ccb460e94fb25599b8586">NvFlowDepthStencilDesc</a>
+<li>dstBlendAlpha
+: <a class="el" href="struct_nv_flow_blend_state_desc.html#22907d96f8f367d9936848552e13c938">NvFlowBlendStateDesc</a>
+<li>dstBlendColor
+: <a class="el" href="struct_nv_flow_blend_state_desc.html#44cd9f65812323e2a3a0a5f91fd58f74">NvFlowBlendStateDesc</a>
 <li>dsv
 : <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d11.html#a6630a6fcb2eeb5fc8e5c919b62f4004">NvFlowDepthStencilViewDescD3D11</a>
+<li>dsvCurrentState
+: <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#2f27bc74dddfbd7747a7941e7d15837d">NvFlowDepthStencilViewDescD3D12</a>
 <li>dsvDesc
 : <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#6e2cbdc36a79f8c05c62418d9f8baf5c">NvFlowDepthStencilViewDescD3D12</a>
 <li>dsvHandle
 : <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#89d615c945e9c660ff02b05c919aaf08">NvFlowDepthStencilViewDescD3D12</a>
+<li>dsvResource
+: <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#578b823c2323554c8d9ec78566d4274b">NvFlowDepthStencilViewDescD3D12</a>
 <li>dynamicHeapCbvSrvUav
 : <a class="el" href="struct_nv_flow_context_desc_d3_d12.html#4919443861c405b98aa8ecdd1444e2f6">NvFlowContextDescD3D12</a>
 </ul>

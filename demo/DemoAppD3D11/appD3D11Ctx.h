@@ -12,9 +12,9 @@
 
 #include "../DemoApp/appGraphCtx.h"
 
-struct AppGraphProfiler;
+struct AppGraphProfilerD3D11;
 
-struct AppGraphCtx
+struct AppGraphCtxD3D11
 {
 	HWND                    m_hWnd = nullptr;
 
@@ -36,8 +36,42 @@ struct AppGraphCtx
 	ID3D11ShaderResourceView*	m_depthSRV = nullptr;
 	ID3D11DepthStencilState*	m_depthState = nullptr;
 
-	AppGraphProfiler* m_profiler = nullptr;
+	AppGraphProfilerD3D11* m_profiler = nullptr;
 
-	AppGraphCtx();
-	~AppGraphCtx();
+	AppGraphCtxD3D11();
+	~AppGraphCtxD3D11();
 };
+
+inline AppGraphCtxD3D11* cast_to_AppGraphCtxD3D11(AppGraphCtx* appctx)
+{
+	return (AppGraphCtxD3D11*)(appctx);
+}
+
+inline AppGraphCtx* cast_from_AppGraphCtxD3D11(AppGraphCtxD3D11* appctx)
+{
+	return (AppGraphCtx*)(appctx);
+}
+
+APP_GRAPH_CTX_API AppGraphCtx* AppGraphCtxCreateD3D11(int deviceID);
+
+APP_GRAPH_CTX_API bool AppGraphCtxUpdateSizeD3D11(AppGraphCtx* context, SDL_Window* window, bool fullscreen);
+
+APP_GRAPH_CTX_API void AppGraphCtxReleaseRenderTargetD3D11(AppGraphCtx* context);
+
+APP_GRAPH_CTX_API void AppGraphCtxReleaseD3D11(AppGraphCtx* context);
+
+APP_GRAPH_CTX_API void AppGraphCtxFrameStartD3D11(AppGraphCtx* context, AppGraphColor clearColor);
+
+APP_GRAPH_CTX_API void AppGraphCtxFramePresentD3D11(AppGraphCtx* context, bool fullsync);
+
+APP_GRAPH_CTX_API void AppGraphCtxWaitForFramesD3D11(AppGraphCtx* context, unsigned int maxFramesInFlight);
+
+APP_GRAPH_CTX_API void AppGraphCtxProfileEnableD3D11(AppGraphCtx* context, bool enabled);
+
+APP_GRAPH_CTX_API void AppGraphCtxProfileBeginD3D11(AppGraphCtx* context, const char* label);
+
+APP_GRAPH_CTX_API void AppGraphCtxProfileEndD3D11(AppGraphCtx* context, const char* label);
+
+APP_GRAPH_CTX_API bool AppGraphCtxProfileGetD3D11(AppGraphCtx* context, const char** plabel, float* cpuTime, float* gpuTime, int index);
+
+APP_GRAPH_CTX_API size_t AppGraphCtxDedicatedVideoMemoryD3D11(AppGraphCtx* context);

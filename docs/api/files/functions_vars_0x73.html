@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>NVIDIA(R) Flow(R) 1.0.0 API Reference: Data Fields - Variables</title>
+		<title>NVIDIA(R) Flow(R) 1.0.1 API Reference: Data Fields - Variables</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<LINK HREF="NVIDIA.css" REL="stylesheet" TYPE="text/css">
 	</head>
@@ -68,8 +68,15 @@
 : <a class="el" href="union_nv_flow_shape_desc.html#4f568e76ea6fb6f357c2cc241afb3929">NvFlowShapeDesc</a>
 <li>sdfOffset
 : <a class="el" href="struct_nv_flow_shape_desc_s_d_f.html#64c749b4cd324ff464e3c76d0792d5a8">NvFlowShapeDescSDF</a>
+<li>secondConstantBuffer
+: <a class="el" href="struct_nv_flow_dispatch_params.html#1fdeb64cc23ed61be241f1ccc95bc7ef">NvFlowDispatchParams</a>
+<li>semanticName
+: <a class="el" href="struct_nv_flow_input_element_desc.html#db17424e6bea8f71cfcf47e42645e142">NvFlowInputElementDesc</a>
 <li>separableSmoothing
 : <a class="el" href="struct_nv_flow_particle_surface_params.html#79f305777abebf3633289488c0ba985a">NvFlowParticleSurfaceParams</a>
+<li>shader
+: <a class="el" href="struct_nv_flow_dispatch_params.html#f33de8c539c1e1e67576bfd43fda2b15">NvFlowDispatchParams</a>
+, <a class="el" href="struct_nv_flow_draw_params.html#684f6aa24ed39852ffc19602fec884dd">NvFlowDrawParams</a>
 <li>shaderParams
 : <a class="el" href="struct_nv_flow_grid_emit_custom_emit_layer_params.html#af19839db5b4ea5d6199e535b931fcb2">NvFlowGridEmitCustomEmitLayerParams</a>
 , <a class="el" href="struct_nv_flow_grid_export_import_layered_mapping.html#e1d70bd10d9e304842971ba94d8db262">NvFlowGridExportImportLayeredMapping</a>
@@ -95,8 +102,15 @@
 : <a class="el" href="struct_nv_flow_grid_emit_params.html#51700c0c050c84b2d3d6f69466c5feed">NvFlowGridEmitParams</a>
 <li>simulation
 : <a class="el" href="struct_nv_flow_query_time.html#01399e128e6d152d30e706b3f1f6f307">NvFlowQueryTime</a>
+<li>singlePassAdvection
+: <a class="el" href="struct_nv_flow_grid_params.html#7ab041d5426c03b12cab8193911f1251">NvFlowGridParams</a>
 <li>sizeDown
 : <a class="el" href="struct_nv_flow_volume_render_l_m_s_params.html#f03949e8572a6f3c41f2a2d13230078d">NvFlowVolumeRenderLMSParams</a>
+<li>sizeInBytes
+: <a class="el" href="struct_nv_flow_constant_buffer_desc.html#2582f5dbb0b9346231881b19c6d00028">NvFlowConstantBufferDesc</a>
+, <a class="el" href="struct_nv_flow_vertex_buffer_desc.html#348d436a863460c09f90a180dde07eeb">NvFlowVertexBufferDesc</a>
+, <a class="el" href="struct_nv_flow_index_buffer_desc.html#bb2d8ae05e0a99b9661628f970caf8c7">NvFlowIndexBufferDesc</a>
+, <a class="el" href="struct_nv_flow_heap_sparse_desc.html#47152e16c538eb088c48d43dd748e136">NvFlowHeapSparseDesc</a>
 <li>sizeLeft
 : <a class="el" href="struct_nv_flow_volume_render_l_m_s_params.html#42d571b77c86fca03a85f33ade5a2c14">NvFlowVolumeRenderLMSParams</a>
 <li>sizeRight
@@ -108,9 +122,9 @@
 <li>slipThickness
 : <a class="el" href="struct_nv_flow_grid_emit_params.html#f60e60f9f1805995bc7e3d7feeed4d6f">NvFlowGridEmitParams</a>
 <li>smoke
-: <a class="el" href="struct_nv_flow_particle_surface_emit_params.html#19df6e486cd5f311238f25b8e51dda0c">NvFlowParticleSurfaceEmitParams</a>
-, <a class="el" href="struct_nv_flow_grid_material_params.html#187c195c063644673ef81d7e29aa78a2">NvFlowGridMaterialParams</a>
+: <a class="el" href="struct_nv_flow_grid_material_params.html#187c195c063644673ef81d7e29aa78a2">NvFlowGridMaterialParams</a>
 , <a class="el" href="struct_nv_flow_grid_emit_params.html#6279cb81514dab2b49ba641d76e8ec80">NvFlowGridEmitParams</a>
+, <a class="el" href="struct_nv_flow_particle_surface_emit_params.html#19df6e486cd5f311238f25b8e51dda0c">NvFlowParticleSurfaceEmitParams</a>
 <li>smokeCoupleRate
 : <a class="el" href="struct_nv_flow_grid_emit_params.html#01bce6b577a47512f2e201e69d3e7808">NvFlowGridEmitParams</a>
 , <a class="el" href="struct_nv_flow_particle_surface_emit_params.html#1db9063193d55fd7c45f731e923e93c1">NvFlowParticleSurfaceEmitParams</a>
@@ -124,17 +138,27 @@
 : <a class="el" href="union_nv_flow_shape_desc.html#df6475fec1d0751d3feccce99c05a725">NvFlowShapeDesc</a>
 <li>spheres
 : <a class="el" href="struct_nv_flow_grid_export_debug_vis_view.html#12d02d55843cb57670c361429e8faff7">NvFlowGridExportDebugVisView</a>
+<li>srcBlendAlpha
+: <a class="el" href="struct_nv_flow_blend_state_desc.html#9e38df1788a26ae6c043bf4ceb5d28a8">NvFlowBlendStateDesc</a>
+<li>srcBlendColor
+: <a class="el" href="struct_nv_flow_blend_state_desc.html#477cadc4646962fc4fd7df49eb433607">NvFlowBlendStateDesc</a>
 <li>srv
 : <a class="el" href="struct_nv_flow_resource_view_desc_d3_d11.html#b499c0f601c69ab0ea696047d7624e13">NvFlowResourceViewDescD3D11</a>
 , <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d11.html#1ec5eb548f58274f85ddf43410a56358">NvFlowDepthStencilViewDescD3D11</a>
+<li>srvCurrentState
+: <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#0dd281f8eecd93f5ce1c0ebaf251810a">NvFlowDepthStencilViewDescD3D12</a>
 <li>srvDesc
 : <a class="el" href="struct_nv_flow_resource_view_desc_d3_d12.html#7e9dde80ea1a940faee3f68902de1123">NvFlowResourceViewDescD3D12</a>
 , <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#4fe4845abd62bb0668a33db103d54358">NvFlowDepthStencilViewDescD3D12</a>
 <li>srvHandle
 : <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#ce52e4daf5e3832eb71dd69783de9541">NvFlowDepthStencilViewDescD3D12</a>
 , <a class="el" href="struct_nv_flow_resource_view_desc_d3_d12.html#2f8b7a5da4f326fede21adb503df4b13">NvFlowResourceViewDescD3D12</a>
+<li>srvResource
+: <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#d105f388030e9cc37e5d878e43eb3af7">NvFlowDepthStencilViewDescD3D12</a>
 <li>stateCPU
 : <a class="el" href="struct_nv_flow_grid_import_state_c_p_u_params.html#2fcf3b065a4206964c48346045863ade">NvFlowGridImportStateCPUParams</a>
+, <a class="el" href="struct_nv_flow_grid_summary_update_params.html#f409f33c97fc0b023e8064605ee0890f">NvFlowGridSummaryUpdateParams</a>
+, <a class="el" href="struct_nv_flow_grid_summary_debug_render_params.html#bd826371d8ea7246684bda06b1fb8560">NvFlowGridSummaryDebugRenderParams</a>
 <li>supportsVTR
 : <a class="el" href="struct_nv_flow_support.html#b9bc7a21ee238ba7dece29ad98fcf1e3">NvFlowSupport</a>
 <li>surfaceThreshold

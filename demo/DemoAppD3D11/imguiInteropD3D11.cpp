@@ -19,24 +19,32 @@
 #include "appD3D11Ctx.h"
 #include "imguiGraphD3D11.h"
 
-bool imguiInteropGraphInit(imguiGraphInit_t func, const char* fontpath, AppGraphCtx* appctx)
+IMGUI_GRAPH_API bool imguiInteropGraphInitD3D11(imguiGraphInit_t func, const char* fontpath, AppGraphCtx* appctx);
+
+IMGUI_GRAPH_API void imguiInteropGraphUpdateD3D11(imguiGraphUpdate_t func, AppGraphCtx* appctx);
+
+bool imguiInteropGraphInitD3D11(imguiGraphInit_t func, const char* fontpath, AppGraphCtx* appctxIn)
 {
-	ImguiGraphDesc desc;
+	auto appctx = cast_to_AppGraphCtxD3D11(appctxIn);
+
+	ImguiGraphDescD3D11 desc;
 	desc.device = appctx->m_device;
 	desc.deviceContext = appctx->m_deviceContext;
 	desc.winW = appctx->m_winW;
 	desc.winH = appctx->m_winH;
 
-	return func(fontpath, &desc);
+	return func(fontpath, cast_from_imguiGraphDescD3D11(&desc));
 }
 
-void imguiInteropGraphUpdate(imguiGraphUpdate_t func, AppGraphCtx* appctx)
+void imguiInteropGraphUpdateD3D11(imguiGraphUpdate_t func, AppGraphCtx* appctxIn)
 {
-	ImguiGraphDesc desc;
+	auto appctx = cast_to_AppGraphCtxD3D11(appctxIn);
+
+	ImguiGraphDescD3D11 desc;
 	desc.device = appctx->m_device;
 	desc.deviceContext = appctx->m_deviceContext;
 	desc.winW = appctx->m_winW;
 	desc.winH = appctx->m_winH;
 
-	return func(&desc);
+	return func(cast_from_imguiGraphDescD3D11(&desc));
 }

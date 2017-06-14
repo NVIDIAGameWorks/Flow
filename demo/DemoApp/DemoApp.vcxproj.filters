@@ -78,6 +78,9 @@
     <ClCompile Include="sceneFlow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sceneEmitSubStep.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest">

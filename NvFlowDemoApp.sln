@@ -5,16 +5,23 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DemoApp", "demo\DemoApp\DemoApp.vcxproj", "{001BA531-503D-4407-AE6B-A42408E17BFF}"
 	ProjectSection(ProjectDependencies) = postProject
+		{15A2730A-1BE6-4A99-BE96-FEB4B8944AC2} = {15A2730A-1BE6-4A99-BE96-FEB4B8944AC2}
 		{A8C5329D-82CC-4D1A-971C-243B65AA3D7B} = {A8C5329D-82CC-4D1A-971C-243B65AA3D7B}
 		{BCBFA7E1-C9CE-4326-A5E3-3A93416BBD90} = {BCBFA7E1-C9CE-4326-A5E3-3A93416BBD90}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DemoAppD3D11", "demo\DemoAppD3D11\DemoAppD3D11.vcxproj", "{A8C5329D-82CC-4D1A-971C-243B65AA3D7B}"
 	ProjectSection(ProjectDependencies) = postProject
+		{15A2730A-1BE6-4A99-BE96-FEB4B8944AC2} = {15A2730A-1BE6-4A99-BE96-FEB4B8944AC2}
 		{BCBFA7E1-C9CE-4326-A5E3-3A93416BBD90} = {BCBFA7E1-C9CE-4326-A5E3-3A93416BBD90}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DemoAppD3D12", "demo\DemoAppD3D12\DemoAppD3D12.vcxproj", "{BCBFA7E1-C9CE-4326-A5E3-3A93416BBD90}"
+	ProjectSection(ProjectDependencies) = postProject
+		{15A2730A-1BE6-4A99-BE96-FEB4B8944AC2} = {15A2730A-1BE6-4A99-BE96-FEB4B8944AC2}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DemoAppCodeGen", "demo\DemoAppCodeGen\DemoAppCodeGen.vcxproj", "{15A2730A-1BE6-4A99-BE96-FEB4B8944AC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +55,14 @@ Global
 		{BCBFA7E1-C9CE-4326-A5E3-3A93416BBD90}.Release|x64.Build.0 = Release|x64
 		{BCBFA7E1-C9CE-4326-A5E3-3A93416BBD90}.Release|x86.ActiveCfg = Release|Win32
 		{BCBFA7E1-C9CE-4326-A5E3-3A93416BBD90}.Release|x86.Build.0 = Release|Win32
+		{15A2730A-1BE6-4A99-BE96-FEB4B8944AC2}.Debug|x64.ActiveCfg = Debug|x64
+		{15A2730A-1BE6-4A99-BE96-FEB4B8944AC2}.Debug|x64.Build.0 = Debug|x64
+		{15A2730A-1BE6-4A99-BE96-FEB4B8944AC2}.Debug|x86.ActiveCfg = Debug|Win32
+		{15A2730A-1BE6-4A99-BE96-FEB4B8944AC2}.Debug|x86.Build.0 = Debug|Win32
+		{15A2730A-1BE6-4A99-BE96-FEB4B8944AC2}.Release|x64.ActiveCfg = Release|x64
+		{15A2730A-1BE6-4A99-BE96-FEB4B8944AC2}.Release|x64.Build.0 = Release|x64
+		{15A2730A-1BE6-4A99-BE96-FEB4B8944AC2}.Release|x86.ActiveCfg = Release|Win32
+		{15A2730A-1BE6-4A99-BE96-FEB4B8944AC2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

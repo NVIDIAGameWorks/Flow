@@ -31,6 +31,7 @@ struct TimeStepper
 	float m_timeError = 0.f;
 	float m_fixedDt = (1.f / 60.f);
 	int m_maxSteps = 1;
+	int m_numSteps = 0;
 
 	TimeStepper() {}
 
@@ -41,14 +42,15 @@ struct TimeStepper
 		// compute time steps
 		m_timeError += m_deltaTime;
 
-		int numSteps = int(m_timeError / m_fixedDt);
-		if (numSteps < 0) numSteps = 0;
+		m_numSteps = int(floorf((m_timeError / m_fixedDt)));
 
-		m_timeError -= m_fixedDt * float(numSteps);
+		if (m_numSteps < 0) m_numSteps = 0;
 
-		if (numSteps > m_maxSteps) numSteps = m_maxSteps;
+		m_timeError -= m_fixedDt * float(m_numSteps);
 
-		return numSteps;
+		if (m_numSteps > m_maxSteps) m_numSteps = m_maxSteps;
+
+		return m_numSteps;
 	}
 };
 
@@ -82,7 +84,10 @@ struct Scene
 	int m_winw = 0;
 	int m_winh = 0;
 
+	float m_deltaTime = 0.f;
+
 protected:
+	virtual void doFrameUpdate(float dt) {}
 	virtual void doUpdate(float dt) = 0;
 
 	AppGraphCtx* m_context = nullptr;
@@ -145,13 +150,17 @@ struct FlowContext
 	int m_maxFramesInFlight = 3u;
 	int m_framesInFlight = 0;
 
+	double m_statUpdateAttemptCount = 0.0;
+	double m_statUpdateSuccessCount = 0.0;
+	float m_statUpdateDt = 0.f;
+
 	FlowContext() {}
 	~FlowContext() {}
 
 	void init(AppGraphCtx* appctx);
 	void release();
 
-	bool updateBegin();
+	bool updateBegin(float dt);
 	void updateEnd();
 	void preDrawBegin();
 	void preDrawEnd();
@@ -174,6 +183,8 @@ struct FlowGridActor
 	NvFlowVolumeRender* m_volumeRender = nullptr;
 	NvFlowVolumeShadow* m_volumeShadow = nullptr;	
 	NvFlowCrossSection* m_crossSection = nullptr;
+	NvFlowGridSummary* m_gridSummary = nullptr;
+	NvFlowGridSummaryStateCPU* m_gridSummaryStateCPU = nullptr;
 
 	NvFlowGridDesc m_gridDesc;
 	NvFlowGridParams m_gridParams;
@@ -215,6 +226,16 @@ struct FlowGridActor
 	float m_crossSectionScale = 2.f;
 	float m_crossSectionBackgroundColor = 0.f;
 	NvFlowFloat3 m_crossSectionLineColor = { 141.f / 255.f, 199.f / 255.f, 63.f / 255.f };
+
+	bool m_enableGridSummary = false;
+	bool m_enableGridSummaryDebugVis = false;
+
+	bool m_enableTranslationTest = false;
+	float m_translationTimeScale = 1.f;
+	bool m_enableTranslationTestOld = false;
+	float m_translationTestTime = 0.f;
+	NvFlowFloat3 m_translationOffsetA = { +4.f, 0.f, 0.f };
+	NvFlowFloat3 m_translationOffsetB = { -4.f, 0.f, 0.f };
 
 	NvFlowUint m_statNumLayers = 0u;
 	NvFlowUint m_statNumDensityBlocks = 0u;
@@ -340,6 +361,10 @@ struct SceneFluid : public Scene
 	bool m_shouldReset = false;
 	bool m_shouldGridReset = false;
 	bool m_shouldLoadPreset = false;
+
+	bool m_autoResetMode = false;
+	float m_autoResetTime = 0.f;
+	float m_autoResetThresh = 0.f;
 
 	virtual bool shouldReset() { return m_shouldReset; }
 	virtual void reset();
@@ -550,6 +575,22 @@ struct SceneSimpleFlameAnimated : public SceneSimpleFlame
 		m_emitParams.bounds.w.x = 2.f * cosf(rate * time);
 		m_emitParams.bounds.w.z = 2.f * sinf(rate * time);
 
+		// testing hack
+		//static int offset = 0;
+		//offset++;
+		//if (offset > 4)
+		//{
+		//	offset = 0;
+		//}
+		//m_emitParams.bounds.w.z += float(offset) - 4.f;
+
+		//NvFlowFloat3 gridLocation = { m_emitParams.bounds.w.x, 0.f, m_emitParams.bounds.w.z };
+		//NvFlowGridSetTargetLocation(m_flowGridActor.m_grid, gridLocation);
+
+		//bool parity = (time - floorf(time)) > 0.5f;
+		//NvFlowFloat3 gridLocation = parity ? NvFlowFloat3{-4.f, 0.f, 0.f} : NvFlowFloat3{+4.f, 0.f, 0.f};
+		//NvFlowGridSetTargetLocation(m_flowGridActor.m_grid, gridLocation);
+
 		m_emitParams.velocityLinear.x = +8.f * sinf(rate * time);
 		m_emitParams.velocityLinear.y = -2.f;
 		m_emitParams.velocityLinear.z = -8.f * cosf(rate * time);
@@ -681,6 +722,8 @@ struct SceneSimpleFlameCapsule : public SceneSimpleFlame
 	float m_capsuleLength = 0.75f;
 	float m_distanceScale = 3.5f;
 	bool m_boxMode = false;
+	bool m_flameSpread = false;
+	bool m_flameSpreadOld = false;
 };
 
 struct Scene2DTextureEmitter : public SceneFluid
@@ -829,6 +872,31 @@ struct SceneCustomEmit : public SceneFluid
 	ComputeResourceRW* m_dataRW[2u] = { nullptr };
 
 	bool m_fullDomain = false;
+};
+
+struct SceneEmitSubStep : public SceneFluid
+{
+	SceneEmitSubStep() : SceneFluid("Emit Sub Step") {}
+
+	virtual void initParams();
+	virtual void init(AppGraphCtx* context, int winw, int winh);
+	virtual void doFrameUpdate(float dt);
+	virtual void doUpdate(float dt);
+	virtual void preDraw();
+	virtual void draw(DirectX::CXMMATRIX projection, DirectX::CXMMATRIX view);
+	virtual void release();
+	virtual void imgui(int x, int y, int w, int h);
+
+	virtual void imguiFluidEmitterExtra();
+
+	void emitSubSteps(float t_old, float x_old, float t_new, float x_new, float frame_dt);
+	void emitImpulse(float x, float impulse_dt);
+
+	float anim_t = 0.f;
+	float anim_x = -1.f;
+	float anim_x_old = 0.f;
+
+	TimeStepper m_emitterTimeStepper;
 };
 
 Scene* getScene(int index);

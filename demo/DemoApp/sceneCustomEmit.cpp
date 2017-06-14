@@ -120,7 +120,7 @@ void SceneCustomEmit::init(AppGraphCtx* appctx, int winw, int winh)
 
 void SceneCustomEmit::doUpdate(float dt)
 {
-	bool shouldUpdate = m_flowContext.updateBegin();
+	bool shouldUpdate = m_flowContext.updateBegin(dt);
 	if (shouldUpdate)
 	{
 		ComputeContextNvFlowContextUpdate(m_customContext, m_flowContext.m_gridContext);

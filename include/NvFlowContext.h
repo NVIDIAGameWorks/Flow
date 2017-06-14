@@ -12,7 +12,7 @@
 
 #include "NvFlowTypes.h"
 
-#define NV_FLOW_VERSION 0x00010000
+#define NV_FLOW_VERSION 0x00010001
 
 //! NvFlowContext: A framework for fluid simulation
 struct NvFlowContext;

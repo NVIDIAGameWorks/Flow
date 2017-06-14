@@ -105,7 +105,7 @@ struct MeshConstantHeap
 	}
 };
 
-struct MeshContext
+struct MeshContextD3D12
 {
 	ID3D12Device* m_device = nullptr;
 	ID3D12GraphicsCommandList* m_commandList = nullptr;
@@ -116,8 +116,8 @@ struct MeshContext
 
 	MeshConstantHeap* m_constantHeap = nullptr;
 
-	MeshContext() {}
-	~MeshContext()
+	MeshContextD3D12() {}
+	~MeshContextD3D12()
 	{
 		COMRelease(m_rootSignature);
 		COMRelease(m_pipelineStateLH);
@@ -130,7 +130,17 @@ struct MeshContext
 	}
 };
 
-struct MeshIndexBuffer
+inline MeshContextD3D12* cast_to_MeshContextD3D12(MeshContext* ctx)
+{
+	return (MeshContextD3D12*)(ctx);
+}
+
+inline MeshContext* cast_from_MeshContextD3D12(MeshContextD3D12* ctx)
+{
+	return (MeshContext*)(ctx);
+}
+
+struct MeshIndexBufferD3D12
 {
 	ID3D12Resource* m_buffer = nullptr;
 	MeshUint m_numElements = 0u;
@@ -138,15 +148,25 @@ struct MeshIndexBuffer
 
 	ID3D12Resource* m_upload = nullptr;
 
-	MeshIndexBuffer() {}
-	~MeshIndexBuffer()
+	MeshIndexBufferD3D12() {}
+	~MeshIndexBufferD3D12()
 	{
 		COMRelease(m_buffer);
 		COMRelease(m_upload);
 	}
 };
 
-struct MeshVertexBuffer
+inline MeshIndexBufferD3D12* cast_to_MeshIndexBufferD3D12(MeshIndexBuffer* buf)
+{
+	return (MeshIndexBufferD3D12*)(buf);
+}
+
+inline MeshIndexBuffer* cast_from_MeshIndexBufferD3D12(MeshIndexBufferD3D12* buf)
+{
+	return (MeshIndexBuffer*)(buf);
+}
+
+struct MeshVertexBufferD3D12
 {
 	ID3D12Resource* m_buffer = nullptr;
 	MeshUint m_numElements = 0u;
@@ -154,16 +174,28 @@ struct MeshVertexBuffer
 
 	ID3D12Resource* m_upload = nullptr;
 
-	MeshVertexBuffer() {}
-	~MeshVertexBuffer()
+	MeshVertexBufferD3D12() {}
+	~MeshVertexBufferD3D12()
 	{
 		COMRelease(m_buffer);
 		COMRelease(m_upload);
 	}
 };
 
-MeshConstantHeap::MeshConstantHeap(MeshContext* meshContext, int size) : m_meshContext(meshContext)
+inline MeshVertexBufferD3D12* cast_to_MeshVertexBufferD3D12(MeshVertexBuffer* buf)
 {
+	return (MeshVertexBufferD3D12*)(buf);
+}
+
+inline MeshVertexBuffer* cast_from_MeshVertexBufferD3D12(MeshVertexBufferD3D12* buf)
+{
+	return (MeshVertexBuffer*)(buf);
+}
+
+MeshConstantHeap::MeshConstantHeap(MeshContext* meshContextIn, int size) : m_meshContext(meshContextIn)
+{
+	auto meshContext = cast_to_MeshContextD3D12(meshContextIn);
+
 	// create a constant buffer
 	{
 		HRESULT hr = S_OK;
@@ -208,9 +240,11 @@ MeshConstantHeap::MeshConstantHeap(MeshContext* meshContext, int size) : m_meshC
 	}
 }
 
-MeshContext* MeshContextCreate(const MeshContextDesc* desc)
+MeshContext* MeshContextCreateD3D12(const MeshContextDesc* descIn)
 {
-	MeshContext* context = new MeshContext;
+	auto desc = cast_to_MeshContextDescD3D12(descIn);
+
+	MeshContextD3D12* context = new MeshContextD3D12;
 
 	context->m_device = desc->device;
 	context->m_commandList = desc->commandList;
@@ -333,30 +367,35 @@ MeshContext* MeshContextCreate(const MeshContextDesc* desc)
 
 	// create constant heap
 	{
-		context->m_constantHeap = new MeshConstantHeap(context, 4096u);
+		context->m_constantHeap = new MeshConstantHeap(cast_from_MeshContextD3D12(context), 4096u);
 	}
 
-	return context;
+	return cast_from_MeshContextD3D12(context);
 }
 
-void MeshContextUpdate(MeshContext* context, const MeshContextDesc* desc)
+void MeshContextUpdateD3D12(MeshContext* contextIn, const MeshContextDesc* descIn)
 {
+	auto context = cast_to_MeshContextD3D12(contextIn);
+	auto desc = cast_to_MeshContextDescD3D12(descIn);
+
 	context->m_device = desc->device;
 	context->m_commandList = desc->commandList;
 
 	context->m_constantHeap->reset();
 }
 
-void MeshContextRelease(MeshContext* context)
+void MeshContextReleaseD3D12(MeshContext* context)
 {
 	if (context == nullptr) return;
 
-	delete context;
+	delete cast_to_MeshContextD3D12(context);
 }
 
-MeshIndexBuffer* MeshIndexBufferCreate(MeshContext* context, MeshUint* indices, MeshUint numIndices)
+MeshIndexBuffer* MeshIndexBufferCreateD3D12(MeshContext* contextIn, MeshUint* indices, MeshUint numIndices)
 {
-	MeshIndexBuffer* buffer = new MeshIndexBuffer;
+	auto context = cast_to_MeshContextD3D12(contextIn);
+
+	MeshIndexBufferD3D12* buffer = new MeshIndexBufferD3D12;
 
 	buffer->m_numElements = numIndices;
 	// create an index buffer
@@ -433,19 +472,21 @@ MeshIndexBuffer* MeshIndexBufferCreate(MeshContext* context, MeshUint* indices, 
 		buffer->m_view.Format = DXGI_FORMAT_R32_UINT;
 	}
 
-	return buffer;
+	return cast_from_MeshIndexBufferD3D12(buffer);
 }
 
-void MeshIndexBufferRelease(MeshIndexBuffer* buffer)
+void MeshIndexBufferReleaseD3D12(MeshIndexBuffer* buffer)
 {
 	if (buffer == nullptr) return;
 
-	delete buffer;
+	delete cast_to_MeshIndexBufferD3D12(buffer);
 }
 
-MeshVertexBuffer* MeshVertexBufferCreate(MeshContext* context, MeshVertex* vertices, MeshUint numVertices)
+MeshVertexBuffer* MeshVertexBufferCreateD3D12(MeshContext* contextIn, MeshVertex* vertices, MeshUint numVertices)
 {
-	MeshVertexBuffer* buffer = new MeshVertexBuffer;
+	auto context = cast_to_MeshContextD3D12(contextIn);
+
+	MeshVertexBufferD3D12* buffer = new MeshVertexBufferD3D12;
 
 	buffer->m_numElements = numVertices;
 	// create a vertex buffer
@@ -522,18 +563,20 @@ MeshVertexBuffer* MeshVertexBufferCreate(MeshContext* context, MeshVertex* verti
 		buffer->m_view.SizeInBytes = bufferSize;
 	}
 
-	return buffer;
+	return cast_from_MeshVertexBufferD3D12(buffer);
 }
 
-void MeshVertexBufferRelease(MeshVertexBuffer* buffer)
+void MeshVertexBufferReleaseD3D12(MeshVertexBuffer* buffer)
 {
 	if (buffer == nullptr) return;
 
-	delete buffer;
+	delete cast_to_MeshVertexBufferD3D12(buffer);
 }
 
-void MeshContextDraw(MeshContext* context, const MeshContextDrawParams* params)
+void MeshContextDrawD3D12(MeshContext* contextIn, const MeshContextDrawParams* params)
 {
+	auto context = cast_to_MeshContextD3D12(contextIn);
+
 	using namespace DirectX;
 
 	XMMATRIX matrix = XMMatrixTranspose(XMMatrixMultiply(XMMatrixMultiply(
@@ -569,8 +612,8 @@ void MeshContextDraw(MeshContext* context, const MeshContextDrawParams* params)
 	commandList->SetGraphicsRootConstantBufferView(0, cbvHandle);
 
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	commandList->IASetVertexBuffers(0, 1, &params->vertexBuffer->m_view);
-	commandList->IASetIndexBuffer(&params->indexBuffer->m_view);
+	commandList->IASetVertexBuffers(0, 1, &cast_to_MeshVertexBufferD3D12(params->vertexBuffer)->m_view);
+	commandList->IASetIndexBuffer(&cast_to_MeshIndexBufferD3D12(params->indexBuffer)->m_view);
 
-	commandList->DrawIndexedInstanced((UINT)params->indexBuffer->m_numElements, 1, 0, 0, 0);
+	commandList->DrawIndexedInstanced((UINT)cast_to_MeshIndexBufferD3D12(params->indexBuffer)->m_numElements, 1, 0, 0, 0);
 }

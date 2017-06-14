@@ -21,7 +21,7 @@
 
 ImguiDescriptorReserveHandleD3D12 imguiInteropReserveDescriptors(void* userdata, UINT numDescriptors, UINT64 lastFenceCompleted, UINT64 nextFenceValue)
 {
-	auto appctx = static_cast<AppGraphCtx*>(userdata);
+	auto appctx = cast_to_AppGraphCtxD3D12((AppGraphCtx*)userdata);
 	auto srcHandle = appctx->m_dynamicHeapCbvSrvUav.reserveDescriptors(numDescriptors, lastFenceCompleted, nextFenceValue);
 	ImguiDescriptorReserveHandleD3D12 handle = {};
 	handle.heap = srcHandle.heap;
@@ -31,8 +31,10 @@ ImguiDescriptorReserveHandleD3D12 imguiInteropReserveDescriptors(void* userdata,
 	return handle;
 }
 
-void imguiInteropUpdateDesc(ImguiGraphDesc& desc, AppGraphCtx* appctx)
+inline void imguiInteropUpdateDesc(ImguiGraphDescD3D12& desc, AppGraphCtx* appctxIn)
 {
+	auto appctx = cast_to_AppGraphCtxD3D12(appctxIn);
+
 	desc.device = appctx->m_device;
 	desc.commandList = appctx->m_commandList;
 	desc.lastFenceCompleted = appctx->m_lastFenceComplete;
@@ -43,18 +45,22 @@ void imguiInteropUpdateDesc(ImguiGraphDesc& desc, AppGraphCtx* appctx)
 	desc.dynamicHeapCbvSrvUav.reserveDescriptors = imguiInteropReserveDescriptors;
 }
 
-bool imguiInteropGraphInit(imguiGraphInit_t func, const char* fontpath, AppGraphCtx* appctx)
+IMGUI_GRAPH_API bool imguiInteropGraphInitD3D12(imguiGraphInit_t func, const char* fontpath, AppGraphCtx* appctx);
+
+IMGUI_GRAPH_API void imguiInteropGraphUpdateD3D12(imguiGraphUpdate_t func, AppGraphCtx* appctx);
+
+bool imguiInteropGraphInitD3D12(imguiGraphInit_t func, const char* fontpath, AppGraphCtx* appctx)
 {
-	ImguiGraphDesc desc;
+	ImguiGraphDescD3D12 desc;
 	imguiInteropUpdateDesc(desc, appctx);
 
-	return func(fontpath, &desc);
+	return func(fontpath, cast_from_imguiGraphDescD3D12(&desc));
 }
 
-void imguiInteropGraphUpdate(imguiGraphUpdate_t func, AppGraphCtx* appctx)
+void imguiInteropGraphUpdateD3D12(imguiGraphUpdate_t func, AppGraphCtx* appctx)
 {
-	ImguiGraphDesc desc;
+	ImguiGraphDescD3D12 desc;
 	imguiInteropUpdateDesc(desc, appctx);
 
-	return func(&desc);
+	return func(cast_from_imguiGraphDescD3D12(&desc));
 }

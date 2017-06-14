@@ -126,6 +126,8 @@ struct NvFlowGridParams
 {
 	NvFlowFloat3 gravity;					//!< Gravity vector for use by buoyancy
 
+	bool singlePassAdvection;				//!< If true, enables single pass advection
+
 	bool pressureLegacyMode;				//!< If true, run older less accurate pressure solver
 
 	bool bigEffectMode;						//!< Tweaks block allocation for better big effect behavior
@@ -253,7 +255,11 @@ struct NvFlowGridMaterialParams
 	NvFlowGridMaterialPerComponent fuel;		//!< Fuel component parameters
 
 	float vorticityStrength;					//!< Higher values increase rotation, reduce laminar flow
-	float vorticityVelocityMask;				//!< 0.f means zero velocity magnitude influence on vorticity
+	float vorticityVelocityMask;				//!< 0.f disabled; 1.0f higher velocities, higher strength; -1.0f for inverse
+	float vorticityTemperatureMask;				//!< 0.f disabled; 1.0f higher temperatures, higher strength; -1.0f for inverse
+	float vorticitySmokeMask;					//!< 0.f disabled; 1.0f higher smoke, higher strength; -1.0f for inverse
+	float vorticityFuelMask;					//!< 0.f disabled; 1.0f higher fuel, higher strength; -1.0f for inverse
+	float vorticityConstantMask;				//!< Works as other masks, provides fixed offset
 
 	float ignitionTemp;							//!< Minimum temperature for combustion
 	float burnPerTemp;							//!< Burn amount per unit temperature above ignitionTemp
@@ -466,9 +472,8 @@ struct NvFlowGridEmitParams
 
 	float deltaTime;								//!< DeltaTime used to compute impulse
 
-	NvFlowGridMaterialHandle material;				//!< Material for this emitter
+	NvFlowUint emitMaterialIndex;					//!< Index into material lookup defined by NvFlowGridUpdateEmitMaterials()
 	NvFlowUint emitMode;							//!< Emitter behavior, based on NvFlowGridEmitMode, 0u is default
-	NvFlowUint numSubSteps;							//!< Numbers of interations to perform on cell value
 
 	NvFlowFloat3 allocationScale;					//!< Higher values cause more blocks to allocate around emitter; 0.f means no allocation, 1.f is default
 	float allocationPredict;						//!< Higher values cause extra allocation based on linear velocity and predict velocity
@@ -515,6 +520,15 @@ NV_FLOW_API void NvFlowGridEmitParamsDefaults(NvFlowGridEmitParams* params);
  * @param[in] numParams Number of emit events in the array.
  */
 NV_FLOW_API void NvFlowGridEmit(NvFlowGrid* grid, const NvFlowShapeDesc* shapes, NvFlowUint numShapes, const NvFlowGridEmitParams* params, NvFlowUint numParams);
+
+/**
+ * Update internal array of grid materials reference by emitMaterialIndex
+ *
+ * @param[in] grid The Flow grid to apply the emit events.
+ * @param[in] materials Array of grid materials.
+ * @param[in] numMaterials Number of grid materials in the array.
+ */
+NV_FLOW_API void NvFlowGridUpdateEmitMaterials(NvFlowGrid* grid, NvFlowGridMaterialHandle* materials, NvFlowUint numMaterials);
 
 /**
  * Update internal array of SDFs that can be referenced by sdfOffset 
@@ -875,6 +889,135 @@ NV_FLOW_API void NvFlowGridImportUpdateStateCPU(NvFlowGridImportStateCPU* stateC
  * @return Returns import handle.
  */
 NV_FLOW_API NvFlowGridImportHandle NvFlowGridImportStateCPUGetHandle(NvFlowGridImport* gridImport, NvFlowContext* context, const NvFlowGridImportStateCPUParams* params);
+
+///@}
+// -------------------------- NvFlowGridSummary -------------------------------
+///@defgroup NvFlowGridSummary
+///@{
+
+//! An object that captures coarse grid behavior and provides CPU access
+struct NvFlowGridSummary;
+
+//! Description necessary to create grid summary
+struct NvFlowGridSummaryDesc
+{
+	NvFlowGridExport* gridExport;		//!< Grid export to use as template for allocation
+};
+
+/**
+ * Creates a grid summary object.
+ *
+ * @param[in] context The context for GPU resource allocation.
+ * @param[in] desc Description for memory allocation.
+ *
+ * @return The created grid summary object.
+ */
+NV_FLOW_API NvFlowGridSummary* NvFlowCreateGridSummary(NvFlowContext* context, const NvFlowGridSummaryDesc* desc);
+
+/**
+ * Releases a grid summary object.
+ *
+ * @param[in] gridSummary The grid summary object to be released.
+ */
+NV_FLOW_API void NvFlowReleaseGridSummary(NvFlowGridSummary* gridSummary);
+
+//! CPU state of grid summary
+struct NvFlowGridSummaryStateCPU;
+
+/**
+ * Creates a grid summary CPU state object.
+ *
+ * @param[in] gridSummary The grid summary this CPU state will hold data from.
+ *
+ * @return The created grid summary CPU state object.
+ */
+NV_FLOW_API NvFlowGridSummaryStateCPU* NvFlowCreateGridSummaryStateCPU(NvFlowGridSummary* gridSummary);
+
+/**
+ * Releases a grid summary CPU state object.
+ *
+ * @param[in] stateCPU The grid summary CPU state object to be released.
+ */
+NV_FLOW_API void NvFlowReleaseGridSummaryStateCPU(NvFlowGridSummaryStateCPU* stateCPU);
+
+//! Parameters required to update summary CPU state
+struct NvFlowGridSummaryUpdateParams
+{
+	NvFlowGridSummaryStateCPU* stateCPU;	//!< The target to store summary data to
+
+	NvFlowGridExport* gridExport;		//!< GridExport to capture summary from
+};
+
+/**
+ * Updates the specified stateCPU with the latest available summary data.
+ *
+ * @param[in] gridSummary The grid summary operator to perform the update.
+ * @param[in] context The context the gridExport is valid on.
+ * @param[in] params Parameters required to update CPU state.
+ */
+NV_FLOW_API void NvFlowGridSummaryUpdate(NvFlowGridSummary* gridSummary, NvFlowContext* context, const NvFlowGridSummaryUpdateParams* params);
+
+//! Parameters to debug render the grid summary data
+struct NvFlowGridSummaryDebugRenderParams
+{
+	NvFlowGridSummaryStateCPU* stateCPU;
+
+	NvFlowRenderTargetView* renderTargetView;	//!< Render target to draw visualization to
+
+	NvFlowFloat4x4 projectionMatrix;			//!< Render target projection matrix, row major
+	NvFlowFloat4x4 viewMatrix;					//!< Render target view matrix, row major
+};
+
+/**
+ * Renders a visualization of the specified stateCPU.
+ *
+ * @param[in] gridSummary The grid summary operator to perform the debug render.
+ * @param[in] context The render context.
+ * @param[in] params Parameters required to render the CPU state.
+ */
+NV_FLOW_API void NvFlowGridSummaryDebugRender(NvFlowGridSummary* gridSummary, NvFlowContext* context, const NvFlowGridSummaryDebugRenderParams* params);
+
+//! Summary results
+struct NvFlowGridSummaryResult
+{
+	NvFlowFloat4 worldLocation;
+	NvFlowFloat4 worldHalfSize;
+	NvFlowFloat3 averageVelocity;
+	float averageSpeed;
+	float averageTemperature;
+	float averageFuel;
+	float averageBurn;
+	float averageSmoke;
+};
+
+/**
+ * Returns the number of layers for the grid summary. This establishes the maximum number of results for a given world location.
+ *
+ * @param[in] stateCPU The grid summary cpu state.
+ *
+ * @return Returns the number of layers.
+ */
+NV_FLOW_API NvFlowUint NvFlowGridSummaryGetNumLayers(NvFlowGridSummaryStateCPU* stateCPU);
+
+/**
+ * Returns grid material mapped to specied layerIdx.
+ *
+ * @param[in] stateCPU The grid summary cpu state.
+ * @param[in] layerIdx The layer index to get the material mapping of.
+ *
+ * @return Returns grid material.
+ */
+NV_FLOW_API NvFlowGridMaterialHandle NvFlowGridSummaryGetLayerMaterial(NvFlowGridSummaryStateCPU* stateCPU, NvFlowUint layerIdx);
+
+/**
+ * Returns pointer to array of summary results for the specified layer.
+ *
+ * @param[in] stateCPU The grid summary state to sample.
+ * @param[out] results Pointer to array pointer.
+ * @param[out] numResults Pointer to array size.
+ * @param[in] layerIdx Layer index to return summary results array from.
+ */
+NV_FLOW_API void NvFlowGridSummaryGetSummaries(NvFlowGridSummaryStateCPU* stateCPU, NvFlowGridSummaryResult** results, NvFlowUint* numResults, NvFlowUint layerIdx);
 
 ///@}
 // -------------------------- NvFlowRenderMaterial -------------------------------

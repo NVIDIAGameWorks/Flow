@@ -67,24 +67,18 @@ bool gImguiActive = false;
 bool g_imguiHide = false;
 
 bool gClearDark = false;
-float gClearVal[4] = { 0.33f,0.33f,0.33f,1.f };
+AppGraphColor gClearVal = { 0.33f,0.33f,0.33f,1.f };
 
 void toggleDark()
 {
 	gClearDark = !gClearDark;
 	if (gClearDark)
 	{
-		gClearVal[0] = 0.f;
-		gClearVal[1] = 0.f;
-		gClearVal[2] = 0.f;
-		gClearVal[3] = 1.f;
+		gClearVal = { 0.f, 0.f, 0.f, 1.f };
 	}
 	else
 	{
-		gClearVal[0] = 0.33f;
-		gClearVal[1] = 0.33f;
-		gClearVal[2] = 0.33f;
-		gClearVal[3] = 1.f;
+		gClearVal = { 0.33f, 0.33f, 0.33f, 1.f };
 	}
 }
 

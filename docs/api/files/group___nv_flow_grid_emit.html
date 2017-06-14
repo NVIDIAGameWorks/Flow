@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>NVIDIA(R) Flow(R) 1.0.0 API Reference: NvFlowGridEmit</title>
+		<title>NVIDIA(R) Flow(R) 1.0.1 API Reference: NvFlowGridEmit</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<LINK HREF="NVIDIA.css" REL="stylesheet" TYPE="text/css">
 	</head>
@@ -46,6 +46,8 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___nv_flow_grid_emit.html#gfb6ef5fb891dc2759ffe6c9ff835bfdc">NvFlowGridEmit</a> (NvFlowGrid *grid, const <a class="el" href="union_nv_flow_shape_desc.html">NvFlowShapeDesc</a> *shapes, <a class="el" href="_nv_flow_types_8h.html#3ecaefc2ddcf5a935631db32d05226b1">NvFlowUint</a> numShapes, const <a class="el" href="struct_nv_flow_grid_emit_params.html">NvFlowGridEmitParams</a> *params, <a class="el" href="_nv_flow_types_8h.html#3ecaefc2ddcf5a935631db32d05226b1">NvFlowUint</a> numParams)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___nv_flow_grid_emit.html#gee91771d7fae19fd3c2bcb58f0cad629">NvFlowGridEmitParamsDefaults</a> (<a class="el" href="struct_nv_flow_grid_emit_params.html">NvFlowGridEmitParams</a> *params)</td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___nv_flow_grid_emit.html#gbf07a26d81c9738687f5ceafffe39468">NvFlowGridUpdateEmitMaterials</a> (NvFlowGrid *grid, <a class="el" href="struct_nv_flow_grid_material_handle.html">NvFlowGridMaterialHandle</a> *materials, <a class="el" href="_nv_flow_types_8h.html#3ecaefc2ddcf5a935631db32d05226b1">NvFlowUint</a> numMaterials)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___nv_flow_grid_emit.html#gfafd945646da940a01d2147ffbeb4906">NvFlowGridUpdateEmitSDFs</a> (NvFlowGrid *grid, NvFlowShapeSDF **sdfs, <a class="el" href="_nv_flow_types_8h.html#3ecaefc2ddcf5a935631db32d05226b1">NvFlowUint</a> numSdfs)</td></tr>
 
@@ -163,6 +165,49 @@ Allows the application to request default emit parameters from Flow.<p>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"><tt>[out]</tt>&nbsp;</td><td valign="top"><em>params</em>&nbsp;</td><td>The parameters for Flow to fill out. </td></tr>
+  </table>
+</dl>
+
+</div>
+</div><p>
+<a class="anchor" name="gbf07a26d81c9738687f5ceafffe39468"></a><!-- doxytag: member="NvFlow.h::NvFlowGridUpdateEmitMaterials" ref="gbf07a26d81c9738687f5ceafffe39468" args="(NvFlowGrid *grid, NvFlowGridMaterialHandle *materials, NvFlowUint numMaterials)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NvFlowGridUpdateEmitMaterials           </td>
+          <td>(</td>
+          <td class="paramtype">NvFlowGrid *&nbsp;</td>
+          <td class="paramname"> <em>grid</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_nv_flow_grid_material_handle.html">NvFlowGridMaterialHandle</a> *&nbsp;</td>
+          <td class="paramname"> <em>materials</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="_nv_flow_types_8h.html#3ecaefc2ddcf5a935631db32d05226b1">NvFlowUint</a>&nbsp;</td>
+          <td class="paramname"> <em>numMaterials</em></td><td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Update internal array of grid materials reference by emitMaterialIndex<p>
+<dl compact><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>grid</em>&nbsp;</td><td>The Flow grid to apply the emit events. </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>materials</em>&nbsp;</td><td>Array of grid materials. </td></tr>
+    <tr><td valign="top"><tt>[in]</tt>&nbsp;</td><td valign="top"><em>numMaterials</em>&nbsp;</td><td>Number of grid materials in the array. </td></tr>
   </table>
 </dl>
 

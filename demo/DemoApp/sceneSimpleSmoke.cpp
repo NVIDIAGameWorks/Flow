@@ -120,7 +120,7 @@ NvFlowFloat3 SceneSimpleSmoke::velocityFunc(float theta, float rate)
 
 void SceneSimpleSmoke::doUpdate(float dt)
 {
-	bool shouldUpdate = m_flowContext.updateBegin();
+	bool shouldUpdate = m_flowContext.updateBegin(dt);
 	if (shouldUpdate)
 	{
 		AppGraphCtxProfileBegin(m_appctx, "Simulate");

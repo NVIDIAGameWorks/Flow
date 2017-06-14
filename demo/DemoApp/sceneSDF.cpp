@@ -138,7 +138,7 @@ void SceneSDFTest::init(AppGraphCtx* appctx, int winw, int winh)
 
 void SceneSDFTest::doUpdate(float dt)
 {
-	bool shouldUpdate = m_flowContext.updateBegin();
+	bool shouldUpdate = m_flowContext.updateBegin(dt);
 	if (shouldUpdate)
 	{
 		AppGraphCtxProfileBegin(m_appctx, "Simulate");
@@ -285,7 +285,7 @@ void SceneCustomLighting::init(AppGraphCtx* context, int winw, int winh)
 
 void SceneCustomLighting::doUpdate(float dt)
 {
-	bool shouldUpdate = m_flowContext.updateBegin();
+	bool shouldUpdate = m_flowContext.updateBegin(dt);
 	if (shouldUpdate)
 	{
 		ComputeContextNvFlowContextUpdate(m_computeContext, m_flowContext.m_renderContext);

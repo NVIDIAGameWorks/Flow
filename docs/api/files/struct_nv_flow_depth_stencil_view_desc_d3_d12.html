@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>NVIDIA(R) Flow(R) 1.0.0 API Reference: NvFlowDepthStencilViewDescD3D12 Struct Reference</title>
+		<title>NVIDIA(R) Flow(R) 1.0.1 API Reference: NvFlowDepthStencilViewDescD3D12 Struct Reference</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<LINK HREF="NVIDIA.css" REL="stylesheet" TYPE="text/css">
 	</head>
@@ -31,28 +31,32 @@
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Data Fields</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">D3D12_RESOURCE_STATES&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#aec08d0f1285b6fd549371d8347200ee">currentState</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">D3D12_RESOURCE_STATES&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#2f27bc74dddfbd7747a7941e7d15837d">dsvCurrentState</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">D3D12_DEPTH_STENCIL_VIEW_DESC&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#6e2cbdc36a79f8c05c62418d9f8baf5c">dsvDesc</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">D3D12_CPU_DESCRIPTOR_HANDLE&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#89d615c945e9c660ff02b05c919aaf08">dsvHandle</a></td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">ID3D12Resource *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#d0d0a61f204ae26d40b2dc0a4cfd1a94">resource</a></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">ID3D12Resource *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#578b823c2323554c8d9ec78566d4274b">dsvResource</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">D3D12_RESOURCE_STATES&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#0dd281f8eecd93f5ce1c0ebaf251810a">srvCurrentState</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">D3D12_SHADER_RESOURCE_VIEW_DESC&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#4fe4845abd62bb0668a33db103d54358">srvDesc</a></td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">D3D12_CPU_DESCRIPTOR_HANDLE&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#ce52e4daf5e3832eb71dd69783de9541">srvHandle</a></td></tr>
 
+<tr><td class="memItemLeft" nowrap align="right" valign="top">ID3D12Resource *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#d105f388030e9cc37e5d878e43eb3af7">srvResource</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">D3D12_VIEWPORT&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#c0f0309497e9a6eb4fd742078b529a6c">viewport</a></td></tr>
 
 </table>
 <hr><h2>Field Documentation</h2>
-<a class="anchor" name="aec08d0f1285b6fd549371d8347200ee"></a><!-- doxytag: member="NvFlowDepthStencilViewDescD3D12::currentState" ref="aec08d0f1285b6fd549371d8347200ee" args="" -->
+<a class="anchor" name="2f27bc74dddfbd7747a7941e7d15837d"></a><!-- doxytag: member="NvFlowDepthStencilViewDescD3D12::dsvCurrentState" ref="2f27bc74dddfbd7747a7941e7d15837d" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">D3D12_RESOURCE_STATES <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#aec08d0f1285b6fd549371d8347200ee">NvFlowDepthStencilViewDescD3D12::currentState</a>          </td>
+          <td class="memname">D3D12_RESOURCE_STATES <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#2f27bc74dddfbd7747a7941e7d15837d">NvFlowDepthStencilViewDescD3D12::dsvCurrentState</a>          </td>
         </tr>
       </table>
 </div>
@@ -92,12 +96,27 @@
 
 </div>
 </div><p>
-<a class="anchor" name="d0d0a61f204ae26d40b2dc0a4cfd1a94"></a><!-- doxytag: member="NvFlowDepthStencilViewDescD3D12::resource" ref="d0d0a61f204ae26d40b2dc0a4cfd1a94" args="" -->
+<a class="anchor" name="578b823c2323554c8d9ec78566d4274b"></a><!-- doxytag: member="NvFlowDepthStencilViewDescD3D12::dsvResource" ref="578b823c2323554c8d9ec78566d4274b" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">ID3D12Resource* <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#d0d0a61f204ae26d40b2dc0a4cfd1a94">NvFlowDepthStencilViewDescD3D12::resource</a>          </td>
+          <td class="memname">ID3D12Resource* <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#578b823c2323554c8d9ec78566d4274b">NvFlowDepthStencilViewDescD3D12::dsvResource</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="0dd281f8eecd93f5ce1c0ebaf251810a"></a><!-- doxytag: member="NvFlowDepthStencilViewDescD3D12::srvCurrentState" ref="0dd281f8eecd93f5ce1c0ebaf251810a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">D3D12_RESOURCE_STATES <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#0dd281f8eecd93f5ce1c0ebaf251810a">NvFlowDepthStencilViewDescD3D12::srvCurrentState</a>          </td>
         </tr>
       </table>
 </div>
@@ -128,6 +147,21 @@
       <table class="memname">
         <tr>
           <td class="memname">D3D12_CPU_DESCRIPTOR_HANDLE <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#ce52e4daf5e3832eb71dd69783de9541">NvFlowDepthStencilViewDescD3D12::srvHandle</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+</div>
+</div><p>
+<a class="anchor" name="d105f388030e9cc37e5d878e43eb3af7"></a><!-- doxytag: member="NvFlowDepthStencilViewDescD3D12::srvResource" ref="d105f388030e9cc37e5d878e43eb3af7" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ID3D12Resource* <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#d105f388030e9cc37e5d878e43eb3af7">NvFlowDepthStencilViewDescD3D12::srvResource</a>          </td>
         </tr>
       </table>
 </div>

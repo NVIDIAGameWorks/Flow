@@ -15,7 +15,7 @@
 
 struct IDXGISwapChain3;
 
-struct AppGraphProfiler;
+struct AppGraphProfilerD3D12;
 
 struct AppDescriptorReserveHandleD3D12
 {
@@ -41,7 +41,7 @@ struct AppDynamicDescriptorHeapD3D12
 	~AppDynamicDescriptorHeapD3D12() { release(); }
 };
 
-struct AppGraphCtx
+struct AppGraphCtxD3D12
 {
 	HWND                    m_hWnd = nullptr;
 
@@ -104,10 +104,44 @@ struct AppGraphCtx
 
 	AppDynamicDescriptorHeapD3D12 m_dynamicHeapCbvSrvUav;
 
-	AppGraphProfiler* m_profiler = nullptr;
+	AppGraphProfilerD3D12* m_profiler = nullptr;
 
-	AppGraphCtx();
-	~AppGraphCtx();
+	AppGraphCtxD3D12();
+	~AppGraphCtxD3D12();
 };
+
+inline AppGraphCtxD3D12* cast_to_AppGraphCtxD3D12(AppGraphCtx* appctx)
+{
+	return (AppGraphCtxD3D12*)(appctx);
+}
+
+inline AppGraphCtx* cast_from_AppGraphCtxD3D12(AppGraphCtxD3D12* appctx)
+{
+	return (AppGraphCtx*)(appctx);
+}
+
+APP_GRAPH_CTX_API AppGraphCtx* AppGraphCtxCreateD3D12(int deviceID);
+
+APP_GRAPH_CTX_API bool AppGraphCtxUpdateSizeD3D12(AppGraphCtx* context, SDL_Window* window, bool fullscreen);
+
+APP_GRAPH_CTX_API void AppGraphCtxReleaseRenderTargetD3D12(AppGraphCtx* context);
+
+APP_GRAPH_CTX_API void AppGraphCtxReleaseD3D12(AppGraphCtx* context);
+
+APP_GRAPH_CTX_API void AppGraphCtxFrameStartD3D12(AppGraphCtx* context, AppGraphColor clearColor);
+
+APP_GRAPH_CTX_API void AppGraphCtxFramePresentD3D12(AppGraphCtx* context, bool fullsync);
+
+APP_GRAPH_CTX_API void AppGraphCtxWaitForFramesD3D12(AppGraphCtx* context, unsigned int maxFramesInFlight);
+
+APP_GRAPH_CTX_API void AppGraphCtxProfileEnableD3D12(AppGraphCtx* context, bool enabled);
+
+APP_GRAPH_CTX_API void AppGraphCtxProfileBeginD3D12(AppGraphCtx* context, const char* label);
+
+APP_GRAPH_CTX_API void AppGraphCtxProfileEndD3D12(AppGraphCtx* context, const char* label);
+
+APP_GRAPH_CTX_API bool AppGraphCtxProfileGetD3D12(AppGraphCtx* context, const char** plabel, float* cpuTime, float* gpuTime, int index);
+
+APP_GRAPH_CTX_API size_t AppGraphCtxDedicatedVideoMemoryD3D12(AppGraphCtx* context);
 
 #endif

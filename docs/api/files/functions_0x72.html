@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>NVIDIA(R) Flow(R) 1.0.0 API Reference: Data Fields</title>
+		<title>NVIDIA(R) Flow(R) 1.0.1 API Reference: Data Fields</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<LINK HREF="NVIDIA.css" REL="stylesheet" TYPE="text/css">
 	</head>
@@ -63,11 +63,15 @@ Here is a list of all struct and union fields with links to the structures/union
 <li>radius
 : <a class="el" href="struct_nv_flow_shape_desc_sphere.html#c269ef4c202ca8dc4b9f5d09fc4571d9">NvFlowShapeDescSphere</a>
 , <a class="el" href="struct_nv_flow_shape_desc_capsule.html#196aa4a3b5ff6f6a1ff7703427f11227">NvFlowShapeDescCapsule</a>
+<li>readOnly
+: <a class="el" href="struct_nv_flow_dispatch_params.html#ac147b0129ee9a1840a8002d5d4086c0">NvFlowDispatchParams</a>
+<li>readWrite
+: <a class="el" href="struct_nv_flow_dispatch_params.html#84ab6762b7e83f83490b723d02748dd7">NvFlowDispatchParams</a>
 <li>renderChannel
-: <a class="el" href="struct_nv_flow_volume_lighting_params.html#cb8b81b86930839673d553e23dc92f4a">NvFlowVolumeLightingParams</a>
-, <a class="el" href="struct_nv_flow_volume_shadow_params.html#07d6933ff9090917a6f311e8d407439d">NvFlowVolumeShadowParams</a>
+: <a class="el" href="struct_nv_flow_cross_section_params.html#18169538a45920f004ee4ef697425ae1">NvFlowCrossSectionParams</a>
 , <a class="el" href="struct_nv_flow_volume_render_params.html#7b25a901e5d057f89f7419c2f7906d7e">NvFlowVolumeRenderParams</a>
-, <a class="el" href="struct_nv_flow_cross_section_params.html#18169538a45920f004ee4ef697425ae1">NvFlowCrossSectionParams</a>
+, <a class="el" href="struct_nv_flow_volume_lighting_params.html#cb8b81b86930839673d553e23dc92f4a">NvFlowVolumeLightingParams</a>
+, <a class="el" href="struct_nv_flow_volume_shadow_params.html#07d6933ff9090917a6f311e8d407439d">NvFlowVolumeShadowParams</a>
 <li>renderContext
 : <a class="el" href="struct_nv_flow_grid_proxy_desc.html#f917e9a744af421f720f4089ec28157f">NvFlowGridProxyDesc</a>
 <li>renderCopyContext
@@ -78,11 +82,14 @@ Here is a list of all struct and union fields with links to the structures/union
 , <a class="el" href="struct_nv_flow_volume_lighting_params.html#25f9dbd38b6261cedd86f23c1a2e9b8d">NvFlowVolumeLightingParams</a>
 , <a class="el" href="struct_nv_flow_volume_shadow_params.html#e10d28b375223d198f7af11c3e13aa58">NvFlowVolumeShadowParams</a>
 , <a class="el" href="struct_nv_flow_cross_section_params.html#370a39ffcaa262e285cfd220e235fe2c">NvFlowCrossSectionParams</a>
+<li>renderTargetFormat
+: <a class="el" href="struct_nv_flow_graphics_shader_desc.html#fd7d543c14516fc8bf2b5b005db31042">NvFlowGraphicsShaderDesc</a>
 <li>renderTargetView
-: <a class="el" href="struct_nv_flow_cross_section_params.html#ca2d7c5711e19b0fba0cee02a8a82895">NvFlowCrossSectionParams</a>
-, <a class="el" href="struct_nv_flow_s_d_f_gen_mesh_params.html#bd7ae276ec5bb2fb159643e15e717bb3">NvFlowSDFGenMeshParams</a>
+: <a class="el" href="struct_nv_flow_grid_summary_debug_render_params.html#c15cfe1c6dfff3b905be6d800f221ed9">NvFlowGridSummaryDebugRenderParams</a>
 , <a class="el" href="struct_nv_flow_volume_render_params.html#90b8fe610a3874db4a1effb5afe274ea">NvFlowVolumeRenderParams</a>
 , <a class="el" href="struct_nv_flow_volume_shadow_debug_render_params.html#a2423d0d87f158e6fab805cf2c736c76">NvFlowVolumeShadowDebugRenderParams</a>
+, <a class="el" href="struct_nv_flow_cross_section_params.html#ca2d7c5711e19b0fba0cee02a8a82895">NvFlowCrossSectionParams</a>
+, <a class="el" href="struct_nv_flow_s_d_f_gen_mesh_params.html#bd7ae276ec5bb2fb159643e15e717bb3">NvFlowSDFGenMeshParams</a>
 <li>reserveDescriptors
 : <a class="el" href="struct_nv_flow_dynamic_descriptor_heap_d3_d12.html#1ee1418a665a7c6b664c8822e2c2dfe6">NvFlowDynamicDescriptorHeapD3D12</a>
 <li>residentScale
@@ -92,14 +99,19 @@ Here is a list of all struct and union fields with links to the structures/union
 : <a class="el" href="struct_nv_flow_shape_s_d_f_desc.html#4a1fa4bd496c3ab42c2b18316b5db295">NvFlowShapeSDFDesc</a>
 , <a class="el" href="struct_nv_flow_s_d_f_gen_desc.html#8df861b399a477fe5c80457fddc94eb4">NvFlowSDFGenDesc</a>
 <li>resource
-: <a class="el" href="struct_nv_flow_resource_view_desc_d3_d12.html#e3d2ac9a6338c9ff2d7730bed353dd46">NvFlowResourceViewDescD3D12</a>
-, <a class="el" href="struct_nv_flow_depth_stencil_view_desc_d3_d12.html#d0d0a61f204ae26d40b2dc0a4cfd1a94">NvFlowDepthStencilViewDescD3D12</a>
-, <a class="el" href="struct_nv_flow_render_target_view_desc_d3_d12.html#6052613483addc76aa4b5e9d60204b32">NvFlowRenderTargetViewDescD3D12</a>
+: <a class="el" href="struct_nv_flow_render_target_view_desc_d3_d12.html#6052613483addc76aa4b5e9d60204b32">NvFlowRenderTargetViewDescD3D12</a>
+, <a class="el" href="struct_nv_flow_resource_view_desc_d3_d12.html#e3d2ac9a6338c9ff2d7730bed353dd46">NvFlowResourceViewDescD3D12</a>
 <li>resourceView
 : <a class="el" href="struct_nv_flow_resource_r_w_view_desc_d3_d11.html#b5306e12712736242109bf22b05ea2ef">NvFlowResourceRWViewDescD3D11</a>
 , <a class="el" href="struct_nv_flow_resource_r_w_view_desc_d3_d12.html#c1999bd1280d53f31f25cf6dfabe7191">NvFlowResourceRWViewDescD3D12</a>
+<li>rootConstantBuffer
+: <a class="el" href="struct_nv_flow_draw_params.html#99531a5ff179d3b7246cf65ff3b44d51">NvFlowDrawParams</a>
+, <a class="el" href="struct_nv_flow_dispatch_params.html#cf64bce24cf9a90ec5fbad0739539a77">NvFlowDispatchParams</a>
 <li>rowPitch
-: <a class="el" href="struct_nv_flow_shape_s_d_f_data.html#02ec06b1cc5c65ed7fe34960a5f53c31">NvFlowShapeSDFData</a>
+: <a class="el" href="struct_nv_flow_mapped_data.html#0f69f43a759ea36766cd35333d0e8cc8">NvFlowMappedData</a>
+, <a class="el" href="struct_nv_flow_shape_s_d_f_data.html#02ec06b1cc5c65ed7fe34960a5f53c31">NvFlowShapeSDFData</a>
+<li>rt_format
+: <a class="el" href="struct_nv_flow_render_target_desc.html#5864d21ca7741af686f93183bc55f5b6">NvFlowRenderTargetDesc</a>
 <li>rtv
 : <a class="el" href="struct_nv_flow_render_target_view_desc_d3_d11.html#2bdbfc1760f5c5e6b8aed8cec3f4772c">NvFlowRenderTargetViewDescD3D11</a>
 <li>rtvDesc

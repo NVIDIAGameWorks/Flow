@@ -250,9 +250,9 @@ struct ComputeContextUserData
 	virtual void Release() = 0;
 };
 
-struct ComputeContext
+struct ComputeContextD3D12
 {
-	ComputeContextDesc m_desc = {};
+	ComputeContextDescD3D12 m_desc = {};
 
 	ID3D12RootSignature* m_rootSignatureCompute = nullptr;
 	ID3D12DescriptorHeap* m_nullHeap = nullptr;
@@ -261,8 +261,10 @@ struct ComputeContext
 
 	ComputeContextUserData* m_computeUserdata = nullptr;
 
-	ComputeContext(const ComputeContextDesc* desc)
+	ComputeContextD3D12(const ComputeContextDesc* descIn)
 	{
+		auto desc = cast_to_ComputeContextDescD3D12(descIn);
+
 		m_desc = *desc;
 
 		auto createRootSignature = [&](D3D12_ROOT_SIGNATURE_DESC* desc, ID3D12RootSignature** root)
@@ -323,7 +325,7 @@ struct ComputeContext
 			m_desc.device->CreateShaderResourceView(nullptr, &srvDesc, m_nullSRV);
 		}
 	}
-	~ComputeContext()
+	~ComputeContextD3D12()
 	{
 		COMRelease(m_rootSignatureCompute);
 		COMRelease(m_nullHeap);
@@ -331,20 +333,40 @@ struct ComputeContext
 	}
 };
 
-struct ComputeShader
+inline ComputeContextD3D12* cast_to_ComputeContextD3D12(ComputeContext* ctx)
+{
+	return (ComputeContextD3D12*)(ctx);
+}
+
+inline ComputeContext* cast_from_ComputeContextD3D12(ComputeContextD3D12* ctx)
+{
+	return (ComputeContext*)(ctx);
+}
+
+struct ComputeShaderD3D12
 {
 	ID3D12PipelineState*  m_shader = nullptr;
-	ComputeShader(ID3D12PipelineState* shader)
+	ComputeShaderD3D12(ID3D12PipelineState* shader)
 	{
 		m_shader = shader;
 	}
-	~ComputeShader()
+	~ComputeShaderD3D12()
 	{
 		COMRelease(m_shader);
 	}
 };
 
-struct ComputeConstantBuffer
+inline ComputeShaderD3D12* cast_to_ComputeShaderD3D12(ComputeShader* ctx)
+{
+	return (ComputeShaderD3D12*)(ctx);
+}
+
+inline ComputeShader* cast_from_ComputeShaderD3D12(ComputeShaderD3D12* ctx)
+{
+	return (ComputeShader*)(ctx);
+}
+
+struct ComputeConstantBufferD3D12
 {
 	ComputeConstantBufferDesc m_desc = {};
 
@@ -357,38 +379,54 @@ struct ComputeConstantBuffer
 	};
 	VersionedBuffer<BufferData> m_buffers;
 
-	ComputeConstantBuffer(ComputeContext* context, const ComputeConstantBufferDesc* desc)
-	{
-		m_desc = *desc;
-
-		// map and unmap to trigger initial allocation
-		ComputeConstantBufferMap(context, this);
-		ComputeConstantBufferUnmap(context, this);
-	}
-	~ComputeConstantBuffer()
-	{
-		for (ComputeUint i = 0; i < m_buffers.m_buffers.m_size; i++)
-		{
-			COMRelease(m_buffers.m_buffers[i].bufferData.m_buffer);
-		}
-	}
+	ComputeConstantBufferD3D12(ComputeContext* context, const ComputeConstantBufferDesc* desc);
+	~ComputeConstantBufferD3D12();
 };
 
-struct ComputeResource
+inline ComputeConstantBufferD3D12* cast_to_ComputeConstantBufferD3D12(ComputeConstantBuffer* ctx)
+{
+	return (ComputeConstantBufferD3D12*)(ctx);
+}
+
+inline ComputeConstantBuffer* cast_from_ComputeConstantBufferD3D12(ComputeConstantBufferD3D12* ctx)
+{
+	return (ComputeConstantBuffer*)(ctx);
+}
+
+ComputeConstantBufferD3D12::ComputeConstantBufferD3D12(ComputeContext* context, const ComputeConstantBufferDesc* desc)
+{
+	m_desc = *desc;
+
+	// map and unmap to trigger initial allocation
+	ComputeConstantBufferMapD3D12(context, cast_from_ComputeConstantBufferD3D12(this));
+	ComputeConstantBufferUnmapD3D12(context, cast_from_ComputeConstantBufferD3D12(this));
+}
+
+ComputeConstantBufferD3D12::~ComputeConstantBufferD3D12()
+{
+	for (ComputeUint i = 0; i < m_buffers.m_buffers.m_size; i++)
+	{
+		COMRelease(m_buffers.m_buffers[i].bufferData.m_buffer);
+	}
+}
+
+struct ComputeResourceD3D12
 {
 protected:
 	D3D12_CPU_DESCRIPTOR_HANDLE m_srv;
 	ID3D12Resource* m_resource;
 	D3D12_RESOURCE_STATES* m_currentState;
 public:
-	void update(const ComputeResourceDesc* desc)
+	void update(const ComputeResourceDesc* descIn)
 	{
+		auto desc = cast_to_ComputeResourceDescD3D12(descIn);
+
 		m_srv = desc->srv;
 		m_resource = desc->resource;
 		m_currentState = desc->currentState;
 	}
 
-	ComputeResource(const ComputeResourceDesc* desc)
+	ComputeResourceD3D12(const ComputeResourceDesc* desc)
 	{
 		update(desc);
 	}
@@ -409,21 +447,36 @@ public:
 	}
 };
 
-struct ComputeResourceRW : public ComputeResource
+inline ComputeResourceD3D12* cast_to_ComputeResourceD3D12(ComputeResource* ctx)
+{
+	return (ComputeResourceD3D12*)(ctx);
+}
+
+inline ComputeResource* cast_from_ComputeResourceD3D12(ComputeResourceD3D12* ctx)
+{
+	return (ComputeResource*)(ctx);
+}
+
+struct ComputeResourceRWD3D12 : public ComputeResourceD3D12
 {
 protected:
 	D3D12_CPU_DESCRIPTOR_HANDLE m_uav;
 public:
-	void update(const ComputeResourceRWDesc* descRW)
+	static const ComputeResourceRWDescD3D12* cast(const ComputeResourceRWDesc* descRW)
 	{
-		m_uav = descRW->uav;
-		ComputeResource::update(&descRW->resource);
+		return cast_to_ComputeResourceRWDescD3D12(descRW);
 	}
 
-	ComputeResourceRW(const ComputeResourceRWDesc* descRW) :
-		ComputeResource(&descRW->resource)
+	void update(const ComputeResourceRWDesc* descRW)
 	{
-		m_uav = descRW->uav;
+		m_uav = cast(descRW)->uav;
+		ComputeResourceD3D12::update(cast_from_ComputeResourceDescD3D12(&cast(descRW)->resource));
+	}
+
+	ComputeResourceRWD3D12(const ComputeResourceRWDesc* descRW) :
+		ComputeResourceD3D12(cast_from_ComputeResourceDescD3D12(&cast(descRW)->resource))
+	{
+		m_uav = cast(descRW)->uav;
 	}
 
 	D3D12_CPU_DESCRIPTOR_HANDLE UAV()
@@ -432,25 +485,41 @@ public:
 	}
 };
 
-// ************* API functions ****************
-
-ComputeContext* ComputeContextCreate(ComputeContextDesc* desc)
+inline ComputeResourceRWD3D12* cast_to_ComputeResourceRWD3D12(ComputeResourceRW* ctx)
 {
-	return new ComputeContext(desc);
+	return (ComputeResourceRWD3D12*)(ctx);
 }
 
-void ComputeContextUpdate(ComputeContext* context, ComputeContextDesc* desc)
+inline ComputeResourceRW* cast_from_ComputeResourceRWD3D12(ComputeResourceRWD3D12* ctx)
 {
+	return (ComputeResourceRW*)(ctx);
+}
+
+
+// ************* API functions ****************
+
+ComputeContext* ComputeContextCreateD3D12(ComputeContextDesc* desc)
+{
+	return cast_from_ComputeContextD3D12(new ComputeContextD3D12(desc));
+}
+
+void ComputeContextUpdateD3D12(ComputeContext* contextIn, ComputeContextDesc* descIn)
+{
+	auto context = cast_to_ComputeContextD3D12(contextIn);
+	auto desc = cast_to_ComputeContextDescD3D12(descIn);
+
 	context->m_desc = *desc;
 }
 
-void ComputeContextRelease(ComputeContext* context)
+void ComputeContextReleaseD3D12(ComputeContext* context)
 {
-	delete context;
+	delete cast_to_ComputeContextD3D12(context);
 }
 
-ComputeShader* ComputeShaderCreate(ComputeContext* context, const ComputeShaderDesc* desc)
+ComputeShader* ComputeShaderCreateD3D12(ComputeContext* contextIn, const ComputeShaderDesc* desc)
 {
+	auto context = cast_to_ComputeContextD3D12(contextIn);
+
 	ID3D12PipelineState* computeShader = nullptr;
 
 	D3D12_COMPUTE_PIPELINE_STATE_DESC psoDesc = {};
@@ -460,26 +529,29 @@ ComputeShader* ComputeShaderCreate(ComputeContext* context, const ComputeShaderD
 
 	context->m_desc.device->CreateComputePipelineState(&psoDesc, IID_PPV_ARGS(&computeShader));
 
-	return new ComputeShader(computeShader);
+	return cast_from_ComputeShaderD3D12(new ComputeShaderD3D12(computeShader));
 }
 
-void ComputeShaderRelease(ComputeShader* shader)
+void ComputeShaderReleaseD3D12(ComputeShader* shader)
 {
-	delete shader;
+	delete cast_to_ComputeShaderD3D12(shader);
 }
 
-ComputeConstantBuffer* ComputeConstantBufferCreate(ComputeContext* context, const ComputeConstantBufferDesc* desc)
+ComputeConstantBuffer* ComputeConstantBufferCreateD3D12(ComputeContext* context, const ComputeConstantBufferDesc* desc)
 {
-	return new ComputeConstantBuffer(context, desc);
+	return cast_from_ComputeConstantBufferD3D12(new ComputeConstantBufferD3D12(context, desc));
 }
 
-void ComputeConstantBufferRelease(ComputeConstantBuffer* constantBuffer)
+void ComputeConstantBufferReleaseD3D12(ComputeConstantBuffer* constantBuffer)
 {
-	delete constantBuffer;
+	delete cast_to_ComputeConstantBufferD3D12(constantBuffer);
 }
 
-void* ComputeConstantBufferMap(ComputeContext* context, ComputeConstantBuffer* constantBuffer)
+void* ComputeConstantBufferMapD3D12(ComputeContext* contextIn, ComputeConstantBuffer* constantBufferIn)
 {
+	auto context = cast_to_ComputeContextD3D12(contextIn);
+	auto constantBuffer = cast_to_ComputeConstantBufferD3D12(constantBufferIn);
+
 	auto bufferData = constantBuffer->m_buffers.map(context->m_desc.lastFenceCompleted, context->m_desc.nextFenceValue);
 
 	if (bufferData->m_buffer == nullptr)
@@ -500,52 +572,60 @@ void* ComputeConstantBufferMap(ComputeContext* context, ComputeConstantBuffer* c
 	return bufferData->m_mappedData;
 }
 
-void ComputeConstantBufferUnmap(ComputeContext* context, ComputeConstantBuffer* constantBuffer)
+void ComputeConstantBufferUnmapD3D12(ComputeContext* contextIn, ComputeConstantBuffer* constantBufferIn)
 {
+	auto context = cast_to_ComputeContextD3D12(contextIn);
+	auto constantBuffer = cast_to_ComputeConstantBufferD3D12(constantBufferIn);
+
 	constantBuffer->m_buffers.unmap(context->m_desc.lastFenceCompleted, context->m_desc.nextFenceValue);
 }
 
-ComputeResource* ComputeResourceCreate(ComputeContext* context, const ComputeResourceDesc* desc)
+ComputeResource* ComputeResourceCreateD3D12(ComputeContext* context, const ComputeResourceDesc* desc)
 {
-	return new ComputeResource(desc);
+	return cast_from_ComputeResourceD3D12(new ComputeResourceD3D12(desc));
 }
 
-void ComputeResourceUpdate(ComputeContext* context, ComputeResource* resource, const ComputeResourceDesc* desc)
+void ComputeResourceUpdateD3D12(ComputeContext* context, ComputeResource* resourceIn, const ComputeResourceDesc* desc)
 {
+	auto resource = cast_to_ComputeResourceD3D12(resourceIn);
 	resource->update(desc);
 }
 
-void ComputeResourceRelease(ComputeResource* resource)
+void ComputeResourceReleaseD3D12(ComputeResource* resource)
 {
-	delete resource;
+	delete cast_to_ComputeResourceD3D12(resource);
 }
 
-ComputeResourceRW* ComputeResourceRWCreate(ComputeContext* context, const ComputeResourceRWDesc* desc)
+ComputeResourceRW* ComputeResourceRWCreateD3D12(ComputeContext* context, const ComputeResourceRWDesc* desc)
 {
-	return new ComputeResourceRW(desc);
+	return cast_from_ComputeResourceRWD3D12(new ComputeResourceRWD3D12(desc));
 }
 
-void ComputeResourceRWUpdate(ComputeContext* context, ComputeResourceRW* resourceRW, const ComputeResourceRWDesc* desc)
+void ComputeResourceRWUpdateD3D12(ComputeContext* context, ComputeResourceRW* resourceRWIn, const ComputeResourceRWDesc* desc)
 {
+	auto resourceRW = cast_to_ComputeResourceRWD3D12(resourceRWIn);
 	resourceRW->update(desc);
 }
 
-void ComputeResourceRWRelease(ComputeResourceRW* resourceRW)
+void ComputeResourceRWReleaseD3D12(ComputeResourceRW* resourceRW)
 {
-	delete resourceRW;
+	delete cast_to_ComputeResourceRWD3D12(resourceRW);
 }
 
-ComputeResource* ComputeResourceRWGetResource(ComputeResourceRW* resourceRW)
+ComputeResource* ComputeResourceRWGetResourceD3D12(ComputeResourceRW* resourceRWIn)
 {
-	return static_cast<ComputeResource*>(resourceRW);
+	auto resourceRW = cast_to_ComputeResourceRWD3D12(resourceRWIn);
+	return cast_from_ComputeResourceD3D12(static_cast<ComputeResourceD3D12*>(resourceRW));
 }
 
-void ComputeContextDispatch(ComputeContext* context, const ComputeDispatchParams* params)
+void ComputeContextDispatchD3D12(ComputeContext* contextIn, const ComputeDispatchParams* params)
 {
+	auto context = cast_to_ComputeContextD3D12(contextIn);
+
 	auto& commandList = context->m_desc.commandList;
 
 	commandList->SetComputeRootSignature(context->m_rootSignatureCompute);
-	if (params->shader) commandList->SetPipelineState(params->shader->m_shader);
+	if (params->shader) commandList->SetPipelineState(cast_to_ComputeShaderD3D12(params->shader)->m_shader);
 
 	auto handles = context->m_desc.dynamicHeapCbvSrvUav.reserveDescriptors(context->m_desc.dynamicHeapCbvSrvUav.userdata,
 		ComputeDispatchMaxResources + ComputeDispatchMaxResourcesRW, 
@@ -557,14 +637,14 @@ void ComputeContextDispatch(ComputeContext* context, const ComputeDispatchParams
 	for (ComputeUint i = 0u; i < ComputeDispatchMaxResources; i++)
 	{
 		auto r = params->resources[i];
-		D3D12_CPU_DESCRIPTOR_HANDLE srcHandle = r ? r->SRV() : context->m_nullSRV;
+		D3D12_CPU_DESCRIPTOR_HANDLE srcHandle = r ? cast_to_ComputeResourceD3D12(r)->SRV() : context->m_nullSRV;
 		context->m_desc.device->CopyDescriptorsSimple(1u, handles.cpuHandle, srcHandle, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 		handles.cpuHandle.ptr += handles.descriptorSize;
 	}
 	for (ComputeUint i = 0u; i < ComputeDispatchMaxResourcesRW; i++)
 	{
 		auto rw = params->resourcesRW[i];
-		D3D12_CPU_DESCRIPTOR_HANDLE srcHandle = rw ? rw->UAV() : context->m_nullUAV;
+		D3D12_CPU_DESCRIPTOR_HANDLE srcHandle = rw ? cast_to_ComputeResourceRWD3D12(rw)->UAV() : context->m_nullUAV;
 		context->m_desc.device->CopyDescriptorsSimple(1u, handles.cpuHandle, srcHandle, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 		handles.cpuHandle.ptr += handles.descriptorSize;
 	}
@@ -575,7 +655,7 @@ void ComputeContextDispatch(ComputeContext* context, const ComputeDispatchParams
 
 	if (params->constantBuffer)
 	{
-		auto cbv = params->constantBuffer->m_buffers.front()->m_buffer;
+		auto cbv = cast_to_ComputeConstantBufferD3D12(params->constantBuffer)->m_buffers.front()->m_buffer;
 		commandList->SetComputeRootConstantBufferView(0u, cbv->GetGPUVirtualAddress());
 	}
 
@@ -586,17 +666,17 @@ void ComputeContextDispatch(ComputeContext* context, const ComputeDispatchParams
 		auto r = params->resources[i];
 		if (r)
 		{
-			if (!((*r->currentState()) & D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE))
+			if (!((*cast_to_ComputeResourceD3D12(r)->currentState()) & D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE))
 			{
 				D3D12_RESOURCE_BARRIER& bar = barrier[barrierIdx++];
 				bar.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 				bar.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-				bar.Transition.pResource = r->resource();
+				bar.Transition.pResource = cast_to_ComputeResourceD3D12(r)->resource();
 				bar.Transition.Subresource = 0u;
-				bar.Transition.StateBefore = *r->currentState();
+				bar.Transition.StateBefore = *cast_to_ComputeResourceD3D12(r)->currentState();
 				bar.Transition.StateAfter = D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE;
 
-				*r->currentState() = D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE;
+				*cast_to_ComputeResourceD3D12(r)->currentState() = D3D12_RESOURCE_STATE_NON_PIXEL_SHADER_RESOURCE;
 			}
 		}
 	}
@@ -605,24 +685,24 @@ void ComputeContextDispatch(ComputeContext* context, const ComputeDispatchParams
 		auto rw = params->resourcesRW[i];
 		if (rw)
 		{
-			if ((*rw->currentState()) == D3D12_RESOURCE_STATE_UNORDERED_ACCESS)
+			if ((*cast_to_ComputeResourceRWD3D12(rw)->currentState()) == D3D12_RESOURCE_STATE_UNORDERED_ACCESS)
 			{
 				D3D12_RESOURCE_BARRIER& bar = barrier[barrierIdx++];
 				bar.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
 				bar.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-				bar.UAV.pResource = rw->resource();
+				bar.UAV.pResource = cast_to_ComputeResourceRWD3D12(rw)->resource();
 			}
 			else
 			{
 				D3D12_RESOURCE_BARRIER& bar = barrier[barrierIdx++];
 				bar.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 				bar.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-				bar.Transition.pResource = rw->resource();
+				bar.Transition.pResource = cast_to_ComputeResourceRWD3D12(rw)->resource();
 				bar.Transition.Subresource = 0u;
-				bar.Transition.StateBefore = *rw->currentState();
+				bar.Transition.StateBefore = *cast_to_ComputeResourceRWD3D12(rw)->currentState();
 				bar.Transition.StateAfter = D3D12_RESOURCE_STATE_UNORDERED_ACCESS;
 
-				*rw->currentState() = D3D12_RESOURCE_STATE_UNORDERED_ACCESS;
+				*cast_to_ComputeResourceRWD3D12(rw)->currentState() = D3D12_RESOURCE_STATE_UNORDERED_ACCESS;
 			}
 		}
 	}
@@ -647,7 +727,7 @@ struct ComputeContextUserDataNvFlow : public ComputeContextUserData
 	}
 };
 
-ComputeDescriptorReserveHandleD3D12 ComputeReserveDescriptors(void* userdata, UINT numDescriptors, UINT64 lastFenceCompleted, UINT64 nextFenceValue)
+ComputeDescriptorReserveHandleD3D12 ComputeReserveDescriptorsD3D12(void* userdata, UINT numDescriptors, UINT64 lastFenceCompleted, UINT64 nextFenceValue)
 {
 	auto data = static_cast<ComputeContextUserDataNvFlow*>(userdata);
 	auto srcHandle = data->flowHeap.reserveDescriptors(data->flowHeap.userdata, numDescriptors, lastFenceCompleted, nextFenceValue);
@@ -659,9 +739,9 @@ ComputeDescriptorReserveHandleD3D12 ComputeReserveDescriptors(void* userdata, UI
 	return handle;
 }
 
-ComputeContext* ComputeContextNvFlowContextCreate(NvFlowContext* flowContext)
+ComputeContext* ComputeContextNvFlowContextCreateD3D12(NvFlowContext* flowContext)
 {
-	ComputeContextDesc desc = {};
+	ComputeContextDescD3D12 desc = {};
 	NvFlowContextDescD3D12 srcDesc = {};
 	NvFlowUpdateContextDescD3D12(flowContext, &srcDesc);
 
@@ -677,18 +757,20 @@ ComputeContext* ComputeContextNvFlowContextCreate(NvFlowContext* flowContext)
 	computeUserdata->flowHeap.reserveDescriptors = srcDesc.dynamicHeapCbvSrvUav.reserveDescriptors;
 
 	desc.dynamicHeapCbvSrvUav.userdata = computeUserdata;
-	desc.dynamicHeapCbvSrvUav.reserveDescriptors = ComputeReserveDescriptors;
+	desc.dynamicHeapCbvSrvUav.reserveDescriptors = ComputeReserveDescriptorsD3D12;
 
-	auto computeContext = ComputeContextCreate(&desc);
+	auto computeContext = cast_to_ComputeContextD3D12(ComputeContextCreateD3D12(cast_from_ComputeContextDescD3D12(&desc)));
 
 	computeContext->m_computeUserdata = computeUserdata;
 
-	return computeContext;
+	return cast_from_ComputeContextD3D12(computeContext);
 }
 
-void ComputeContextNvFlowContextUpdate(ComputeContext* computeContext, NvFlowContext* flowContext)
+void ComputeContextNvFlowContextUpdateD3D12(ComputeContext* computeContextIn, NvFlowContext* flowContext)
 {
-	ComputeContextDesc desc = {};
+	auto computeContext = cast_to_ComputeContextD3D12(computeContextIn);
+
+	ComputeContextDescD3D12 desc = {};
 	NvFlowContextDescD3D12 srcDesc = {};
 	NvFlowUpdateContextDescD3D12(flowContext, &srcDesc);
 
@@ -704,56 +786,56 @@ void ComputeContextNvFlowContextUpdate(ComputeContext* computeContext, NvFlowCon
 	computeUserdata->flowHeap.reserveDescriptors = srcDesc.dynamicHeapCbvSrvUav.reserveDescriptors;
 
 	desc.dynamicHeapCbvSrvUav.userdata = computeUserdata;
-	desc.dynamicHeapCbvSrvUav.reserveDescriptors = ComputeReserveDescriptors;
+	desc.dynamicHeapCbvSrvUav.reserveDescriptors = ComputeReserveDescriptorsD3D12;
 
-	ComputeContextUpdate(computeContext, &desc);
+	ComputeContextUpdateD3D12(cast_from_ComputeContextD3D12(computeContext), cast_from_ComputeContextDescD3D12(&desc));
 }
 
-inline void updateComputeResourceDesc(NvFlowResourceViewDescD3D12* flowViewDesc, ComputeResourceDesc* desc)
+inline void updateComputeResourceDesc(NvFlowResourceViewDescD3D12* flowViewDesc, ComputeResourceDescD3D12* desc)
 {
 	desc->srv = flowViewDesc->srvHandle;
 	desc->resource = flowViewDesc->resource;
 	desc->currentState = flowViewDesc->currentState;
 }
 
-ComputeResource* ComputeResourceNvFlowCreate(ComputeContext* context, NvFlowContext* flowContext, NvFlowResource* flowResource)
+ComputeResource* ComputeResourceNvFlowCreateD3D12(ComputeContext* context, NvFlowContext* flowContext, NvFlowResource* flowResource)
 {
 	NvFlowResourceViewDescD3D12 flowViewDesc = {};
 	NvFlowUpdateResourceViewDescD3D12(flowContext, flowResource, &flowViewDesc);
-	ComputeResourceDesc desc = {};
+	ComputeResourceDescD3D12 desc = {};
 	updateComputeResourceDesc(&flowViewDesc, &desc);
-	return ComputeResourceCreate(context, &desc);
+	return ComputeResourceCreateD3D12(context, cast_from_ComputeResourceDescD3D12(&desc));
 }
 
-void ComputeResourceNvFlowUpdate(ComputeContext* context, ComputeResource* resource, NvFlowContext* flowContext, NvFlowResource* flowResource)
+void ComputeResourceNvFlowUpdateD3D12(ComputeContext* context, ComputeResource* resource, NvFlowContext* flowContext, NvFlowResource* flowResource)
 {
 	NvFlowResourceViewDescD3D12 flowViewDesc = {};
 	NvFlowUpdateResourceViewDescD3D12(flowContext, flowResource, &flowViewDesc);
-	ComputeResourceDesc desc = {};
+	ComputeResourceDescD3D12 desc = {};
 	updateComputeResourceDesc(&flowViewDesc, &desc);
-	ComputeResourceUpdate(context, resource, &desc);
+	ComputeResourceUpdateD3D12(context, resource, cast_from_ComputeResourceDescD3D12(&desc));
 }
 
-inline void updateComputeResourceRWDesc(NvFlowResourceRWViewDescD3D12* flowViewDesc, ComputeResourceRWDesc* desc)
+inline void updateComputeResourceRWDesc(NvFlowResourceRWViewDescD3D12* flowViewDesc, ComputeResourceRWDescD3D12* desc)
 {
 	updateComputeResourceDesc(&flowViewDesc->resourceView, &desc->resource);
 	desc->uav = flowViewDesc->uavHandle;
 }
 
-ComputeResourceRW* ComputeResourceRWNvFlowCreate(ComputeContext* context, NvFlowContext* flowContext, NvFlowResourceRW* flowResourceRW)
+ComputeResourceRW* ComputeResourceRWNvFlowCreateD3D12(ComputeContext* context, NvFlowContext* flowContext, NvFlowResourceRW* flowResourceRW)
 {
 	NvFlowResourceRWViewDescD3D12 flowViewDesc = {};
 	NvFlowUpdateResourceRWViewDescD3D12(flowContext, flowResourceRW, &flowViewDesc);
-	ComputeResourceRWDesc desc = {};
+	ComputeResourceRWDescD3D12 desc = {};
 	updateComputeResourceRWDesc(&flowViewDesc, &desc);
-	return ComputeResourceRWCreate(context, &desc);
+	return ComputeResourceRWCreateD3D12(context, cast_from_ComputeResourceRWDescD3D12(&desc));
 }
 
-void ComputeResourceRWNvFlowUpdate(ComputeContext* context, ComputeResourceRW* resourceRW, NvFlowContext* flowContext, NvFlowResourceRW* flowResourceRW)
+void ComputeResourceRWNvFlowUpdateD3D12(ComputeContext* context, ComputeResourceRW* resourceRW, NvFlowContext* flowContext, NvFlowResourceRW* flowResourceRW)
 {
 	NvFlowResourceRWViewDescD3D12 flowViewDesc = {};
 	NvFlowUpdateResourceRWViewDescD3D12(flowContext, flowResourceRW, &flowViewDesc);
-	ComputeResourceRWDesc desc = {};
+	ComputeResourceRWDescD3D12 desc = {};
 	updateComputeResourceRWDesc(&flowViewDesc, &desc);
-	ComputeResourceRWUpdate(context, resourceRW, &desc);
+	ComputeResourceRWUpdateD3D12(context, resourceRW, cast_from_ComputeResourceRWDescD3D12(&desc));
 }

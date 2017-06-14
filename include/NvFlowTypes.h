@@ -42,6 +42,26 @@ struct NvFlowUint4
 	NvFlowUint x, y, z, w;
 };
 
+struct NvFlowInt2
+{
+	int x, y;
+};
+
+struct NvFlowInt3
+{
+	int x, y, z;
+};
+
+struct NvFlowInt4
+{
+	int x, y, z, w;
+};
+
+struct NvFlowFloat2
+{
+	float x, y;
+};
+
 struct NvFlowFloat3
 {
 	float x, y, z;

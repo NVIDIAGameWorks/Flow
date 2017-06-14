@@ -1,3 +1,10 @@
+1.0.1
+------
+
+- Moving grid support.
+- Single pass advection.
+- Vorticity confinement masks.
+
 1.0.0
 ------
 

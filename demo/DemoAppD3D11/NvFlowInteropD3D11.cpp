@@ -15,16 +15,32 @@
 #include "NvFlowContextD3D11.h"
 #include "appD3D11Ctx.h"
 
-NvFlowContext* NvFlowInteropCreateContext(AppGraphCtx* appctx)
+NV_FLOW_API NvFlowContext* NvFlowInteropCreateContextD3D11(AppGraphCtx* appctx);
+
+NV_FLOW_API NvFlowDepthStencilView* NvFlowInteropCreateDepthStencilViewD3D11(AppGraphCtx* appctx, NvFlowContext* flowctx);
+
+NV_FLOW_API NvFlowRenderTargetView* NvFlowInteropCreateRenderTargetViewD3D11(AppGraphCtx* appctx, NvFlowContext* flowctx);
+
+NV_FLOW_API void NvFlowInteropUpdateContextD3D11(NvFlowContext* context, AppGraphCtx* appctx);
+
+NV_FLOW_API void NvFlowInteropUpdateDepthStencilViewD3D11(NvFlowDepthStencilView* view, AppGraphCtx* appctx, NvFlowContext* flowctx);
+
+NV_FLOW_API void NvFlowInteropUpdateRenderTargetViewD3D11(NvFlowRenderTargetView* view, AppGraphCtx* appctx, NvFlowContext* flowctx);
+
+NvFlowContext* NvFlowInteropCreateContextD3D11(AppGraphCtx* appctxIn)
 {
+	auto appctx = cast_to_AppGraphCtxD3D11(appctxIn);
+
 	NvFlowContextDescD3D11 desc = {};
 	desc.device = appctx->m_device;
 	desc.deviceContext = appctx->m_deviceContext;
 	return NvFlowCreateContextD3D11(NV_FLOW_VERSION, &desc);
 }
 
-NvFlowDepthStencilView* NvFlowInteropCreateDepthStencilView(AppGraphCtx* appctx, NvFlowContext* flowctx)
+NvFlowDepthStencilView* NvFlowInteropCreateDepthStencilViewD3D11(AppGraphCtx* appctxIn, NvFlowContext* flowctx)
 {
+	auto appctx = cast_to_AppGraphCtxD3D11(appctxIn);
+
 	NvFlowDepthStencilViewDescD3D11 desc = {};
 	desc.dsv = appctx->m_dsv;
 	desc.srv = appctx->m_depthSRV;
@@ -32,24 +48,30 @@ NvFlowDepthStencilView* NvFlowInteropCreateDepthStencilView(AppGraphCtx* appctx,
 	return NvFlowCreateDepthStencilViewD3D11(flowctx, &desc);
 }
 
-NvFlowRenderTargetView* NvFlowInteropCreateRenderTargetView(AppGraphCtx* appctx, NvFlowContext* flowctx)
+NvFlowRenderTargetView* NvFlowInteropCreateRenderTargetViewD3D11(AppGraphCtx* appctxIn, NvFlowContext* flowctx)
 {
+	auto appctx = cast_to_AppGraphCtxD3D11(appctxIn);
+
 	NvFlowRenderTargetViewDescD3D11 desc = {};
 	desc.rtv = appctx->m_rtv;
 	desc.viewport = appctx->m_viewport;
 	return NvFlowCreateRenderTargetViewD3D11(flowctx, &desc);
 }
 
-void NvFlowInteropUpdateContext(NvFlowContext* context, AppGraphCtx* appctx)
+void NvFlowInteropUpdateContextD3D11(NvFlowContext* context, AppGraphCtx* appctxIn)
 {
+	auto appctx = cast_to_AppGraphCtxD3D11(appctxIn);
+
 	NvFlowContextDescD3D11 desc = {};
 	desc.device = appctx->m_device;
 	desc.deviceContext = appctx->m_deviceContext;
 	NvFlowUpdateContextD3D11(context, &desc);
 }
 
-void NvFlowInteropUpdateDepthStencilView(NvFlowDepthStencilView* view, AppGraphCtx* appctx, NvFlowContext* flowctx)
+void NvFlowInteropUpdateDepthStencilViewD3D11(NvFlowDepthStencilView* view, AppGraphCtx* appctxIn, NvFlowContext* flowctx)
 {
+	auto appctx = cast_to_AppGraphCtxD3D11(appctxIn);
+
 	NvFlowDepthStencilViewDescD3D11 desc = {};
 	desc.dsv = appctx->m_dsv;
 	desc.srv = appctx->m_depthSRV;
@@ -57,8 +79,10 @@ void NvFlowInteropUpdateDepthStencilView(NvFlowDepthStencilView* view, AppGraphC
 	NvFlowUpdateDepthStencilViewD3D11(flowctx, view, &desc);
 }
 
-void NvFlowInteropUpdateRenderTargetView(NvFlowRenderTargetView* view, AppGraphCtx* appctx, NvFlowContext* flowctx)
+void NvFlowInteropUpdateRenderTargetViewD3D11(NvFlowRenderTargetView* view, AppGraphCtx* appctxIn, NvFlowContext* flowctx)
 {
+	auto appctx = cast_to_AppGraphCtxD3D11(appctxIn);
+
 	NvFlowRenderTargetViewDescD3D11 desc = {};
 	desc.rtv = appctx->m_rtv;
 	desc.viewport = appctx->m_viewport;

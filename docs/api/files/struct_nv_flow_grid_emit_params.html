@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>NVIDIA(R) Flow(R) 1.0.0 API Reference: NvFlowGridEmitParams Struct Reference</title>
+		<title>NVIDIA(R) Flow(R) 1.0.1 API Reference: NvFlowGridEmitParams Struct Reference</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<LINK HREF="NVIDIA.css" REL="stylesheet" TYPE="text/css">
 	</head>
@@ -49,6 +49,9 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_emit_params.html#70989b281f389eeaad19f1e9f8d23e59">deltaTime</a></td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">DeltaTime used to compute impulse.  <a href="#70989b281f389eeaad19f1e9f8d23e59"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="_nv_flow_types_8h.html#3ecaefc2ddcf5a935631db32d05226b1">NvFlowUint</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_emit_params.html#7dbac24aafcfa3b64f9b45af70b75f7d">emitMaterialIndex</a></td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Index into material lookup defined by <a class="el" href="group___nv_flow_grid_emit.html#gbf07a26d81c9738687f5ceafffe39468">NvFlowGridUpdateEmitMaterials()</a>.  <a href="#7dbac24aafcfa3b64f9b45af70b75f7d"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="_nv_flow_types_8h.html#3ecaefc2ddcf5a935631db32d05226b1">NvFlowUint</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_emit_params.html#ec080b3b49bed313e6d41e2832c80a23">emitMode</a></td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Emitter behavior, based on NvFlowGridEmitMode, 0u is default.  <a href="#ec080b3b49bed313e6d41e2832c80a23"></a><br></td></tr>
@@ -67,9 +70,6 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="struct_nv_flow_float4x4.html">NvFlowFloat4x4</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_emit_params.html#864fd06afe3eba6df4f30885b68b6eec">localToWorld</a></td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Transform from shape local space to world space.  <a href="#864fd06afe3eba6df4f30885b68b6eec"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="struct_nv_flow_grid_material_handle.html">NvFlowGridMaterialHandle</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_emit_params.html#4ec867891c4664ce6001c4c7a575a9e1">material</a></td></tr>
-
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Material for this emitter.  <a href="#4ec867891c4664ce6001c4c7a575a9e1"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_emit_params.html#36277f14a99654f760c4fc458e5bdb23">maxActiveDist</a></td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Maximum distance value for active emission.  <a href="#36277f14a99654f760c4fc458e5bdb23"></a><br></td></tr>
@@ -82,9 +82,6 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">float&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_emit_params.html#331204cdfa8a315bc0b54c208a699682">minEdgeDist</a></td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Distance from minActiveDist to 1.0 emitter opacity.  <a href="#331204cdfa8a315bc0b54c208a699682"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="_nv_flow_types_8h.html#3ecaefc2ddcf5a935631db32d05226b1">NvFlowUint</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_emit_params.html#47b23d8747b51503648edb2976acf530">numSubSteps</a></td></tr>
-
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Numbers of interations to perform on cell value.  <a href="#47b23d8747b51503648edb2976acf530"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="struct_nv_flow_float3.html">NvFlowFloat3</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_nv_flow_grid_emit_params.html#78397caeb2c29ef8afae9acdaf6a4b23">predictVelocity</a></td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Velocity used only for predict.  <a href="#78397caeb2c29ef8afae9acdaf6a4b23"></a><br></td></tr>
@@ -218,6 +215,23 @@ DeltaTime used to compute impulse.
 
 </div>
 </div><p>
+<a class="anchor" name="7dbac24aafcfa3b64f9b45af70b75f7d"></a><!-- doxytag: member="NvFlowGridEmitParams::emitMaterialIndex" ref="7dbac24aafcfa3b64f9b45af70b75f7d" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_nv_flow_types_8h.html#3ecaefc2ddcf5a935631db32d05226b1">NvFlowUint</a> <a class="el" href="struct_nv_flow_grid_emit_params.html#7dbac24aafcfa3b64f9b45af70b75f7d">NvFlowGridEmitParams::emitMaterialIndex</a>          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Index into material lookup defined by <a class="el" href="group___nv_flow_grid_emit.html#gbf07a26d81c9738687f5ceafffe39468">NvFlowGridUpdateEmitMaterials()</a>. 
+<p>
+
+</div>
+</div><p>
 <a class="anchor" name="ec080b3b49bed313e6d41e2832c80a23"></a><!-- doxytag: member="NvFlowGridEmitParams::emitMode" ref="ec080b3b49bed313e6d41e2832c80a23" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -320,23 +334,6 @@ Transform from shape local space to world space.
 
 </div>
 </div><p>
-<a class="anchor" name="4ec867891c4664ce6001c4c7a575a9e1"></a><!-- doxytag: member="NvFlowGridEmitParams::material" ref="4ec867891c4664ce6001c4c7a575a9e1" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="struct_nv_flow_grid_material_handle.html">NvFlowGridMaterialHandle</a> <a class="el" href="struct_nv_flow_grid_emit_params.html#4ec867891c4664ce6001c4c7a575a9e1">NvFlowGridEmitParams::material</a>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-Material for this emitter. 
-<p>
-
-</div>
-</div><p>
 <a class="anchor" name="36277f14a99654f760c4fc458e5bdb23"></a><!-- doxytag: member="NvFlowGridEmitParams::maxActiveDist" ref="36277f14a99654f760c4fc458e5bdb23" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -401,23 +398,6 @@ Minimum distance value for active emission.
 
 <p>
 Distance from minActiveDist to 1.0 emitter opacity. 
-<p>
-
-</div>
-</div><p>
-<a class="anchor" name="47b23d8747b51503648edb2976acf530"></a><!-- doxytag: member="NvFlowGridEmitParams::numSubSteps" ref="47b23d8747b51503648edb2976acf530" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="_nv_flow_types_8h.html#3ecaefc2ddcf5a935631db32d05226b1">NvFlowUint</a> <a class="el" href="struct_nv_flow_grid_emit_params.html#47b23d8747b51503648edb2976acf530">NvFlowGridEmitParams::numSubSteps</a>          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-Numbers of interations to perform on cell value. 
 <p>
 
 </div>

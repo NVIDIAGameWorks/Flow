@@ -77,7 +77,7 @@ namespace
 	};
 }
 
-void imguiGraphContextDestroy()
+void imguiGraphContextDestroyD3D11()
 {
 	COMRelease(m_rasterizerState);
 	COMRelease(m_samplerState);
@@ -89,8 +89,10 @@ void imguiGraphContextDestroy()
 	COMRelease(m_vertexBuffer);
 }
 
-void imguiGraphContextInit(const ImguiGraphDesc* desc)
+void imguiGraphContextInitD3D11(const ImguiGraphDesc* descIn)
 {
+	const auto desc = cast_to_imguiGraphDescD3D11(descIn);
+
 	m_device = desc->device;
 	m_deviceContext = desc->deviceContext;
 	m_winW = desc->winW;
@@ -202,15 +204,17 @@ void imguiGraphContextInit(const ImguiGraphDesc* desc)
 	}
 }
 
-void imguiGraphContextUpdate(const ImguiGraphDesc* desc)
+void imguiGraphContextUpdateD3D11(const ImguiGraphDesc* descIn)
 {
+	const auto desc = cast_to_imguiGraphDescD3D11(descIn);
+
 	m_device = desc->device;
 	m_deviceContext = desc->deviceContext;
 	m_winW = desc->winW;
 	m_winH = desc->winH;
 }
 
-void imguiGraphRecordBegin()
+void imguiGraphRecordBeginD3D11()
 {
 	Params params = {
 		2.f / float(m_winW), 0.f, 0.f, -1.f,
@@ -318,7 +322,7 @@ static void imguiGraphFlush()
 	}
 }
 
-void imguiGraphRecordEnd()
+void imguiGraphRecordEndD3D11()
 {
 	ID3D11DeviceContext* context = m_deviceContext;
 
@@ -340,7 +344,7 @@ void imguiGraphRecordEnd()
 	context->RSSetState(nullptr);
 }
 
-void imguiGraphEnableScissor(int x, int y, int width, int height)
+void imguiGraphEnableScissorD3D11(int x, int y, int width, int height)
 {
 	// mark end of last region
 	m_stateScissor.stopIdx = m_stateVertIdx;
@@ -355,7 +359,7 @@ void imguiGraphEnableScissor(int x, int y, int width, int height)
 	m_stateScissor.height = height;
 }
 
-void imguiGraphDisableScissor()
+void imguiGraphDisableScissorD3D11()
 {
 	if (m_stateVertIdx == 0) return;
 
@@ -372,13 +376,13 @@ void imguiGraphDisableScissor()
 	m_stateScissor.height = m_winH;
 }
 
-void imguiGraphVertex2f(float x, float y)
+void imguiGraphVertex2fD3D11(float x, float y)
 {
 	float v[2] = { x,y };
-	imguiGraphVertex2fv(v);
+	imguiGraphVertex2fvD3D11(v);
 }
 
-void imguiGraphVertex2fv(const float* v)
+void imguiGraphVertex2fvD3D11(const float* v)
 {
 	// update state
 	m_stateVert.x = v[0];
@@ -393,13 +397,13 @@ void imguiGraphVertex2fv(const float* v)
 	}
 }
 
-void imguiGraphTexCoord2f(float u, float v)
+void imguiGraphTexCoord2fD3D11(float u, float v)
 {
 	m_stateVert.u = u;
 	m_stateVert.v = v;
 }
 
-void imguiGraphColor4ub(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
+void imguiGraphColor4ubD3D11(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
 {
 	m_stateVert.rgba[0] = red;
 	m_stateVert.rgba[1] = green;
@@ -407,7 +411,7 @@ void imguiGraphColor4ub(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
 	m_stateVert.rgba[3] = alpha;
 }
 
-void imguiGraphColor4ubv(const uint8_t* v)
+void imguiGraphColor4ubvD3D11(const uint8_t* v)
 {
 	m_stateVert.rgba[0] = v[0];
 	m_stateVert.rgba[1] = v[1];
@@ -415,18 +419,18 @@ void imguiGraphColor4ubv(const uint8_t* v)
 	m_stateVert.rgba[3] = v[3];
 }
 
-void imguiGraphFontTextureEnable()
+void imguiGraphFontTextureEnableD3D11()
 {
 
 }
 
-void imguiGraphFontTextureDisable()
+void imguiGraphFontTextureDisableD3D11()
 {
 	m_stateVert.u = -1.f;
 	m_stateVert.v = -1.f;
 }
 
-void imguiGraphFontTextureInit(unsigned char* data)
+void imguiGraphFontTextureInitD3D11(unsigned char* data)
 {
 	ID3D11DeviceContext* context = m_deviceContext;
 
@@ -465,7 +469,7 @@ void imguiGraphFontTextureInit(unsigned char* data)
 
 }
 
-void imguiGraphFontTextureRelease()
+void imguiGraphFontTextureReleaseD3D11()
 {
 	COMRelease(m_texture);
 	COMRelease(m_textureSRV);

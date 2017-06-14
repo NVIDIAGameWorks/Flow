@@ -29,7 +29,7 @@ struct ImguiDynamicDescriptorHeapD3D12
 	ImguiDescriptorReserveHandleD3D12(*reserveDescriptors)(void* userdata, UINT numDescriptors, UINT64 lastFenceCompleted, UINT64 nextFenceValue);
 };
 
-struct ImguiGraphDesc
+struct ImguiGraphDescD3D12
 {
 	ID3D12Device* device = nullptr;
 	ID3D12GraphicsCommandList* commandList = nullptr;
@@ -42,7 +42,49 @@ struct ImguiGraphDesc
 
 	ImguiDynamicDescriptorHeapD3D12 dynamicHeapCbvSrvUav = {};
 
-	ImguiGraphDesc() {}
+	ImguiGraphDescD3D12() {}
 };
+
+inline const ImguiGraphDescD3D12* cast_to_imguiGraphDescD3D12(const ImguiGraphDesc* desc)
+{
+	return (const ImguiGraphDescD3D12*)(desc);
+}
+
+inline ImguiGraphDesc* cast_from_imguiGraphDescD3D12(ImguiGraphDescD3D12* desc)
+{
+	return (ImguiGraphDesc*)(desc);
+}
+
+IMGUI_GRAPH_API void imguiGraphContextInitD3D12(const ImguiGraphDesc* desc);
+
+IMGUI_GRAPH_API void imguiGraphContextUpdateD3D12(const ImguiGraphDesc* desc);
+
+IMGUI_GRAPH_API void imguiGraphContextDestroyD3D12();
+
+IMGUI_GRAPH_API void imguiGraphRecordBeginD3D12();
+
+IMGUI_GRAPH_API void imguiGraphRecordEndD3D12();
+
+IMGUI_GRAPH_API void imguiGraphVertex2fD3D12(float x, float y);
+
+IMGUI_GRAPH_API void imguiGraphVertex2fvD3D12(const float* v);
+
+IMGUI_GRAPH_API void imguiGraphTexCoord2fD3D12(float u, float v);
+
+IMGUI_GRAPH_API void imguiGraphColor4ubD3D12(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
+
+IMGUI_GRAPH_API void imguiGraphColor4ubvD3D12(const uint8_t* v);
+
+IMGUI_GRAPH_API void imguiGraphFontTextureEnableD3D12();
+
+IMGUI_GRAPH_API void imguiGraphFontTextureDisableD3D12();
+
+IMGUI_GRAPH_API void imguiGraphEnableScissorD3D12(int x, int y, int width, int height);
+
+IMGUI_GRAPH_API void imguiGraphDisableScissorD3D12();
+
+IMGUI_GRAPH_API void imguiGraphFontTextureInitD3D12(unsigned char* data);
+
+IMGUI_GRAPH_API void imguiGraphFontTextureReleaseD3D12();
 
 #endif

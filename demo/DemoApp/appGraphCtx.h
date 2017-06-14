@@ -16,6 +16,11 @@ struct SDL_Window;
 
 struct AppGraphCtx;
 
+struct AppGraphColor
+{
+	float r, g, b, a;
+};
+
 APP_GRAPH_CTX_API AppGraphCtx* AppGraphCtxCreate(int deviceID);
 
 APP_GRAPH_CTX_API bool AppGraphCtxUpdateSize(AppGraphCtx* context, SDL_Window* window, bool fullscreen);
@@ -24,7 +29,7 @@ APP_GRAPH_CTX_API void AppGraphCtxReleaseRenderTarget(AppGraphCtx* context);
 
 APP_GRAPH_CTX_API void AppGraphCtxRelease(AppGraphCtx* context);
 
-APP_GRAPH_CTX_API void AppGraphCtxFrameStart(AppGraphCtx* context, float clearColor[4]);
+APP_GRAPH_CTX_API void AppGraphCtxFrameStart(AppGraphCtx* context, AppGraphColor clearColor);
 
 APP_GRAPH_CTX_API void AppGraphCtxFramePresent(AppGraphCtx* context, bool fullsync);
 

@@ -130,7 +130,7 @@ void Scene2DTextureEmitter::init(AppGraphCtx* appctx, int winw, int winh)
 
 void Scene2DTextureEmitter::doUpdate(float dt)
 {
-	bool shouldUpdate = m_flowContext.updateBegin();
+	bool shouldUpdate = m_flowContext.updateBegin(dt);
 	if (shouldUpdate)
 	{
 		AppGraphCtxProfileBegin(m_appctx, "Simulate");

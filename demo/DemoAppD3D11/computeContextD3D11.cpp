@@ -21,9 +21,9 @@ void inline COMRelease(T& t)
 	t = nullptr;
 }
 
-struct ComputeContext
+struct ComputeContextD3D11
 {
-	ComputeContextDesc m_desc = {};
+	ComputeContextDescD3D11 m_desc = {};
 
 	ID3D11SamplerState* m_sampler0 = nullptr;
 	ID3D11SamplerState* m_sampler1 = nullptr;
@@ -32,8 +32,10 @@ struct ComputeContext
 	ID3D11SamplerState* m_sampler4 = nullptr;
 	ID3D11SamplerState* m_sampler5 = nullptr;
 
-	ComputeContext(const ComputeContextDesc* desc)
+	ComputeContextD3D11(const ComputeContextDesc* descIn)
 	{
+		const auto desc = cast_to_ComputeContextDescD3D11(descIn);
+
 		m_desc = *desc;
 
 		auto createSampler = [&](D3D11_FILTER filter, D3D11_TEXTURE_ADDRESS_MODE mode)
@@ -64,7 +66,7 @@ struct ComputeContext
 		m_sampler4 = createSampler(D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT, D3D11_TEXTURE_ADDRESS_CLAMP);
 		m_sampler5 = createSampler(D3D11_FILTER_MIN_MAG_MIP_POINT, D3D11_TEXTURE_ADDRESS_CLAMP);
 	}
-	~ComputeContext()
+	~ComputeContextD3D11()
 	{
 		COMRelease(m_sampler0);
 		COMRelease(m_sampler1);
@@ -75,43 +77,74 @@ struct ComputeContext
 	}
 };
 
-struct ComputeShader
+inline ComputeContextD3D11* cast_to_ComputeContextD3D11(ComputeContext* ctx)
+{
+	return (ComputeContextD3D11*)(ctx);
+}
+
+inline ComputeContext* cast_from_ComputeContextD3D11(ComputeContextD3D11* ctx)
+{
+	return (ComputeContext*)(ctx);
+}
+
+struct ComputeShaderD3D11
 {
 	ID3D11ComputeShader* m_shader = nullptr;
-	ComputeShader(ID3D11ComputeShader* shader)
+	ComputeShaderD3D11(ID3D11ComputeShader* shader)
 	{
 		m_shader = shader;
 	}
-	~ComputeShader()
+	~ComputeShaderD3D11()
 	{
 		COMRelease(m_shader);
 	}
 };
 
-struct ComputeConstantBuffer
+inline ComputeShaderD3D11* cast_to_ComputeShaderD3D11(ComputeShader* ctx)
+{
+	return (ComputeShaderD3D11*)(ctx);
+}
+
+inline ComputeShader* cast_from_ComputeShaderD3D11(ComputeShaderD3D11* ctx)
+{
+	return (ComputeShader*)(ctx);
+}
+
+struct ComputeConstantBufferD3D11
 {
 	ID3D11Buffer* m_buffer;
-	ComputeConstantBuffer(ID3D11Buffer* buffer)
+	ComputeConstantBufferD3D11(ID3D11Buffer* buffer)
 	{
 		m_buffer = buffer;
 	}
-	~ComputeConstantBuffer()
+	~ComputeConstantBufferD3D11()
 	{
 		COMRelease(m_buffer);
 	}
 };
 
-struct ComputeResource
+inline ComputeConstantBufferD3D11* cast_to_ComputeConstantBufferD3D11(ComputeConstantBuffer* ctx)
+{
+	return (ComputeConstantBufferD3D11*)(ctx);
+}
+
+inline ComputeConstantBuffer* cast_from_ComputeConstantBufferD3D11(ComputeConstantBufferD3D11* ctx)
+{
+	return (ComputeConstantBuffer*)(ctx);
+}
+
+struct ComputeResourceD3D11
 {
 protected:
 	ID3D11ShaderResourceView* m_srv = nullptr;
 public:
-	void update(const ComputeResourceDesc* desc)
+	void update(const ComputeResourceDesc* descIn)
 	{
+		const auto desc = cast_to_ComputeResourceDescD3D11(descIn);
 		m_srv = desc->srv;
 	}
 
-	ComputeResource(const ComputeResourceDesc* desc)
+	ComputeResourceD3D11(const ComputeResourceDesc* desc)
 	{
 		update(desc);
 	}
@@ -122,20 +155,37 @@ public:
 	}
 };
 
-struct ComputeResourceRW : public ComputeResource
+inline ComputeResourceD3D11* cast_to_ComputeResourceD3D11(ComputeResource* ctx)
+{
+	return (ComputeResourceD3D11*)(ctx);
+}
+
+inline ComputeResource* cast_from_ComputeResourceD3D11(ComputeResourceD3D11* ctx)
+{
+	return (ComputeResource*)(ctx);
+}
+
+struct ComputeResourceRWD3D11 : public ComputeResourceD3D11
 {
 protected:
 	ID3D11UnorderedAccessView* m_uav;
 public:
-	void update(const ComputeResourceRWDesc* descRW)
+	static const ComputeResourceRWDescD3D11* cast(const ComputeResourceRWDesc* descRW)
 	{
-		m_uav = descRW->uav;
-		ComputeResource::update(&descRW->resource);
+		return cast_to_ComputeResourceRWDescD3D11(descRW);
 	}
 
-	ComputeResourceRW(const ComputeResourceRWDesc* descRW):
-		ComputeResource(&descRW->resource)
+	void update(const ComputeResourceRWDesc* descRWIn)
 	{
+		const auto descRW = cast(descRWIn);
+		m_uav = descRW->uav;
+		ComputeResourceD3D11::update(cast_from_ComputeResourceDescD3D11(&descRW->resource));
+	}
+
+	ComputeResourceRWD3D11(const ComputeResourceRWDesc* descRWIn):
+		ComputeResourceD3D11(cast_from_ComputeResourceDescD3D11(&cast(descRWIn)->resource))
+	{
+		const auto descRW = cast(descRWIn);
 		m_uav = descRW->uav;
 	}
 
@@ -145,37 +195,54 @@ public:
 	}
 };
 
-// ************* API functions ****************
-
-ComputeContext* ComputeContextCreate(ComputeContextDesc* desc)
+inline ComputeResourceRWD3D11* cast_to_ComputeResourceRWD3D11(ComputeResourceRW* ctx)
 {
-	return new ComputeContext(desc);
+	return (ComputeResourceRWD3D11*)(ctx);
 }
 
-void ComputeContextUpdate(ComputeContext* context, ComputeContextDesc* desc)
+inline ComputeResourceRW* cast_from_ComputeResourceRWD3D11(ComputeResourceRWD3D11* ctx)
 {
+	return (ComputeResourceRW*)(ctx);
+}
+
+// ************* API functions ****************
+
+ComputeContext* ComputeContextCreateD3D11(ComputeContextDesc* desc)
+{
+	return cast_from_ComputeContextD3D11(new ComputeContextD3D11(desc));
+}
+
+void ComputeContextUpdateD3D11(ComputeContext* contextIn, ComputeContextDesc* descIn)
+{
+	auto context = cast_to_ComputeContextD3D11(contextIn);
+	auto desc = cast_to_ComputeContextDescD3D11(descIn);
+
 	context->m_desc = *desc;
 }
 
-void ComputeContextRelease(ComputeContext* context)
+void ComputeContextReleaseD3D11(ComputeContext* context)
 {
-	delete context;
+	delete cast_to_ComputeContextD3D11(context);
 }
 
-ComputeShader* ComputeShaderCreate(ComputeContext* context, const ComputeShaderDesc* desc)
+ComputeShader* ComputeShaderCreateD3D11(ComputeContext* contextIn, const ComputeShaderDesc* desc)
 {
+	auto context = cast_to_ComputeContextD3D11(contextIn);
+
 	ID3D11ComputeShader* computeShader = nullptr;
 	context->m_desc.device->CreateComputeShader(desc->cs, desc->cs_length, nullptr, &computeShader);
-	return new ComputeShader(computeShader);
+	return cast_from_ComputeShaderD3D11(new ComputeShaderD3D11(computeShader));
 }
 
-void ComputeShaderRelease(ComputeShader* shader)
+void ComputeShaderReleaseD3D11(ComputeShader* shader)
 {
-	delete shader;
+	delete cast_to_ComputeShaderD3D11(shader);
 }
 
-ComputeConstantBuffer* ComputeConstantBufferCreate(ComputeContext* context, const ComputeConstantBufferDesc* desc)
+ComputeConstantBuffer* ComputeConstantBufferCreateD3D11(ComputeContext* contextIn, const ComputeConstantBufferDesc* desc)
 {
+	auto context = cast_to_ComputeContextD3D11(contextIn);
+
 	ID3D11Buffer* constantBuffer = nullptr;
 	{
 		D3D11_BUFFER_DESC bufDesc;
@@ -187,81 +254,94 @@ ComputeConstantBuffer* ComputeConstantBufferCreate(ComputeContext* context, cons
 
 		context->m_desc.device->CreateBuffer(&bufDesc, nullptr, &constantBuffer);
 	}
-	return new ComputeConstantBuffer(constantBuffer);
+	return cast_from_ComputeConstantBufferD3D11(new ComputeConstantBufferD3D11(constantBuffer));
 }
 
-void ComputeConstantBufferRelease(ComputeConstantBuffer* constantBuffer)
+void ComputeConstantBufferReleaseD3D11(ComputeConstantBuffer* constantBuffer)
 {
-	delete constantBuffer;
+	delete cast_to_ComputeConstantBufferD3D11(constantBuffer);
 }
 
-void* ComputeConstantBufferMap(ComputeContext* context, ComputeConstantBuffer* constantBuffer)
+void* ComputeConstantBufferMapD3D11(ComputeContext* contextIn, ComputeConstantBuffer* constantBufferIn)
 {
+	auto context = cast_to_ComputeContextD3D11(contextIn);
+	auto constantBuffer = cast_to_ComputeConstantBufferD3D11(constantBufferIn);
+
 	D3D11_MAPPED_SUBRESOURCE mapped = {};
 	context->m_desc.deviceContext->Map(constantBuffer->m_buffer, 0u, D3D11_MAP_WRITE_DISCARD, 0u, &mapped);
 	return mapped.pData;
 }
 
-void ComputeConstantBufferUnmap(ComputeContext* context, ComputeConstantBuffer* constantBuffer)
+void ComputeConstantBufferUnmapD3D11(ComputeContext* contextIn, ComputeConstantBuffer* constantBufferIn)
 {
+	auto context = cast_to_ComputeContextD3D11(contextIn);
+	auto constantBuffer = cast_to_ComputeConstantBufferD3D11(constantBufferIn);
+
 	context->m_desc.deviceContext->Unmap(constantBuffer->m_buffer, 0u);
 }
 
-ComputeResource* ComputeResourceCreate(ComputeContext* context, const ComputeResourceDesc* desc)
+ComputeResource* ComputeResourceCreateD3D11(ComputeContext* context, const ComputeResourceDesc* desc)
 {
-	return new ComputeResource(desc);
+	return cast_from_ComputeResourceD3D11(new ComputeResourceD3D11(desc));
 }
 
-void ComputeResourceUpdate(ComputeContext* context, ComputeResource* resource, const ComputeResourceDesc* desc)
+void ComputeResourceUpdateD3D11(ComputeContext* context, ComputeResource* resourceIn, const ComputeResourceDesc* desc)
 {
+	auto resource = cast_to_ComputeResourceD3D11(resourceIn);
+
 	resource->update(desc);
 }
 
-void ComputeResourceRelease(ComputeResource* resource)
+void ComputeResourceReleaseD3D11(ComputeResource* resource)
 {
-	delete resource;
+	delete cast_to_ComputeResourceD3D11(resource);
 }
 
-ComputeResourceRW* ComputeResourceRWCreate(ComputeContext* context, const ComputeResourceRWDesc* desc)
+ComputeResourceRW* ComputeResourceRWCreateD3D11(ComputeContext* context, const ComputeResourceRWDesc* desc)
 {
-	return new ComputeResourceRW(desc);
+	return cast_from_ComputeResourceRWD3D11(new ComputeResourceRWD3D11(desc));
 }
 
-void ComputeResourceRWUpdate(ComputeContext* context, ComputeResourceRW* resourceRW, const ComputeResourceRWDesc* desc)
+void ComputeResourceRWUpdateD3D11(ComputeContext* context, ComputeResourceRW* resourceRWIn, const ComputeResourceRWDesc* desc)
 {
+	auto resourceRW = cast_to_ComputeResourceRWD3D11(resourceRWIn);
+
 	resourceRW->update(desc);
 }
 
-void ComputeResourceRWRelease(ComputeResourceRW* resourceRW)
+void ComputeResourceRWReleaseD3D11(ComputeResourceRW* resourceRW)
 {
-	delete resourceRW;
+	delete cast_to_ComputeResourceRWD3D11(resourceRW);
 }
 
-ComputeResource* ComputeResourceRWGetResource(ComputeResourceRW* resourceRW)
+ComputeResource* ComputeResourceRWGetResourceD3D11(ComputeResourceRW* resourceRWIn)
 {
-	return static_cast<ComputeResource*>(resourceRW);
+	auto resourceRW = cast_to_ComputeResourceRWD3D11(resourceRWIn);
+	return cast_from_ComputeResourceD3D11(static_cast<ComputeResourceD3D11*>(resourceRW));
 }
 
-void ComputeContextDispatch(ComputeContext* context, const ComputeDispatchParams* params)
+void ComputeContextDispatchD3D11(ComputeContext* contextIn, const ComputeDispatchParams* params)
 {
+	auto context = cast_to_ComputeContextD3D11(contextIn);
+
 	auto& deviceContext = context->m_desc.deviceContext;
 
-	if (params->shader) deviceContext->CSSetShader(params->shader->m_shader, nullptr, 0u);
+	if (params->shader) deviceContext->CSSetShader(cast_to_ComputeShaderD3D11(params->shader)->m_shader, nullptr, 0u);
 
 	ID3D11ShaderResourceView* srvs[ComputeDispatchMaxResources] = { nullptr };
 	ID3D11UnorderedAccessView* uavs[ComputeDispatchMaxResourcesRW] = { nullptr };
 	for (unsigned int i = 0u; i < ComputeDispatchMaxResources; i++)
 	{
-		if (params->resources[i]) srvs[i] = params->resources[i]->SRV();
+		if (params->resources[i]) srvs[i] = cast_to_ComputeResourceD3D11(params->resources[i])->SRV();
 	}
 	for (unsigned int i = 0u; i < ComputeDispatchMaxResourcesRW; i++)
 	{
-		if (params->resourcesRW[i]) uavs[i] = params->resourcesRW[i]->UAV();
+		if (params->resourcesRW[i]) uavs[i] = cast_to_ComputeResourceRWD3D11(params->resourcesRW[i])->UAV();
 	}
 	deviceContext->CSSetShaderResources(0u, ComputeDispatchMaxResources, srvs);
 	deviceContext->CSSetUnorderedAccessViews(0u, ComputeDispatchMaxResourcesRW, uavs, nullptr);
 
-	if (params->constantBuffer) deviceContext->CSSetConstantBuffers(0u, 1u, &params->constantBuffer->m_buffer);
+	if (params->constantBuffer) deviceContext->CSSetConstantBuffers(0u, 1u, &cast_to_ComputeConstantBufferD3D11(params->constantBuffer)->m_buffer);
 
 	ID3D11SamplerState* samplers[] = { 
 		context->m_sampler0, context->m_sampler1, context->m_sampler2, 
@@ -282,7 +362,7 @@ void ComputeContextDispatch(ComputeContext* context, const ComputeDispatchParams
 #include "NvFlow.h"
 #include "NvFlowContextD3D11.h"
 
-inline void updateComputeContextDesc(NvFlowContext* flowContext, ComputeContextDesc* desc)
+inline void updateComputeContextDesc(NvFlowContext* flowContext, ComputeContextDescD3D11* desc)
 {
 	NvFlowContextDescD3D11 srcDesc = {};
 	NvFlowUpdateContextDescD3D11(flowContext, &srcDesc);
@@ -290,54 +370,54 @@ inline void updateComputeContextDesc(NvFlowContext* flowContext, ComputeContextD
 	desc->deviceContext = srcDesc.deviceContext;
 }
 
-ComputeContext* ComputeContextNvFlowContextCreate(NvFlowContext* flowContext)
+ComputeContext* ComputeContextNvFlowContextCreateD3D11(NvFlowContext* flowContext)
 {
-	ComputeContextDesc desc = {};
+	ComputeContextDescD3D11 desc = {};
 	updateComputeContextDesc(flowContext, &desc);
-	return ComputeContextCreate(&desc);
+	return ComputeContextCreateD3D11(cast_from_ComputeContextDescD3D11(&desc));
 }
 
-void ComputeContextNvFlowContextUpdate(ComputeContext* computeContext, NvFlowContext* flowContext)
+void ComputeContextNvFlowContextUpdateD3D11(ComputeContext* computeContext, NvFlowContext* flowContext)
 {
-	ComputeContextDesc desc = {};
+	ComputeContextDescD3D11 desc = {};
 	updateComputeContextDesc(flowContext, &desc);
-	ComputeContextUpdate(computeContext, &desc);
+	ComputeContextUpdateD3D11(computeContext, cast_from_ComputeContextDescD3D11(&desc));
 }
 
-ComputeResource* ComputeResourceNvFlowCreate(ComputeContext* context, NvFlowContext* flowContext, NvFlowResource* flowResource)
+ComputeResource* ComputeResourceNvFlowCreateD3D11(ComputeContext* context, NvFlowContext* flowContext, NvFlowResource* flowResource)
 {
 	NvFlowResourceViewDescD3D11 flowViewDesc = {};
 	NvFlowUpdateResourceViewDescD3D11(flowContext, flowResource, &flowViewDesc);
-	ComputeResourceDesc desc = {};
+	ComputeResourceDescD3D11 desc = {};
 	desc.srv = flowViewDesc.srv;
-	return ComputeResourceCreate(context, &desc);
+	return ComputeResourceCreateD3D11(context, cast_from_ComputeResourceDescD3D11(&desc));
 }
 
-void ComputeResourceNvFlowUpdate(ComputeContext* context, ComputeResource* resource, NvFlowContext* flowContext, NvFlowResource* flowResource)
+void ComputeResourceNvFlowUpdateD3D11(ComputeContext* context, ComputeResource* resource, NvFlowContext* flowContext, NvFlowResource* flowResource)
 {
 	NvFlowResourceViewDescD3D11 flowViewDesc = {};
 	NvFlowUpdateResourceViewDescD3D11(flowContext, flowResource, &flowViewDesc);
-	ComputeResourceDesc desc = {};
+	ComputeResourceDescD3D11 desc = {};
 	desc.srv = flowViewDesc.srv;
-	ComputeResourceUpdate(context, resource, &desc);
+	ComputeResourceUpdateD3D11(context, resource, cast_from_ComputeResourceDescD3D11(&desc));
 }
 
-ComputeResourceRW* ComputeResourceRWNvFlowCreate(ComputeContext* context, NvFlowContext* flowContext, NvFlowResourceRW* flowResourceRW)
+ComputeResourceRW* ComputeResourceRWNvFlowCreateD3D11(ComputeContext* context, NvFlowContext* flowContext, NvFlowResourceRW* flowResourceRW)
 {
 	NvFlowResourceRWViewDescD3D11 flowViewDesc = {};
 	NvFlowUpdateResourceRWViewDescD3D11(flowContext, flowResourceRW, &flowViewDesc);
-	ComputeResourceRWDesc desc = {};
+	ComputeResourceRWDescD3D11 desc = {};
 	desc.resource.srv = flowViewDesc.resourceView.srv;
 	desc.uav = flowViewDesc.uav;
-	return ComputeResourceRWCreate(context, &desc);
+	return ComputeResourceRWCreateD3D11(context, cast_from_ComputeResourceRWDescD3D11(&desc));
 }
 
-void ComputeResourceRWNvFlowUpdate(ComputeContext* context, ComputeResourceRW* resourceRW, NvFlowContext* flowContext, NvFlowResourceRW* flowResourceRW)
+void ComputeResourceRWNvFlowUpdateD3D11(ComputeContext* context, ComputeResourceRW* resourceRW, NvFlowContext* flowContext, NvFlowResourceRW* flowResourceRW)
 {
 	NvFlowResourceRWViewDescD3D11 flowViewDesc = {};
 	NvFlowUpdateResourceRWViewDescD3D11(flowContext, flowResourceRW, &flowViewDesc);
-	ComputeResourceRWDesc desc = {};
+	ComputeResourceRWDescD3D11 desc = {};
 	desc.resource.srv = flowViewDesc.resourceView.srv;
 	desc.uav = flowViewDesc.uav;
-	ComputeResourceRWUpdate(context, resourceRW, &desc);
+	ComputeResourceRWUpdateD3D11(context, resourceRW, cast_from_ComputeResourceRWDescD3D11(&desc));
 }

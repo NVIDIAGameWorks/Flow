@@ -28,7 +28,7 @@ namespace
 
 namespace
 {
-	ImguiGraphDesc m_desc = {};
+	ImguiGraphDescD3D12 m_desc = {};
 
 	struct Vertex
 	{
@@ -75,8 +75,10 @@ namespace
 	int frameIndex = 0;
 }
 
-void imguiGraphContextInit(const ImguiGraphDesc* desc)
+void imguiGraphContextInitD3D12(const ImguiGraphDesc* descIn)
 {
+	const auto desc = cast_to_imguiGraphDescD3D12(descIn);
+
 	m_desc = *desc;
 
 	// create the root signature
@@ -308,12 +310,14 @@ void imguiGraphContextInit(const ImguiGraphDesc* desc)
 	}
 }
 
-void imguiGraphContextUpdate(const ImguiGraphDesc* desc)
+void imguiGraphContextUpdateD3D12(const ImguiGraphDesc* descIn)
 {
+	const auto desc = cast_to_imguiGraphDescD3D12(descIn);
+
 	m_desc = *desc;
 }
 
-void imguiGraphContextDestroy()
+void imguiGraphContextDestroyD3D12()
 {
 	COMRelease(m_rootSignature);
 	COMRelease(m_pipelineState);
@@ -321,7 +325,7 @@ void imguiGraphContextDestroy()
 	COMRelease(m_vertexBuffer);
 }
 
-void imguiGraphRecordBegin()
+void imguiGraphRecordBeginD3D12()
 {
 	frameIndex = (frameIndex + 1) % frameCount;
 
@@ -406,7 +410,7 @@ static void imguiGraphFlush()
 	}
 }
 
-void imguiGraphRecordEnd()
+void imguiGraphRecordEndD3D12()
 {
 	ID3D12GraphicsCommandList* commandList = m_desc.commandList;
 
@@ -424,7 +428,7 @@ void imguiGraphRecordEnd()
 	commandList->RSSetScissorRects(1, &rect);
 }
 
-void imguiGraphEnableScissor(int x, int y, int width, int height)
+void imguiGraphEnableScissorD3D12(int x, int y, int width, int height)
 {
 	// mark end of last region
 	m_stateScissor.stopIdx = m_stateVertIdx;
@@ -439,7 +443,7 @@ void imguiGraphEnableScissor(int x, int y, int width, int height)
 	m_stateScissor.height = height;
 }
 
-void imguiGraphDisableScissor()
+void imguiGraphDisableScissorD3D12()
 {
 	if (m_stateVertIdx == 0) return;
 
@@ -456,13 +460,13 @@ void imguiGraphDisableScissor()
 	m_stateScissor.height = m_desc.winH;
 }
 
-void imguiGraphVertex2f(float x, float y)
+void imguiGraphVertex2fD3D12(float x, float y)
 {
 	float v[2] = { x,y };
-	imguiGraphVertex2fv(v);
+	imguiGraphVertex2fvD3D12(v);
 }
 
-void imguiGraphVertex2fv(const float* v)
+void imguiGraphVertex2fvD3D12(const float* v)
 {
 	// update state
 	m_stateVert.x = v[0];
@@ -477,13 +481,13 @@ void imguiGraphVertex2fv(const float* v)
 	}
 }
 
-void imguiGraphTexCoord2f(float u, float v)
+void imguiGraphTexCoord2fD3D12(float u, float v)
 {
 	m_stateVert.u = u;
 	m_stateVert.v = v;
 }
 
-void imguiGraphColor4ub(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
+void imguiGraphColor4ubD3D12(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
 {
 	m_stateVert.rgba[0] = red;
 	m_stateVert.rgba[1] = green;
@@ -491,7 +495,7 @@ void imguiGraphColor4ub(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha)
 	m_stateVert.rgba[3] = alpha;
 }
 
-void imguiGraphColor4ubv(const uint8_t* v)
+void imguiGraphColor4ubvD3D12(const uint8_t* v)
 {
 	m_stateVert.rgba[0] = v[0];
 	m_stateVert.rgba[1] = v[1];
@@ -499,18 +503,18 @@ void imguiGraphColor4ubv(const uint8_t* v)
 	m_stateVert.rgba[3] = v[3];
 }
 
-void imguiGraphFontTextureEnable()
+void imguiGraphFontTextureEnableD3D12()
 {
 
 }
 
-void imguiGraphFontTextureDisable()
+void imguiGraphFontTextureDisableD3D12()
 {
 	m_stateVert.u = -1.f;
 	m_stateVert.v = -1.f;
 }
 
-void imguiGraphFontTextureInit(unsigned char* data)
+void imguiGraphFontTextureInitD3D12(unsigned char* data)
 {
 	ID3D12GraphicsCommandList* commandList = m_desc.commandList;
 
@@ -653,7 +657,7 @@ void imguiGraphFontTextureInit(unsigned char* data)
 
 }
 
-void imguiGraphFontTextureRelease()
+void imguiGraphFontTextureReleaseD3D12()
 {
 	COMRelease(m_texture);
 	COMRelease(m_textureUploadHeap);

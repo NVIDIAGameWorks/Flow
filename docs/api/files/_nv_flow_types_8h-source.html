@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>NVIDIA(R) Flow(R) 1.0.0 API Reference: NvFlowTypes.h Source File</title>
+		<title>NVIDIA(R) Flow(R) 1.0.1 API Reference: NvFlowTypes.h Source File</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<LINK HREF="NVIDIA.css" REL="stylesheet" TYPE="text/css">
 	</head>
@@ -71,61 +71,81 @@
 <a name="l00042"></a><a class="code" href="struct_nv_flow_uint4.html#56cf1bc5e4f7379590b4ed7b98c3921f">00042</a>     <a class="code" href="_nv_flow_types_8h.html#3ecaefc2ddcf5a935631db32d05226b1">NvFlowUint</a> <a class="code" href="struct_nv_flow_uint4.html#56705fa874ab3835a52dc1ccfe5e1784">x</a>, <a class="code" href="struct_nv_flow_uint4.html#76a9dbd55116d0b45a772b14a13b2c18">y</a>, <a class="code" href="struct_nv_flow_uint4.html#56cf1bc5e4f7379590b4ed7b98c3921f">z</a>, <a class="code" href="struct_nv_flow_uint4.html#694db6f55aaf1c4f4bc0214dfa4a6d86">w</a>;
 <a name="l00043"></a>00043 };
 <a name="l00044"></a>00044 
-<a name="l00045"></a><a class="code" href="struct_nv_flow_float3.html">00045</a> <span class="keyword">struct </span><a class="code" href="struct_nv_flow_float3.html">NvFlowFloat3</a>
+<a name="l00045"></a><a class="code" href="struct_nv_flow_int2.html">00045</a> <span class="keyword">struct </span><a class="code" href="struct_nv_flow_int2.html">NvFlowInt2</a>
 <a name="l00046"></a>00046 {
-<a name="l00047"></a><a class="code" href="struct_nv_flow_float3.html#06a5f40929899206c2c1acb221f91858">00047</a>     <span class="keywordtype">float</span> <a class="code" href="struct_nv_flow_float3.html#0204e7c9bdeb0cbcb6516b34bcc5af62">x</a>, <a class="code" href="struct_nv_flow_float3.html#72790f2f5e6bf05c4f008200b7214474">y</a>, <a class="code" href="struct_nv_flow_float3.html#06a5f40929899206c2c1acb221f91858">z</a>;
+<a name="l00047"></a><a class="code" href="struct_nv_flow_int2.html#fc375faf0a0617daf0bba4ff8ce3c520">00047</a>     <span class="keywordtype">int</span> <a class="code" href="struct_nv_flow_int2.html#a6e8431da91329f148ed33aad715ee5f">x</a>, <a class="code" href="struct_nv_flow_int2.html#fc375faf0a0617daf0bba4ff8ce3c520">y</a>;
 <a name="l00048"></a>00048 };
 <a name="l00049"></a>00049 
-<a name="l00050"></a><a class="code" href="struct_nv_flow_float4.html">00050</a> <span class="keyword">struct </span><a class="code" href="struct_nv_flow_float4.html">NvFlowFloat4</a>
+<a name="l00050"></a><a class="code" href="struct_nv_flow_int3.html">00050</a> <span class="keyword">struct </span><a class="code" href="struct_nv_flow_int3.html">NvFlowInt3</a>
 <a name="l00051"></a>00051 {
-<a name="l00052"></a><a class="code" href="struct_nv_flow_float4.html#87ac527bceb43f66f00337864b951cb0">00052</a>     <span class="keywordtype">float</span> <a class="code" href="struct_nv_flow_float4.html#b04481cfd0486d909ec406808abb6955">x</a>, <a class="code" href="struct_nv_flow_float4.html#58ee92885e16e8f03283b2e9e7da948d">y</a>, <a class="code" href="struct_nv_flow_float4.html#87ac527bceb43f66f00337864b951cb0">z</a>, <a class="code" href="struct_nv_flow_float4.html#7cff4463df717e34301af9772b276729">w</a>;
+<a name="l00052"></a><a class="code" href="struct_nv_flow_int3.html#b76c14ed7d186fc428be056db7bcc67d">00052</a>     <span class="keywordtype">int</span> <a class="code" href="struct_nv_flow_int3.html#73e12f7c750f20bc2a642d139815cce6">x</a>, <a class="code" href="struct_nv_flow_int3.html#a190cda874683d079077c37a86fec891">y</a>, <a class="code" href="struct_nv_flow_int3.html#b76c14ed7d186fc428be056db7bcc67d">z</a>;
 <a name="l00053"></a>00053 };
 <a name="l00054"></a>00054 
-<a name="l00055"></a><a class="code" href="struct_nv_flow_float4x4.html">00055</a> <span class="keyword">struct </span><a class="code" href="struct_nv_flow_float4x4.html">NvFlowFloat4x4</a>
+<a name="l00055"></a><a class="code" href="struct_nv_flow_int4.html">00055</a> <span class="keyword">struct </span><a class="code" href="struct_nv_flow_int4.html">NvFlowInt4</a>
 <a name="l00056"></a>00056 {
-<a name="l00057"></a><a class="code" href="struct_nv_flow_float4x4.html#8a67cff1fb11826df327bb277ee31489">00057</a>     <a class="code" href="struct_nv_flow_float4.html">NvFlowFloat4</a> <a class="code" href="struct_nv_flow_float4x4.html#e63fda9a10ddee094c84b2f0ba1775da">x</a>, <a class="code" href="struct_nv_flow_float4x4.html#4e20c1c1150e7aa0e8be14923a9192fa">y</a>, <a class="code" href="struct_nv_flow_float4x4.html#8a67cff1fb11826df327bb277ee31489">z</a>, <a class="code" href="struct_nv_flow_float4x4.html#499098c080d7ca7cdde6ff3f88247420">w</a>;
+<a name="l00057"></a><a class="code" href="struct_nv_flow_int4.html#1be59aa647b3c9c293057186ce2dcea6">00057</a>     <span class="keywordtype">int</span> <a class="code" href="struct_nv_flow_int4.html#581e9caf43bd52dc95418e6010f1c497">x</a>, <a class="code" href="struct_nv_flow_int4.html#60ebdbff326b19672eddf6993a82ccef">y</a>, <a class="code" href="struct_nv_flow_int4.html#1be59aa647b3c9c293057186ce2dcea6">z</a>, <a class="code" href="struct_nv_flow_int4.html#908dcfd0e690e4345935b60b710115b6">w</a>;
 <a name="l00058"></a>00058 };
 <a name="l00059"></a>00059 
-<a name="l00060"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c">00060</a> <span class="keyword">enum</span> <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c">NvFlowFormat</a>
+<a name="l00060"></a><a class="code" href="struct_nv_flow_float2.html">00060</a> <span class="keyword">struct </span><a class="code" href="struct_nv_flow_float2.html">NvFlowFloat2</a>
 <a name="l00061"></a>00061 {
-<a name="l00062"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c1d0b1885fb6f462c83fccaf6177c5745">00062</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c1d0b1885fb6f462c83fccaf6177c5745">eNvFlowFormat_unknown</a> = 0,
-<a name="l00063"></a>00063 
-<a name="l00064"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c4156ffab2a50893af4444af1c0126ccb">00064</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c4156ffab2a50893af4444af1c0126ccb">eNvFlowFormat_r32_float</a> = 1,
-<a name="l00065"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c79bbf51b6425ac00fe59efadf1fc72cc">00065</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c79bbf51b6425ac00fe59efadf1fc72cc">eNvFlowFormat_r32g32_float</a> = 2,
-<a name="l00066"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cc750ececc262a5f1f95c77a84092ac90">00066</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cc750ececc262a5f1f95c77a84092ac90">eNvFlowFormat_r32g32b32a32_float</a> = 3,
-<a name="l00067"></a>00067 
-<a name="l00068"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cd51f6991584464764db30e31f10484e9">00068</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cd51f6991584464764db30e31f10484e9">eNvFlowFormat_r16_float</a> = 4,
-<a name="l00069"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cd59a09208a11853a0a99b2cfe45cb3ea">00069</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cd59a09208a11853a0a99b2cfe45cb3ea">eNvFlowFormat_r16g16_float</a> = 5,
-<a name="l00070"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c2eac8633b4aafb7c041ab7122b66fb47">00070</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c2eac8633b4aafb7c041ab7122b66fb47">eNvFlowFormat_r16g16b16a16_float</a> = 6,
-<a name="l00071"></a>00071 
-<a name="l00072"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c5bc5993a6ee9e22706acc7f52508ed9f">00072</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c5bc5993a6ee9e22706acc7f52508ed9f">eNvFlowFormat_r32_uint</a> = 7,
-<a name="l00073"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cef998058401d254d2336d60499d9cfea">00073</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cef998058401d254d2336d60499d9cfea">eNvFlowFormat_r32g32_uint</a> = 8,
-<a name="l00074"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c464ba9c4b818d4e330cd32a8b02596a4">00074</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c464ba9c4b818d4e330cd32a8b02596a4">eNvFlowFormat_r32g32b32a32_uint</a> = 9,
-<a name="l00075"></a>00075 
-<a name="l00076"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c84f273cf69970dc4adba666bd7003e6e">00076</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c84f273cf69970dc4adba666bd7003e6e">eNvFlowFormat_r8_unorm</a> = 10,
-<a name="l00077"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c72a010125f40c9846d3648c6f608a7f3">00077</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c72a010125f40c9846d3648c6f608a7f3">eNvFlowFormat_r8g8_unorm</a> = 11,
-<a name="l00078"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957caa42ac82be2f7ff3ce3dae85f1947ebf">00078</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957caa42ac82be2f7ff3ce3dae85f1947ebf">eNvFlowFormat_r8g8b8a8_unorm</a> = 12,
+<a name="l00062"></a><a class="code" href="struct_nv_flow_float2.html#5f2c79d826959769fac959287586d08c">00062</a>     <span class="keywordtype">float</span> <a class="code" href="struct_nv_flow_float2.html#672afedd15d99e494c9cfabb03c5a59b">x</a>, <a class="code" href="struct_nv_flow_float2.html#5f2c79d826959769fac959287586d08c">y</a>;
+<a name="l00063"></a>00063 };
+<a name="l00064"></a>00064 
+<a name="l00065"></a><a class="code" href="struct_nv_flow_float3.html">00065</a> <span class="keyword">struct </span><a class="code" href="struct_nv_flow_float3.html">NvFlowFloat3</a>
+<a name="l00066"></a>00066 {
+<a name="l00067"></a><a class="code" href="struct_nv_flow_float3.html#06a5f40929899206c2c1acb221f91858">00067</a>     <span class="keywordtype">float</span> <a class="code" href="struct_nv_flow_float3.html#0204e7c9bdeb0cbcb6516b34bcc5af62">x</a>, <a class="code" href="struct_nv_flow_float3.html#72790f2f5e6bf05c4f008200b7214474">y</a>, <a class="code" href="struct_nv_flow_float3.html#06a5f40929899206c2c1acb221f91858">z</a>;
+<a name="l00068"></a>00068 };
+<a name="l00069"></a>00069 
+<a name="l00070"></a><a class="code" href="struct_nv_flow_float4.html">00070</a> <span class="keyword">struct </span><a class="code" href="struct_nv_flow_float4.html">NvFlowFloat4</a>
+<a name="l00071"></a>00071 {
+<a name="l00072"></a><a class="code" href="struct_nv_flow_float4.html#87ac527bceb43f66f00337864b951cb0">00072</a>     <span class="keywordtype">float</span> <a class="code" href="struct_nv_flow_float4.html#b04481cfd0486d909ec406808abb6955">x</a>, <a class="code" href="struct_nv_flow_float4.html#58ee92885e16e8f03283b2e9e7da948d">y</a>, <a class="code" href="struct_nv_flow_float4.html#87ac527bceb43f66f00337864b951cb0">z</a>, <a class="code" href="struct_nv_flow_float4.html#7cff4463df717e34301af9772b276729">w</a>;
+<a name="l00073"></a>00073 };
+<a name="l00074"></a>00074 
+<a name="l00075"></a><a class="code" href="struct_nv_flow_float4x4.html">00075</a> <span class="keyword">struct </span><a class="code" href="struct_nv_flow_float4x4.html">NvFlowFloat4x4</a>
+<a name="l00076"></a>00076 {
+<a name="l00077"></a><a class="code" href="struct_nv_flow_float4x4.html#8a67cff1fb11826df327bb277ee31489">00077</a>     <a class="code" href="struct_nv_flow_float4.html">NvFlowFloat4</a> <a class="code" href="struct_nv_flow_float4x4.html#e63fda9a10ddee094c84b2f0ba1775da">x</a>, <a class="code" href="struct_nv_flow_float4x4.html#4e20c1c1150e7aa0e8be14923a9192fa">y</a>, <a class="code" href="struct_nv_flow_float4x4.html#8a67cff1fb11826df327bb277ee31489">z</a>, <a class="code" href="struct_nv_flow_float4x4.html#499098c080d7ca7cdde6ff3f88247420">w</a>;
+<a name="l00078"></a>00078 };
 <a name="l00079"></a>00079 
-<a name="l00080"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c01b0a457d35248abdac389257759caf0">00080</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c01b0a457d35248abdac389257759caf0">eNvFlowFormat_r16_unorm</a> = 13,
-<a name="l00081"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cf3f46b4dfcd57cf2a2884a6d3ee97173">00081</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cf3f46b4dfcd57cf2a2884a6d3ee97173">eNvFlowFormat_r16g16_unorm</a> = 14,
-<a name="l00082"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957ce6975443b9be1b25ff368f2117f8b506">00082</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957ce6975443b9be1b25ff368f2117f8b506">eNvFlowFormat_r16g16b16a16_unorm</a> = 15,
+<a name="l00080"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c">00080</a> <span class="keyword">enum</span> <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c">NvFlowFormat</a>
+<a name="l00081"></a>00081 {
+<a name="l00082"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c1d0b1885fb6f462c83fccaf6177c5745">00082</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c1d0b1885fb6f462c83fccaf6177c5745">eNvFlowFormat_unknown</a> = 0,
 <a name="l00083"></a>00083 
-<a name="l00084"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cdf2cfafd6eeb761e01a5ee438eb58062">00084</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cdf2cfafd6eeb761e01a5ee438eb58062">eNvFlowFormat_d32_float</a> = 16,
-<a name="l00085"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c727f1b670616005cf3b80d3af5b9233c">00085</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c727f1b670616005cf3b80d3af5b9233c">eNvFlowFormat_d24_unorm_s8_uint</a> = 17,
-<a name="l00086"></a>00086 
-<a name="l00087"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c2670a4bf275ccc20a3ba893a8fa242c5">00087</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c2670a4bf275ccc20a3ba893a8fa242c5">eNvFlowFormat_r8_snorm</a> = 18,
-<a name="l00088"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957ceb2736f62e15e8920ae61837bce06f64">00088</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957ceb2736f62e15e8920ae61837bce06f64">eNvFlowFormat_r8g8_snorm</a> = 19,
-<a name="l00089"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cedd06811be32dff1617899386cb6d536">00089</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cedd06811be32dff1617899386cb6d536">eNvFlowFormat_r8g8b8a8_snorm</a> = 20,
-<a name="l00090"></a>00090 
-<a name="l00091"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cfdca341f9586cc39028e225979e7df46">00091</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cfdca341f9586cc39028e225979e7df46">eNvFlowFormat_r32_typeless</a> = 21,
-<a name="l00092"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c1bd32aa49f066d037b54ece9b26c0ced">00092</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c1bd32aa49f066d037b54ece9b26c0ced">eNvFlowFormat_r24_unorm_x8_typeless</a> = 22,
-<a name="l00093"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c04d5037e286579a683d852461c3b62fe">00093</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c04d5037e286579a683d852461c3b62fe">eNvFlowFormat_r24g8_typeless</a> = 23,
-<a name="l00094"></a>00094 
-<a name="l00095"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cd93ea7e88ec41a78b6042f8f7f674d6e">00095</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cd93ea7e88ec41a78b6042f8f7f674d6e">eNvFlowFormat_r16_typeless</a> = 24,
-<a name="l00096"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c7ecb4fce88d5e4ae4d460752ea199966">00096</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c7ecb4fce88d5e4ae4d460752ea199966">eNvFlowFormat_d16_unorm</a> = 25,
-<a name="l00097"></a>00097 
-<a name="l00098"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c2db4e9e05fc62929388899c22a62a31b">00098</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c2db4e9e05fc62929388899c22a62a31b">eNvFlowFormat_max</a>
-<a name="l00099"></a>00099 };
+<a name="l00084"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c4156ffab2a50893af4444af1c0126ccb">00084</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c4156ffab2a50893af4444af1c0126ccb">eNvFlowFormat_r32_float</a> = 1,
+<a name="l00085"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c79bbf51b6425ac00fe59efadf1fc72cc">00085</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c79bbf51b6425ac00fe59efadf1fc72cc">eNvFlowFormat_r32g32_float</a> = 2,
+<a name="l00086"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cc750ececc262a5f1f95c77a84092ac90">00086</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cc750ececc262a5f1f95c77a84092ac90">eNvFlowFormat_r32g32b32a32_float</a> = 3,
+<a name="l00087"></a>00087 
+<a name="l00088"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cd51f6991584464764db30e31f10484e9">00088</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cd51f6991584464764db30e31f10484e9">eNvFlowFormat_r16_float</a> = 4,
+<a name="l00089"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cd59a09208a11853a0a99b2cfe45cb3ea">00089</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cd59a09208a11853a0a99b2cfe45cb3ea">eNvFlowFormat_r16g16_float</a> = 5,
+<a name="l00090"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c2eac8633b4aafb7c041ab7122b66fb47">00090</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c2eac8633b4aafb7c041ab7122b66fb47">eNvFlowFormat_r16g16b16a16_float</a> = 6,
+<a name="l00091"></a>00091 
+<a name="l00092"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c5bc5993a6ee9e22706acc7f52508ed9f">00092</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c5bc5993a6ee9e22706acc7f52508ed9f">eNvFlowFormat_r32_uint</a> = 7,
+<a name="l00093"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cef998058401d254d2336d60499d9cfea">00093</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cef998058401d254d2336d60499d9cfea">eNvFlowFormat_r32g32_uint</a> = 8,
+<a name="l00094"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c464ba9c4b818d4e330cd32a8b02596a4">00094</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c464ba9c4b818d4e330cd32a8b02596a4">eNvFlowFormat_r32g32b32a32_uint</a> = 9,
+<a name="l00095"></a>00095 
+<a name="l00096"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c84f273cf69970dc4adba666bd7003e6e">00096</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c84f273cf69970dc4adba666bd7003e6e">eNvFlowFormat_r8_unorm</a> = 10,
+<a name="l00097"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c72a010125f40c9846d3648c6f608a7f3">00097</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c72a010125f40c9846d3648c6f608a7f3">eNvFlowFormat_r8g8_unorm</a> = 11,
+<a name="l00098"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957caa42ac82be2f7ff3ce3dae85f1947ebf">00098</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957caa42ac82be2f7ff3ce3dae85f1947ebf">eNvFlowFormat_r8g8b8a8_unorm</a> = 12,
+<a name="l00099"></a>00099 
+<a name="l00100"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c01b0a457d35248abdac389257759caf0">00100</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c01b0a457d35248abdac389257759caf0">eNvFlowFormat_r16_unorm</a> = 13,
+<a name="l00101"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cf3f46b4dfcd57cf2a2884a6d3ee97173">00101</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cf3f46b4dfcd57cf2a2884a6d3ee97173">eNvFlowFormat_r16g16_unorm</a> = 14,
+<a name="l00102"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957ce6975443b9be1b25ff368f2117f8b506">00102</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957ce6975443b9be1b25ff368f2117f8b506">eNvFlowFormat_r16g16b16a16_unorm</a> = 15,
+<a name="l00103"></a>00103 
+<a name="l00104"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cdf2cfafd6eeb761e01a5ee438eb58062">00104</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cdf2cfafd6eeb761e01a5ee438eb58062">eNvFlowFormat_d32_float</a> = 16,
+<a name="l00105"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c727f1b670616005cf3b80d3af5b9233c">00105</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c727f1b670616005cf3b80d3af5b9233c">eNvFlowFormat_d24_unorm_s8_uint</a> = 17,
+<a name="l00106"></a>00106 
+<a name="l00107"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c2670a4bf275ccc20a3ba893a8fa242c5">00107</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c2670a4bf275ccc20a3ba893a8fa242c5">eNvFlowFormat_r8_snorm</a> = 18,
+<a name="l00108"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957ceb2736f62e15e8920ae61837bce06f64">00108</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957ceb2736f62e15e8920ae61837bce06f64">eNvFlowFormat_r8g8_snorm</a> = 19,
+<a name="l00109"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cedd06811be32dff1617899386cb6d536">00109</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cedd06811be32dff1617899386cb6d536">eNvFlowFormat_r8g8b8a8_snorm</a> = 20,
+<a name="l00110"></a>00110 
+<a name="l00111"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cfdca341f9586cc39028e225979e7df46">00111</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cfdca341f9586cc39028e225979e7df46">eNvFlowFormat_r32_typeless</a> = 21,
+<a name="l00112"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c1bd32aa49f066d037b54ece9b26c0ced">00112</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c1bd32aa49f066d037b54ece9b26c0ced">eNvFlowFormat_r24_unorm_x8_typeless</a> = 22,
+<a name="l00113"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c04d5037e286579a683d852461c3b62fe">00113</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c04d5037e286579a683d852461c3b62fe">eNvFlowFormat_r24g8_typeless</a> = 23,
+<a name="l00114"></a>00114 
+<a name="l00115"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cd93ea7e88ec41a78b6042f8f7f674d6e">00115</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957cd93ea7e88ec41a78b6042f8f7f674d6e">eNvFlowFormat_r16_typeless</a> = 24,
+<a name="l00116"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c7ecb4fce88d5e4ae4d460752ea199966">00116</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c7ecb4fce88d5e4ae4d460752ea199966">eNvFlowFormat_d16_unorm</a> = 25,
+<a name="l00117"></a>00117 
+<a name="l00118"></a><a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c2db4e9e05fc62929388899c22a62a31b">00118</a>     <a class="code" href="_nv_flow_types_8h.html#adb600299e2edd6a3e237ec0fcef957c2db4e9e05fc62929388899c22a62a31b">eNvFlowFormat_max</a>
+<a name="l00119"></a>00119 };
 </pre></div></div>
 <!-- start footer part -->
 <div class="footer">
