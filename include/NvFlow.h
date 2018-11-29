@@ -1177,6 +1177,20 @@ struct NvFlowVolumeRenderDesc
  */
 NV_FLOW_API NvFlowVolumeRender* NvFlowCreateVolumeRender(NvFlowContext* context, const NvFlowVolumeRenderDesc* desc);
 
+//! From NvfContextExt
+struct NvFlowBlendStateDesc;
+
+/**
+* Creates a volume render object.
+*
+* @param[in] context The context for GPU resource allocation.
+* @param[in] desc Description for memory allocation.
+* @param[in] blendDesc Description for composite blending.
+*
+* @return The created volume render object.
+*/
+NV_FLOW_API NvFlowVolumeRender* NvFlowCreateVolumeRenderCustomComposite(NvFlowContext* context, const NvFlowVolumeRenderDesc* desc, const NvFlowBlendStateDesc* blendDesc);
+
 /**
  * Releases a volume render object.
  *

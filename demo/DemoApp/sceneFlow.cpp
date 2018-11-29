@@ -13,6 +13,12 @@
 #include "imgui.h"
 #include "imguiser.h"
 
+#define USE_CUSTOM_BLEND 0
+
+#if USE_CUSTOM_BLEND
+#include "NvFlowContextExt.h"
+#endif
+
 // ******************** FlowContext ************************
 
 void FlowContext::init(AppGraphCtx* appctx)
@@ -356,7 +362,20 @@ void FlowGridActor::init(FlowContext* flowContext, AppGraphCtx* appctx)
 	NvFlowVolumeRenderDesc volumeRenderDesc;
 	volumeRenderDesc.gridExport = gridExport;
 
+#if USE_CUSTOM_BLEND
+	NvFlowBlendStateDesc blendDesc = {};
+	blendDesc.enable = true;
+	blendDesc.srcBlendColor = eNvFlowBlend_One; //eBlendInvSrcAlpha;
+	blendDesc.dstBlendColor = eNvFlowBlend_SrcAlpha;
+	blendDesc.blendOpColor = eNvFlowBlendOp_Add;
+	blendDesc.srcBlendAlpha = eNvFlowBlend_One; // eBlendInvSrcAlpha;
+	blendDesc.dstBlendAlpha = eNvFlowBlend_One;
+	blendDesc.blendOpAlpha = eNvFlowBlendOp_RevSubtract;
+
+	m_volumeRender = NvFlowCreateVolumeRenderCustomComposite(flowContext->m_renderContext, &volumeRenderDesc, &blendDesc);
+#else
 	m_volumeRender = NvFlowCreateVolumeRender(flowContext->m_renderContext, &volumeRenderDesc);
+#endif
 
 	NvFlowCrossSectionDesc crossSectionDesc = {};
 	crossSectionDesc.gridExport = gridExport;
