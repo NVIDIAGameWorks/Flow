@@ -1,12 +1,29 @@
-/*
-* Copyright (c) 2014-2017, NVIDIA CORPORATION.  All rights reserved.
-*
-* NVIDIA CORPORATION and its licensors retain all intellectual property
-* and proprietary rights in and to this software, related documentation
-* and any modifications thereto.  Any use, reproduction, disclosure or
-* distribution of this software and related documentation without an express
-* license agreement from NVIDIA CORPORATION is strictly prohibited.
-*/
+// This code contains NVIDIA Confidential Information and is disclosed to you
+// under a form of NVIDIA software license agreement provided separately to you.
+//
+// Notice
+// NVIDIA Corporation and its licensors retain all intellectual property and
+// proprietary rights in and to this software and related documentation and
+// any modifications thereto. Any use, reproduction, disclosure, or
+// distribution of this software and related documentation without an express
+// license agreement from NVIDIA Corporation is strictly prohibited.
+//
+// ALL NVIDIA DESIGN SPECIFICATIONS, CODE ARE PROVIDED "AS IS.". NVIDIA MAKES
+// NO WARRANTIES, EXPRESSED, IMPLIED, STATUTORY, OR OTHERWISE WITH RESPECT TO
+// THE MATERIALS, AND EXPRESSLY DISCLAIMS ALL IMPLIED WARRANTIES OF NONINFRINGEMENT,
+// MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.
+//
+// Information and code furnished is believed to be accurate and reliable.
+// However, NVIDIA Corporation assumes no responsibility for the consequences of use of such
+// information or for any infringement of patents or other rights of third parties that may
+// result from its use. No license is granted by implication or otherwise under any patent
+// or patent rights of NVIDIA Corporation. Details are subject to change without notice.
+// This code supersedes and replaces all information previously supplied.
+// NVIDIA Corporation products are not authorized for use as critical
+// components in life support devices or systems without express written approval of
+// NVIDIA Corporation.
+//
+// Copyright (c) 2014-2021 NVIDIA Corporation. All rights reserved.
 
 #pragma once
 
@@ -174,15 +191,32 @@ void declare_backend_functions(const GenerateCodeParams* params, const char* suf
 }
 
 const char* fileHeader =
-"/*\n"
-"* Copyright (c) 2014-2017, NVIDIA CORPORATION.  All rights reserved.\n"
-"*\n"
-"* NVIDIA CORPORATION and its licensors retain all intellectual property\n"
-"* and proprietary rights in and to this software, related documentation\n"
-"* and any modifications thereto.  Any use, reproduction, disclosure or\n"
-"* distribution of this software and related documentation without an express\n"
-"* license agreement from NVIDIA CORPORATION is strictly prohibited.\n"
-"*/\n\n";
+"// This code contains NVIDIA Confidential Information and is disclosed to you\n"
+"// under a form of NVIDIA software license agreement provided separately to you.\n"
+"//\n"
+"// Notice\n"
+"// NVIDIA Corporation and its licensors retain all intellectual property and\n"
+"// proprietary rights in and to this software and related documentation and\n"
+"// any modifications thereto. Any use, reproduction, disclosure, or\n"
+"// distribution of this software and related documentation without an express\n"
+"// license agreement from NVIDIA Corporation is strictly prohibited.\n"
+"//\n"
+"// ALL NVIDIA DESIGN SPECIFICATIONS, CODE ARE PROVIDED \"AS IS.\". NVIDIA MAKES\n"
+"// NO WARRANTIES, EXPRESSED, IMPLIED, STATUTORY, OR OTHERWISE WITH RESPECT TO\n"
+"// THE MATERIALS, AND EXPRESSLY DISCLAIMS ALL IMPLIED WARRANTIES OF NONINFRINGEMENT,\n"
+"// MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.\n"
+"//\n"
+"// Information and code furnished is believed to be accurate and reliable.\n"
+"// However, NVIDIA Corporation assumes no responsibility for the consequences of use of such\n"
+"// information or for any infringement of patents or other rights of third parties that may\n"
+"// result from its use. No license is granted by implication or otherwise under any patent\n"
+"// or patent rights of NVIDIA Corporation. Details are subject to change without notice.\n"
+"// This code supersedes and replaces all information previously supplied.\n"
+"// NVIDIA Corporation products are not authorized for use as critical\n"
+"// components in life support devices or systems without express written approval of\n"
+"// NVIDIA Corporation.\n"
+"//\n"
+"// Copyright (c) 2014-2021 NVIDIA Corporation. All rights reserved.\n\n";
 
 void generateCode(const GenerateCodeParams* params)
 {
