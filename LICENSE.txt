@@ -39,7 +39,7 @@ itself.
 3.3 Patent Claims. If you bring or threaten to bring a patent claim against any
 Licensor (including any claim, cross-claim or counterclaim in a lawsuit) to
 enforce any patents that you allege are infringed by any Work, then your rights
-under this License from such Licensor (including the grants in Sections 2.1)
+under this License from such Licensor (including the grant in Sections 2.1)
 will terminate immediately.
 
 3.4 Trademarks. This License does not grant any rights to use any Licensor’s or
