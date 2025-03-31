@@ -5,6 +5,11 @@ Flow is a sparse grid-based fluid simulation library for real-time applications.
 Please see the manual included in this release package for more information on
 the API and usage.
 
+Flow 2
+-------------------
+
+Flow 2 is now available and open source [here](https://github.com/NVIDIA-Omniverse/PhysX).
+
 Supported Platforms
 -------------------
 
